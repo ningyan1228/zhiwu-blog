@@ -1940,6 +1940,7 @@ body.home-page.light-theme .site-nav a {
 .home-page .intro-hero,
 .home-page .intro-hero.hero,
 body.home-page.light-theme .intro-hero {
+  display: grid;
   max-width: none;
   margin: 0;
   padding: clamp(48px, 7vw, 86px) 0 40px;
@@ -1948,6 +1949,15 @@ body.home-page.light-theme .intro-hero {
   background: transparent;
   box-shadow: none;
   backdrop-filter: none;
+}
+
+.home-page .intro-hero .hero-content {
+  width: min(820px, calc(100vw - 40px));
+  max-width: 820px;
+  margin-right: auto;
+  margin-left: auto;
+  justify-self: center;
+  text-align: center;
 }
 
 .home-page .intro-hero h1,
