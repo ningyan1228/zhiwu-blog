@@ -1838,8 +1838,9 @@ body.home-page.light-theme {
   color: var(--text);
   color-scheme: dark;
   background:
-    linear-gradient(180deg, rgba(4, 8, 18, 0.48), rgba(4, 8, 18, 0.76)),
-    url("earth-starry-panorama.png") center 34% / cover fixed no-repeat;
+    radial-gradient(circle at 18% 18%, rgba(108, 140, 255, 0.26), transparent 28rem),
+    radial-gradient(circle at 82% 12%, rgba(167, 139, 250, 0.2), transparent 24rem),
+    linear-gradient(180deg, #070b16 0%, var(--bg) 48%, #080d1a 100%);
 }
 
 body.home-page::before,
@@ -1855,8 +1856,29 @@ body.home-page.light-theme::before {
 
 body.home-page #starfield {
   z-index: -2;
-  opacity: 0.82;
+  opacity: 0.38;
   mix-blend-mode: screen;
+}
+
+.home-page main {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background:
+    linear-gradient(180deg, rgba(6, 10, 24, 0.2) 0%, rgba(6, 10, 24, 0.48) 45%, rgba(6, 10, 24, 0.72) 100%),
+    url("earth-starry-panorama.png") center 18% / cover fixed no-repeat;
+}
+
+.home-page main > .intro-hero,
+.home-page main > .split-section {
+  width: min(1160px, calc(100% - 40px));
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.home-page main > .hero-wallpaper {
+  width: 100vw;
+  margin-left: 0;
 }
 
 .home-page .site-header,
