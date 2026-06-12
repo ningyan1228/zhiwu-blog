@@ -1863,10 +1863,28 @@ body.home-page #starfield {
 .home-page main {
   position: relative;
   width: 100vw;
+  margin-top: -1px;
   margin-left: calc(50% - 50vw);
   background:
-    linear-gradient(180deg, rgba(6, 10, 24, 0.2) 0%, rgba(6, 10, 24, 0.48) 45%, rgba(6, 10, 24, 0.72) 100%),
-    url("earth-starry-panorama.png") center 18% / cover fixed no-repeat;
+    linear-gradient(180deg, rgba(6, 10, 24, 0.96) 0%, rgba(6, 10, 24, 0.78) 8%, rgba(6, 10, 24, 0.34) 26%, rgba(6, 10, 24, 0.62) 100%),
+    url("earth-starry-panorama.png") center 30% / cover fixed no-repeat;
+}
+
+.home-page main::before {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 0;
+  height: clamp(140px, 18vw, 260px);
+  content: "";
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center top, rgba(38, 89, 148, 0.18), transparent 58%),
+    linear-gradient(180deg, #070b16 0%, rgba(7, 11, 22, 0.92) 32%, rgba(7, 11, 22, 0.34) 74%, transparent 100%);
+}
+
+.home-page main > * {
+  position: relative;
+  z-index: 1;
 }
 
 .home-page main > .intro-hero,
