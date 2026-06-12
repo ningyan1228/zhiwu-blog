@@ -1860,6 +1860,24 @@ body.home-page #starfield {
   mix-blend-mode: screen;
 }
 
+.home-page .page-shell {
+  width: 100%;
+}
+
+.home-page .site-header {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  width: min(1450px, calc(100% - 96px));
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+.home-page .hero-wallpaper {
+  margin-top: 0;
+  padding-top: 126px;
+}
+
 .home-page main {
   position: relative;
   width: 100vw;
@@ -1901,6 +1919,7 @@ body.home-page #starfield {
 
 .home-page .site-header,
 body.home-page.light-theme .site-header {
+  z-index: 20;
   border-color: rgba(248, 250, 252, 0.14);
   background: rgba(8, 13, 26, 0.68);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24);
@@ -1971,4 +1990,26 @@ body.home-page.light-theme .glass-card {
   border: 1px solid var(--line);
   color: var(--text);
   background: rgba(248, 250, 252, 0.07);
+}
+
+@media (max-width: 880px) {
+  .home-page .site-header {
+    position: absolute;
+    top: 14px;
+    width: min(100% - 28px, 720px);
+  }
+
+  .home-page .hero-wallpaper {
+    padding-top: 188px;
+  }
+}
+
+@media (max-width: 520px) {
+  .home-page .site-header {
+    width: min(100% - 22px, 440px);
+  }
+
+  .home-page .hero-wallpaper {
+    padding-top: 230px;
+  }
 }
