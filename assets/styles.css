@@ -1822,3 +1822,113 @@ body.light-theme .link-list a {
   color: rgba(255, 255, 255, 0.74);
   text-shadow: 0 2px 14px rgba(25, 39, 42, 0.22);
 }
+
+/* Home keeps the original cosmic landing style */
+body.home-page,
+body.home-page.light-theme {
+  --bg: #0b1020;
+  --bg-soft: #121a2f;
+  --panel: rgba(18, 26, 47, 0.68);
+  --panel-strong: rgba(24, 34, 62, 0.78);
+  --line: rgba(248, 250, 252, 0.14);
+  --text: #f8fafc;
+  --muted: #b7c2db;
+  --muted-soft: #8290b4;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+  color: var(--text);
+  color-scheme: dark;
+  background:
+    linear-gradient(180deg, rgba(4, 8, 18, 0.48), rgba(4, 8, 18, 0.76)),
+    url("earth-starry-panorama.png") center 34% / cover fixed no-repeat;
+}
+
+body.home-page::before,
+body.home-page.light-theme::before {
+  z-index: -3;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    radial-gradient(circle at 50% 18%, rgba(108, 140, 255, 0.18), transparent 32rem);
+  background-size: 72px 72px, 72px 72px, auto;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+}
+
+body.home-page #starfield {
+  z-index: -2;
+  opacity: 0.82;
+  mix-blend-mode: screen;
+}
+
+.home-page .site-header,
+body.home-page.light-theme .site-header {
+  border-color: rgba(248, 250, 252, 0.14);
+  background: rgba(8, 13, 26, 0.68);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(18px);
+}
+
+.home-page .brand,
+.home-page .site-nav a,
+body.home-page.light-theme .site-nav a {
+  color: #e4ebff;
+  text-shadow: none;
+}
+
+.home-page .hero-wallpaper {
+  display: block;
+}
+
+.home-page .intro-hero,
+.home-page .intro-hero.hero,
+body.home-page.light-theme .intro-hero {
+  max-width: none;
+  margin: 0;
+  padding: clamp(48px, 7vw, 86px) 0 40px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.home-page .intro-hero h1,
+.home-page .intro-hero .subtitle,
+.home-page .section-heading h2 {
+  color: var(--text);
+  text-shadow: 0 12px 34px rgba(0, 0, 0, 0.42);
+}
+
+.home-page .intro-hero .hero-copy,
+.home-page .feature-card p {
+  color: var(--muted);
+}
+
+.home-page .glass-card,
+body.home-page.light-theme .glass-card {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(145deg, rgba(248, 250, 252, 0.1), transparent 34%),
+    var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.home-page .glass-card:hover {
+  border-color: rgba(248, 250, 252, 0.26);
+  background:
+    linear-gradient(145deg, rgba(248, 250, 252, 0.13), transparent 36%),
+    var(--panel-strong);
+}
+
+.home-page .button-primary,
+.home-page .card-link {
+  color: #061022;
+  background: linear-gradient(135deg, #dbe5ff, #b9c6ff 46%, #d9ccff);
+  box-shadow: 0 18px 46px rgba(108, 140, 255, 0.28);
+}
+
+.home-page .button-ghost {
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: rgba(248, 250, 252, 0.07);
+}
