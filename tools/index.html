@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="止鹜个人博客的常用工具导航页，收纳壁纸、内容平台、AI、地图、新闻、图标和书法等常用网站。"
+    />
+    <title>工具 | 止鹜个人博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  </head>
+  <body>
+    <canvas id="starfield" aria-hidden="true"></canvas>
+    <canvas id="click-effects" aria-hidden="true"></canvas>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="../index.html" aria-label="止鹜个人博客首页">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>止鹜个人博客</span>
+        </a>
+        <nav class="site-nav" aria-label="主导航">
+          <a href="../index.html">首页</a>
+          <a href="../articles/">文章</a>
+          <a href="../projects/">项目</a>
+          <a href="../practice/">学习</a>
+          <a href="../knowledge/">笔记</a>
+          <a href="./" aria-current="page">工具</a>
+          <a href="../about/">关于我</a>
+          <a href="../about/#contact">联系</a>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="切换白天黑夜模式" aria-pressed="false">
+          <span class="theme-toggle-sun" aria-hidden="true"></span>
+          <span class="theme-toggle-moon" aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <main>
+        <section class="page-hero reveal">
+          <p class="eyebrow">Tools</p>
+          <h1>工具</h1>
+          <p>
+            把日常会反复打开的网站整理成一个 Finder 式工具箱，壁纸、内容运营、AI、地图、新闻、素材和书法入口都放在这里。
+          </p>
+        </section>
+
+        <section class="finder-window reveal" aria-label="常用工具 Finder">
+          <div class="finder-titlebar">
+            <div class="finder-traffic" aria-hidden="true">
+              <span class="traffic-close"></span>
+              <span class="traffic-minimize"></span>
+              <span class="traffic-zoom"></span>
+            </div>
+            <div class="finder-title">常用网站</div>
+            <div class="finder-toolbar" role="group" aria-label="工具视图切换">
+              <button class="finder-view-button is-active" type="button" data-view="card" aria-pressed="true">卡片</button>
+              <button class="finder-view-button" type="button" data-view="list" aria-pressed="false">列表</button>
+              <button class="finder-view-button" type="button" data-view="grid" aria-pressed="false">网格</button>
+              <button class="finder-view-button" type="button" data-view="image" aria-pressed="false">图片</button>
+            </div>
+          </div>
+
+          <div class="finder-columns" aria-hidden="true">
+            <span>名称</span>
+            <span>类型</span>
+            <span>更新日期</span>
+            <span>入口</span>
+          </div>
+
+          <div class="finder-projects finder-card-view" id="tool-finder">
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">🌌</span></div>
+              <div class="project-main">
+                <p class="project-kind">壁纸资源</p>
+                <h2>哲风壁纸</h2>
+                <p>高质量桌面壁纸浏览与下载入口。</p>
+              </div>
+              <div class="project-meta"><span>壁纸资源</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://haowallpaper.com/homeView" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">🍎</span></div>
+              <div class="project-main">
+                <p class="project-kind">壁纸资源</p>
+                <h2>mac 壁纸</h2>
+                <p>macOS 系列壁纸和 Apple 风格视觉素材。</p>
+              </div>
+              <div class="project-meta"><span>壁纸资源</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://applewalls.com/zh/wallpapers/macos/macos-26-tahoe-wallpapers" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">💬</span></div>
+              <div class="project-main">
+                <p class="project-kind">内容运营</p>
+                <h2>微信公众号平台</h2>
+                <p>公众号文章编辑、发布、数据与账号管理。</p>
+              </div>
+              <div class="project-meta"><span>运营平台</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://mp.weixin.qq.com/cgi-bin/home?t=home/index&amp;lang=zh_CN&amp;token=1346280293" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">⚽</span></div>
+              <div class="project-main">
+                <p class="project-kind">体育比分</p>
+                <h2>海星看球平台</h2>
+                <p>足球比分、赛程和赛事信息查看入口。</p>
+              </div>
+              <div class="project-meta"><span>体育工具</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://www.haixing.cc/score/football" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">🗺</span></div>
+              <div class="project-main">
+                <p class="project-kind">地图工具</p>
+                <h2>高德地图</h2>
+                <p>地图查询、路线规划和地点检索。</p>
+              </div>
+              <div class="project-meta"><span>地图工具</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://ditu.amap.com/" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">🤖</span></div>
+              <div class="project-main">
+                <p class="project-kind">AI 助手</p>
+                <h2>Claude</h2>
+                <p>AI 对话、写作、编程和资料分析入口。</p>
+              </div>
+              <div class="project-meta"><span>AI 工具</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://claude.com/app-unavailable-in-region" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">🧠</span></div>
+              <div class="project-main">
+                <p class="project-kind">AI 学习</p>
+                <h2>鱼皮 AI 教程</h2>
+                <p>AI 编程、工具使用和实战学习资料。</p>
+              </div>
+              <div class="project-meta"><span>学习教程</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://ai.codefather.cn/" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">📰</span></div>
+              <div class="project-main">
+                <p class="project-kind">新闻阅读</p>
+                <h2>光明网</h2>
+                <p>新闻资讯、评论文章和时事内容阅读。</p>
+              </div>
+              <div class="project-meta"><span>新闻资讯</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://www.gmw.cn/" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">📚</span></div>
+              <div class="project-main">
+                <p class="project-kind">阅读检索</p>
+                <h2>Z-Library</h2>
+                <p>电子书检索与阅读资源入口，请遵守版权规则。</p>
+              </div>
+              <div class="project-meta"><span>阅读资源</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://zh.z-library.sk/?ts=0342" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">📱</span></div>
+              <div class="project-main">
+                <p class="project-kind">应用下载</p>
+                <h2>豌豆荚</h2>
+                <p>安卓应用搜索、下载和应用信息查看。</p>
+              </div>
+              <div class="project-meta"><span>应用平台</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://www.wandoujia.com/" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">🔗</span></div>
+              <div class="project-main">
+                <p class="project-kind">资源分享</p>
+                <h2>分享迷</h2>
+                <p>软件、工具和实用资源分享入口。</p>
+              </div>
+              <div class="project-meta"><span>资源平台</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://www.fenxm.com/" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">🎛</span></div>
+              <div class="project-main">
+                <p class="project-kind">图标素材</p>
+                <h2>icon 平台</h2>
+                <p>图标搜索、素材下载和前端图标资源。</p>
+              </div>
+              <div class="project-meta"><span>设计素材</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://www.iconfont.cn/" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+
+            <article class="finder-project-card">
+              <div class="project-preview"><span class="project-icon">🖌</span></div>
+              <div class="project-main">
+                <p class="project-kind">书法工具</p>
+                <h2>以观书法</h2>
+                <p>书法字典、碑帖检索和临摹参考。</p>
+              </div>
+              <div class="project-meta"><span>书法工具</span><span>2026-06-13</span></div>
+              <div class="project-actions"><a class="card-link" href="https://web.ygsf.com/#/home?VNK=2a679365" target="_blank" rel="noopener noreferrer">打开网站</a></div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>© 2026 止鹜个人博客</span>
+        <span>Tools Finder</span>
+      </footer>
+    </div>
+    <script src="../assets/main.js"></script>
+    <script src="../assets/tools.js"></script>
+  </body>
+</html>
