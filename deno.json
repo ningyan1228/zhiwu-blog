@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "proxy": "deno run --allow-net --allow-env deno/proxy.ts",
+    "check": "deno check deno/proxy.ts"
+  },
+  "deploy": {
+    "entrypoint": "deno/proxy.ts"
+  }
+}

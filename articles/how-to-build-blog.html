@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="止鹜个人博客文章阅读页。"
+    />
+    <title>文章 | 止鹜个人博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+  </head>
+  <body data-article-slug="how-to-build-blog">
+    <canvas id="starfield" aria-hidden="true"></canvas>
+    <canvas id="click-effects" aria-hidden="true"></canvas>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="../index.html" aria-label="止鹜个人博客首页">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>止鹜个人博客</span>
+        </a>
+        <nav class="site-nav" aria-label="主导航">
+          <a href="../index.html">首页</a>
+          <a href="./" aria-current="page">文章</a>
+          <a href="../projects/">项目</a>
+          <a href="../practice/">学习</a>
+          <a href="../knowledge/">笔记</a>
+          <a href="../index.html#tools">工具</a>
+          <a href="../index.html#about">关于我</a>
+          <a href="../index.html#contact">联系</a>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="切换白天黑夜模式" aria-pressed="false">
+          <span class="theme-toggle-sun" aria-hidden="true"></span>
+          <span class="theme-toggle-moon" aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <main class="article-page">
+        <a class="article-back" href="./">返回文章列表</a>
+        <article class="glass-card article-shell reveal">
+          <header class="article-header">
+            <p class="eyebrow" id="article-category">Article</p>
+            <h1 id="article-title">文章加载中...</h1>
+            <p class="article-meta" id="article-meta"></p>
+          </header>
+          <div class="markdown-body" id="article-content"></div>
+        </article>
+      </main>
+
+      <footer class="site-footer">
+        <span>© 2026 止鹜个人博客</span>
+        <span>Markdown Article</span>
+      </footer>
+    </div>
+    <script src="../assets/main.js"></script>
+    <script src="../assets/articles.js"></script>
+  </body>
+</html>

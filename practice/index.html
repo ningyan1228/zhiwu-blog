@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="止鹜个人博客的刷题导航与学习入口。"
+    />
+    <title>学习 | 止鹜个人博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  </head>
+  <body>
+    <canvas id="starfield" aria-hidden="true"></canvas>
+    <canvas id="click-effects" aria-hidden="true"></canvas>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="../index.html" aria-label="止鹜个人博客首页">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>止鹜个人博客</span>
+        </a>
+        <nav class="site-nav" aria-label="主导航">
+          <a href="../index.html">首页</a>
+          <a href="../articles/">文章</a>
+          <a href="../projects/">项目</a>
+          <a href="./" aria-current="page">学习</a>
+          <a href="../knowledge/">笔记</a>
+          <a href="../index.html#tools">工具</a>
+          <a href="../index.html#about">关于我</a>
+          <a href="../index.html#contact">联系</a>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="切换白天黑夜模式" aria-pressed="false">
+          <span class="theme-toggle-sun" aria-hidden="true"></span>
+          <span class="theme-toggle-moon" aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <main>
+        <section class="page-hero reveal">
+          <p class="eyebrow">Practice Map</p>
+          <h1>学习</h1>
+          <p>
+            把公务员刷题、编程刷题、英语学习和综合学习入口集中到一个 Finder 式导航里。
+          </p>
+        </section>
+
+        <section class="finder-window practice-finder reveal" aria-label="学习 Finder">
+          <div class="finder-titlebar">
+            <div class="finder-traffic" aria-hidden="true">
+              <span class="traffic-close"></span>
+              <span class="traffic-minimize"></span>
+              <span class="traffic-zoom"></span>
+            </div>
+            <div class="finder-title">学习导航</div>
+            <div class="finder-toolbar" role="group" aria-label="学习视图切换">
+              <button class="finder-view-button is-active" type="button" data-view="list" aria-pressed="true">列表</button>
+              <button class="finder-view-button" type="button" data-view="grid" aria-pressed="false">网格</button>
+              <button class="finder-view-button" type="button" data-view="image" aria-pressed="false">图片</button>
+            </div>
+          </div>
+
+          <div class="practice-board practice-list-view" id="practice-board">
+            <article class="practice-folder">
+              <div class="practice-folder-icon">📝</div>
+              <div class="practice-folder-main">
+                <p class="project-kind">Civil Service</p>
+                <h2><a href="#">公务员刷题</a></h2>
+                <p>行测、申论、常识、判断推理的高频训练入口。</p>
+                <div class="practice-subcards">
+                  <a class="practice-subcard" href="#"><span>📊</span>行测</a>
+                  <a class="practice-subcard" href="#"><span>🖋</span>申论</a>
+                  <a class="practice-subcard" href="#"><span>📌</span>常识</a>
+                  <a class="practice-subcard" href="#"><span>🧠</span>判断推理</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="practice-folder">
+              <div class="practice-folder-icon">💻</div>
+              <div class="practice-folder-main">
+                <p class="project-kind">Coding</p>
+                <h2><a href="#">编程刷题</a></h2>
+                <p>算法、面试题、竞赛题和在线评测平台。</p>
+                <div class="practice-subcards">
+                  <a class="practice-subcard" href="#"><span>🖥</span>LeetCode</a>
+                  <a class="practice-subcard" href="#"><span>🐂</span>牛客</a>
+                  <a class="practice-subcard" href="#"><span>🎯</span>Codeforces</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="practice-folder">
+              <div class="practice-folder-icon">🔤</div>
+              <div class="practice-folder-main">
+                <p class="project-kind">English</p>
+                <h2><a href="#">英语学习</a></h2>
+                <p>单词、阅读和听力的日常训练入口。</p>
+                <div class="practice-subcards">
+                  <a class="practice-subcard" href="#"><span>🔤</span>单词</a>
+                  <a class="practice-subcard" href="#"><span>📖</span>阅读</a>
+                  <a class="practice-subcard" href="#"><span>🎧</span>听力</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="practice-folder">
+              <div class="practice-folder-icon">📚</div>
+              <div class="practice-folder-main">
+                <p class="project-kind">Learning</p>
+                <h2><a href="#">综合学习</a></h2>
+                <p>课程、公开课和收藏内容的统一入口。</p>
+                <div class="practice-subcards">
+                  <a class="practice-subcard" href="#"><span>📺</span>B站课程</a>
+                  <a class="practice-subcard" href="#"><span>🎓</span>MOOC</a>
+                  <a class="practice-subcard" href="#"><span>📝</span>知乎收藏</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>© 2026 止鹜个人博客</span>
+        <span>Practice Finder</span>
+      </footer>
+    </div>
+    <script src="../assets/main.js"></script>
+    <script src="../assets/practice.js"></script>
+  </body>
+</html>

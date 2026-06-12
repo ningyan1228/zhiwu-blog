@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="止鹜个人博客的 Notion 知识库入口页。"
+    />
+    <title>知识库 | 止鹜个人博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  </head>
+  <body>
+    <canvas id="starfield" aria-hidden="true"></canvas>
+    <canvas id="click-effects" aria-hidden="true"></canvas>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="../index.html" aria-label="止鹜个人博客首页">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>止鹜个人博客</span>
+        </a>
+        <nav class="site-nav" aria-label="主导航">
+          <a href="../index.html">首页</a>
+          <a href="../articles/">文章</a>
+          <a href="../projects/">项目</a>
+          <a href="../practice/">学习</a>
+          <a href="./" aria-current="page">笔记</a>
+          <a href="../index.html#tools">工具</a>
+          <a href="../index.html#about">关于我</a>
+          <a href="../index.html#contact">联系</a>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="切换白天黑夜模式" aria-pressed="false">
+          <span class="theme-toggle-sun" aria-hidden="true"></span>
+          <span class="theme-toggle-moon" aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <main>
+        <section class="page-hero reveal">
+          <p class="eyebrow">Notion Knowledge</p>
+          <h1>知识库</h1>
+          <p>
+            将长期积累的阅读、学习、创作和资源整理沉淀为可持续生长的个人知识网络。
+          </p>
+        </section>
+
+        <section class="section-block">
+          <div class="knowledge-grid">
+            <a class="glass-card knowledge-card reveal" href="#">
+              <span class="card-icon">🧠</span>
+              <h2>AI 知识库</h2>
+              <p>模型、工具、提示词、自动化和 AI 工作流。</p>
+            </a>
+
+            <a class="glass-card knowledge-card reveal" href="#">
+              <span class="card-icon">💻</span>
+              <h2>编程知识库</h2>
+              <p>前端、后端、部署、工程实践和问题记录。</p>
+            </a>
+
+            <a class="glass-card knowledge-card reveal" href="#">
+              <span class="card-icon">📚</span>
+              <h2>公考考编知识库</h2>
+              <p>行测、申论、常识、资料分析和备考资料。</p>
+            </a>
+
+            <a class="glass-card knowledge-card reveal" href="#">
+              <span class="card-icon">✍️</span>
+              <h2>写作知识库</h2>
+              <p>文章结构、表达练习、选题库和创作素材。</p>
+            </a>
+
+            <a class="glass-card knowledge-card reveal" href="#">
+              <span class="card-icon">📖</span>
+              <h2>阅读知识库</h2>
+              <p>读书笔记、摘录、主题书单和思考卡片。</p>
+            </a>
+
+            <a class="glass-card knowledge-card reveal" href="#">
+              <span class="card-icon">📱</span>
+              <h2>个人笔记知识库</h2>
+              <p>日常记录、灵感收集、复盘和生活管理。</p>
+            </a>
+
+            <a class="glass-card knowledge-card reveal" href="#">
+              <span class="card-icon">🎨</span>
+              <h2>壁纸设计知识库</h2>
+              <p>视觉灵感、配色、构图、壁纸和头像设计。</p>
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>© 2026 止鹜个人博客</span>
+        <span>Notion Links Ready</span>
+      </footer>
+    </div>
+    <script src="../assets/main.js"></script>
+  </body>
+</html>

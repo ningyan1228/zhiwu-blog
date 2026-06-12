@@ -1,0 +1,20 @@
+[
+  {
+    "slug": "how-to-build-blog",
+    "title": "我是如何搭建个人博客工作台的",
+    "excerpt": "记录这个个人数字工作台从首页、项目入口、知识库到 Deno Deploy 代理的搭建思路。",
+    "date": "2026-06-12",
+    "category": "建站",
+    "readTime": 5,
+    "tags": ["GitHub Pages", "Deno Deploy", "数字花园"]
+  },
+  {
+    "slug": "reading-note-xxx",
+    "title": "《XXX》读书笔记与思考",
+    "excerpt": "这篇文章示范如何把阅读摘录、观点和行动清单整理成一篇 Markdown 笔记。",
+    "date": "2026-06-10",
+    "category": "阅读",
+    "readTime": 8,
+    "tags": ["阅读", "笔记", "复盘"]
+  }
+]
