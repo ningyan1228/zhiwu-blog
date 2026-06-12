@@ -1905,11 +1905,17 @@ body.home-page #starfield {
   z-index: 1;
 }
 
-.home-page main > .intro-hero,
 .home-page main > .split-section {
   width: min(1160px, calc(100% - 40px));
   margin-right: auto;
   margin-left: auto;
+}
+
+.home-page main > .intro-hero,
+.home-page main > .intro-hero.hero {
+  width: 100vw;
+  margin-right: 0;
+  margin-left: calc(50% - 50vw);
 }
 
 .home-page main > .hero-wallpaper {
@@ -1954,11 +1960,14 @@ body.home-page.light-theme .intro-hero {
 }
 
 .home-page .intro-hero .hero-content {
+  position: relative;
+  left: 50vw;
   width: min(820px, calc(100vw - 40px));
   max-width: 820px;
-  margin: 0 auto;
-  justify-self: center;
+  margin: 0;
+  justify-self: start;
   text-align: center;
+  transform: translateX(-50%);
 }
 
 .home-page .intro-hero h1,
