@@ -727,9 +727,14 @@ body.light-theme .link-list a {
 
 .contact-card {
   display: grid;
+  border: 1px solid var(--line);
   min-height: 150px;
   padding: 22px;
   align-content: space-between;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .contact-card strong {
@@ -744,16 +749,166 @@ body.light-theme .link-list a {
 }
 
 .contact-icon {
+  --icon-bg: #dbe5ff;
+  --icon-fg: #061022;
   display: inline-grid;
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   place-items: center;
   border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--icon-fg);
+  background: var(--icon-bg);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.contact-icon::before {
+  width: 25px;
+  height: 25px;
+  content: "";
+  background: currentColor;
+}
+
+.social-github {
+  --icon-bg: #f8fafc;
+  --icon-fg: #111827;
+}
+
+.social-github::before {
+  border-radius: 50% 50% 45% 45%;
+  clip-path: path("M12.5 1.8C6.6 1.8 1.8 6.6 1.8 12.6c0 4.8 3.1 8.9 7.4 10.3.5.1.7-.2.7-.5v-2c-3 .7-3.6-1.3-3.6-1.3-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.7 2.6 3.1 1.8.1-.7.4-1.2.7-1.5-2.4-.3-5-1.2-5-5.4 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.5.1-3 0 0 .9-.3 3 1.1.9-.2 1.8-.4 2.7-.4s1.8.1 2.7.4c2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.7.1 3 .7.8 1.1 1.8 1.1 3 0 4.2-2.6 5.1-5 5.4.4.4.8 1 .8 2.1v3c0 .3.2.6.8.5 4.3-1.4 7.4-5.5 7.4-10.3C23.2 6.6 18.4 1.8 12.5 1.8Z");
+}
+
+.social-qq {
+  --icon-bg: #eff6ff;
+  --icon-fg: #111827;
+}
+
+.social-qq::before {
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 44% 44%;
+  clip-path: polygon(50% 0, 68% 9%, 78% 29%, 76% 54%, 91% 76%, 70% 71%, 58% 91%, 42% 91%, 30% 71%, 9% 76%, 24% 54%, 22% 29%, 32% 9%);
+}
+
+.social-weibo {
+  --icon-bg: #fff1f2;
+  --icon-fg: #e6162d;
+}
+
+.social-weibo::before {
+  width: 29px;
+  height: 22px;
+  border-radius: 48% 54% 44% 46%;
+  transform: rotate(-12deg);
+  clip-path: ellipse(48% 39% at 50% 58%);
+  box-shadow:
+    9px -10px 0 -7px #f59e0b,
+    12px -13px 0 -9px #e6162d;
+}
+
+.social-xiaohongshu {
+  --icon-bg: #ff2442;
+  --icon-fg: #fff;
+}
+
+.social-xiaohongshu::before {
+  width: 26px;
+  height: 22px;
+  border-radius: 5px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  background:
+    linear-gradient(currentColor 0 0) 5px 5px / 16px 3px no-repeat,
+    linear-gradient(currentColor 0 0) 5px 11px / 16px 3px no-repeat,
+    linear-gradient(currentColor 0 0) 5px 17px / 16px 3px no-repeat;
+}
+
+.social-mail {
+  --icon-bg: linear-gradient(135deg, #dbe5ff, #b9c6ff 46%, #d9ccff);
+  --icon-fg: #061022;
+}
+
+.social-mail::before {
+  width: 28px;
+  height: 20px;
+  border: 3px solid currentColor;
+  border-radius: 4px;
+  background:
+    linear-gradient(35deg, transparent 46%, currentColor 47%, currentColor 54%, transparent 55%),
+    linear-gradient(-35deg, transparent 46%, currentColor 47%, currentColor 54%, transparent 55%);
+}
+
+.account-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: none;
+  place-items: center;
+  padding: 20px;
+}
+
+.account-dialog.is-open {
+  display: grid;
+}
+
+.account-dialog-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 16, 0.62);
+  backdrop-filter: blur(8px);
+}
+
+.account-dialog-panel {
+  position: relative;
+  z-index: 1;
+  width: min(520px, 100%);
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(18, 26, 47, 0.9);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.42);
+}
+
+.account-dialog-title {
+  margin: 0 0 14px;
+  color: var(--text);
+  font-size: 24px;
+}
+
+.account-dialog-value {
+  overflow-wrap: anywhere;
+  margin: 0 0 20px;
+  padding: 14px;
+  border: 1px solid var(--line);
   border-radius: 8px;
-  color: #061022;
-  font-size: 13px;
-  font-weight: 900;
-  background: linear-gradient(135deg, #dbe5ff, #b9c6ff 46%, #d9ccff);
+  color: var(--muted);
+  background: rgba(248, 250, 252, 0.07);
+  line-height: 1.7;
+}
+
+.account-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.account-dialog-actions .button {
+  min-height: 44px;
+}
+
+.account-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--text);
+  background: rgba(248, 250, 252, 0.08);
+  cursor: pointer;
 }
 
 .giscus-panel {
