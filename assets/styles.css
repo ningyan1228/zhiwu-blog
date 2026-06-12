@@ -1970,6 +1970,10 @@ body.home-page.light-theme .intro-hero {
   transform: translateX(-50%);
 }
 
+.home-page .intro-hero .hero-actions {
+  display: none;
+}
+
 .home-page .intro-hero h1,
 .home-page .intro-hero .subtitle,
 .home-page .section-heading h2 {
@@ -1980,6 +1984,10 @@ body.home-page.light-theme .intro-hero {
 .home-page .intro-hero .hero-copy,
 .home-page .feature-card p {
   color: var(--muted);
+}
+
+.home-page .intro-hero .hero-copy {
+  margin-bottom: 0;
 }
 
 .home-page .glass-card,
