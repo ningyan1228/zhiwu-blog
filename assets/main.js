@@ -180,10 +180,85 @@ function revealOnScroll() {
   items.forEach((item) => observer.observe(item));
 }
 
+function initAccountDialog() {
+  const accountCards = document.querySelectorAll("[data-account-title]");
+
+  if (!accountCards.length) {
+    return;
+  }
+
+  const dialog = document.createElement("div");
+  dialog.className = "account-dialog";
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-hidden", "true");
+  dialog.innerHTML = `
+    <div class="account-dialog-backdrop" data-account-close></div>
+    <div class="account-dialog-panel">
+      <button class="account-close" type="button" aria-label="关闭" data-account-close>×</button>
+      <h3 class="account-dialog-title"></h3>
+      <p class="account-dialog-value"></p>
+      <div class="account-dialog-actions">
+        <button class="button button-primary" type="button" data-account-copy>复制</button>
+        <a class="button button-ghost" href="#" target="_blank" rel="noopener noreferrer" data-account-open>打开</a>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(dialog);
+
+  const title = dialog.querySelector(".account-dialog-title");
+  const value = dialog.querySelector(".account-dialog-value");
+  const copyButton = dialog.querySelector("[data-account-copy]");
+  const openLink = dialog.querySelector("[data-account-open]");
+  const closeButtons = dialog.querySelectorAll("[data-account-close]");
+  let activeValue = "";
+
+  function closeDialog() {
+    dialog.classList.remove("is-open");
+    dialog.setAttribute("aria-hidden", "true");
+  }
+
+  accountCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      activeValue = card.dataset.accountValue || "";
+      const action = card.dataset.accountAction || "打开";
+      const url = card.dataset.accountUrl || "";
+
+      title.textContent = card.dataset.accountTitle || "账号";
+      value.textContent = activeValue;
+      copyButton.textContent = "复制";
+      openLink.textContent = action;
+      openLink.href = url || "#";
+      openLink.style.display = url ? "inline-flex" : "none";
+      dialog.classList.add("is-open");
+      dialog.setAttribute("aria-hidden", "false");
+      copyButton.focus();
+    });
+  });
+
+  copyButton.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(activeValue);
+      copyButton.textContent = "已复制";
+    } catch {
+      copyButton.textContent = "复制失败";
+    }
+  });
+
+  closeButtons.forEach((button) => button.addEventListener("click", closeDialog));
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && dialog.classList.contains("is-open")) {
+      closeDialog();
+    }
+  });
+}
+
 initTheme();
 resizeCanvas();
 drawStars();
 revealOnScroll();
+initAccountDialog();
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
