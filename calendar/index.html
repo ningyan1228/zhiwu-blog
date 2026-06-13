@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="止鹜个人博客的个人日历页面，包含月历、今日事项、本周计划、倒计时、日记和最近记录。"
+    />
+    <title>个人日历 | 止鹜个人博客</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg?v=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  </head>
+  <body>
+    <canvas id="starfield" aria-hidden="true"></canvas>
+    <canvas id="click-effects" aria-hidden="true"></canvas>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="../index.html" aria-label="止鹜个人博客首页">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>止鹜个人博客</span>
+        </a>
+        <nav class="site-nav" aria-label="主导航">
+          <a href="../index.html">首页</a>
+          <a href="../articles/">文章</a>
+          <a href="../projects/">项目</a>
+          <a href="../practice/">学习</a>
+          <a href="../knowledge/">笔记</a>
+          <a href="../tools/" aria-current="page">工具</a>
+          <a href="../about/">关于我</a>
+          <a href="../contact/">联系</a>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="切换白天黑夜模式" aria-pressed="false">
+          <span class="theme-toggle-sun" aria-hidden="true"></span>
+          <span class="theme-toggle-moon" aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <main>
+        <section class="page-hero reveal">
+          <p class="eyebrow">Personal Calendar</p>
+          <h1>个人日历</h1>
+          <p>一个轻量的本地日历工作台，用来记录今日事项、本周计划、重要倒计时和日记。</p>
+        </section>
+
+        <section class="calendar-dashboard section-block reveal" aria-label="个人日历工作台">
+          <div class="glass-card calendar-panel calendar-month">
+            <div class="calendar-toolbar">
+              <button class="calendar-nav" type="button" id="prev-month" aria-label="上个月">‹</button>
+              <h2 id="calendar-title">2026 年 6 月</h2>
+              <button class="calendar-nav" type="button" id="next-month" aria-label="下个月">›</button>
+            </div>
+            <div class="calendar-weekdays" aria-hidden="true">
+              <span>一</span>
+              <span>二</span>
+              <span>三</span>
+              <span>四</span>
+              <span>五</span>
+              <span>六</span>
+              <span>日</span>
+            </div>
+            <div class="calendar-grid-days" id="calendar-days"></div>
+          </div>
+
+          <div class="calendar-side">
+            <section class="glass-card calendar-panel">
+              <div class="calendar-section-title">
+                <p class="eyebrow">Today</p>
+                <h2>今日事项</h2>
+              </div>
+              <form class="calendar-inline-form" id="task-form">
+                <input id="task-input" type="text" placeholder="添加今天要做的事" autocomplete="off" />
+                <button class="button button-primary" type="submit">添加</button>
+              </form>
+              <ul class="calendar-list" id="task-list"></ul>
+            </section>
+
+            <section class="glass-card calendar-panel">
+              <div class="calendar-section-title">
+                <p class="eyebrow">Week</p>
+                <h2>本周计划</h2>
+              </div>
+              <textarea id="week-plan" rows="4" placeholder="写下本周重点：学习、刷题、文章、项目..."></textarea>
+            </section>
+
+            <section class="glass-card calendar-panel calendar-countdown">
+              <div class="calendar-section-title">
+                <p class="eyebrow">Countdown</p>
+                <h2>倒计时</h2>
+              </div>
+              <form class="calendar-inline-form" id="countdown-form">
+                <input id="countdown-title" type="text" placeholder="目标名称" autocomplete="off" />
+                <input id="countdown-date" type="date" />
+                <button class="button button-primary" type="submit">保存</button>
+              </form>
+              <div class="countdown-result" id="countdown-result">还没有设置倒计时。</div>
+            </section>
+
+            <section class="glass-card calendar-panel">
+              <div class="calendar-section-title">
+                <p class="eyebrow">Diary</p>
+                <h2>日记</h2>
+              </div>
+              <textarea id="diary-input" rows="5" placeholder="临时记录今天的一点想法，正式日记可以打开 Notion 日记库整理。"></textarea>
+              <div class="calendar-diary-actions">
+                <button class="button button-ghost" id="save-diary" type="button">保存日记</button>
+                <button
+                  class="button button-primary"
+                  id="open-diary-link"
+                  type="button"
+                  data-url="https://app.notion.com/p/zwgjsx/1b268aec7cb08379865b81dcaad309df?source=copy_link"
+                  data-password="zhiwu1228"
+                >
+                  解锁 Notion 日记库
+                </button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="glass-card calendar-panel reveal">
+            <div class="calendar-section-title">
+              <p class="eyebrow">Recent</p>
+              <h2>最近记录</h2>
+            </div>
+            <div class="recent-records" id="recent-records"></div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>© 2026 止鹜个人博客</span>
+        <span>Local Calendar Workspace</span>
+      </footer>
+    </div>
+    <script src="../assets/main.js"></script>
+    <script src="../assets/calendar.js"></script>
+  </body>
+</html>
