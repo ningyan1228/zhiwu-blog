@@ -2223,6 +2223,31 @@ body.home-page.light-theme::before {
   mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
 }
 
+/* Compact page heading panels for inner pages */
+body:not(.home-page) .page-hero {
+  max-width: 900px;
+  margin: 18px auto 0;
+  padding: clamp(22px, 4vw, 42px) clamp(26px, 5vw, 58px);
+  border-radius: 8px;
+}
+
+body:not(.home-page) .page-hero .eyebrow {
+  margin-bottom: 8px;
+}
+
+body:not(.home-page) .page-hero h1 {
+  margin-bottom: 10px;
+  font-size: clamp(38px, 5.4vw, 64px);
+  line-height: 1;
+}
+
+body:not(.home-page) .page-hero p {
+  max-width: 760px;
+  margin-bottom: 0;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.7;
+}
+
 body.home-page #starfield {
   z-index: -2;
   opacity: 0.38;
@@ -2566,6 +2591,44 @@ body.home-page.light-theme .intro-hero {
   letter-spacing: 0.14em;
 }
 
+.meteor-field {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.meteor {
+  position: absolute;
+  top: var(--meteor-top);
+  left: var(--meteor-left);
+  width: var(--meteor-length);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(174, 220, 255, 0.82), #f8fafc);
+  filter: drop-shadow(0 0 10px rgba(118, 190, 255, 0.7));
+  opacity: 0;
+  transform: rotate(-24deg) translate3d(0, 0, 0);
+  transform-origin: right center;
+  animation: meteorFly var(--meteor-duration) cubic-bezier(0.16, 0.78, 0.34, 1) forwards;
+}
+
+.meteor::after {
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  content: "";
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 14px rgba(255, 255, 255, 0.9),
+    0 0 28px rgba(118, 190, 255, 0.65);
+  transform: translateY(-50%);
+}
+
 @keyframes horizonBreath {
   0%,
   100% {
@@ -2576,6 +2639,26 @@ body.home-page.light-theme .intro-hero {
   50% {
     opacity: 0.98;
     transform: scaleX(1.02);
+  }
+}
+
+@keyframes meteorFly {
+  0% {
+    opacity: 0;
+    transform: rotate(-24deg) translate3d(0, 0, 0);
+  }
+
+  10% {
+    opacity: var(--meteor-opacity);
+  }
+
+  72% {
+    opacity: var(--meteor-opacity);
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(-24deg) translate3d(-58vw, 34vh, 0);
   }
 }
 
