@@ -254,6 +254,80 @@ function initAccountDialog() {
   });
 }
 
+function initLockedLinks() {
+  const lockedLinks = document.querySelectorAll("[data-locked-url]");
+
+  if (!lockedLinks.length) {
+    return;
+  }
+
+  function closeLockDialog() {
+    document.querySelector(".diary-lock-backdrop")?.remove();
+  }
+
+  function openLockDialog(link) {
+    closeLockDialog();
+
+    const titleText = link.dataset.lockedTitle || "私密入口";
+    const backdrop = document.createElement("div");
+    backdrop.className = "diary-lock-backdrop";
+    backdrop.innerHTML = `
+      <form class="diary-lock-dialog" aria-label="${titleText}密码验证">
+        <button class="diary-lock-close" type="button" aria-label="关闭">×</button>
+        <p class="eyebrow">Private Notes</p>
+        <h2>${titleText}</h2>
+        <p>这个知识库已加锁，输入密码后会打开 Notion 页面。</p>
+        <input id="locked-link-password" type="password" placeholder="请输入访问密码" autocomplete="current-password" />
+        <div class="diary-lock-error" role="alert" aria-live="polite"></div>
+        <button class="button button-primary" type="submit">解锁打开</button>
+      </form>
+    `;
+
+    document.body.appendChild(backdrop);
+
+    const form = backdrop.querySelector("form");
+    const input = backdrop.querySelector("#locked-link-password");
+    const error = backdrop.querySelector(".diary-lock-error");
+    const closeButton = backdrop.querySelector(".diary-lock-close");
+
+    input.focus();
+
+    closeButton.addEventListener("click", closeLockDialog);
+    backdrop.addEventListener("click", (event) => {
+      if (event.target === backdrop) {
+        closeLockDialog();
+      }
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const password = link.dataset.password || "";
+
+      if (input.value.trim() !== password) {
+        error.textContent = "密码不正确，再试一次。";
+        input.select();
+        return;
+      }
+
+      window.open(link.dataset.lockedUrl, "_blank", "noopener,noreferrer");
+      closeLockDialog();
+    });
+  }
+
+  lockedLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      openLockDialog(link);
+    });
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeLockDialog();
+    }
+  });
+}
+
 function initMeteors() {
   if (!document.body.classList.contains("home-page") || prefersReducedMotion) {
     return;
@@ -340,6 +414,7 @@ resizeCanvas();
 drawStars();
 revealOnScroll();
 initAccountDialog();
+initLockedLinks();
 initFireflies();
 initMeteors();
 
