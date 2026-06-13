@@ -254,11 +254,55 @@ function initAccountDialog() {
   });
 }
 
+function initMeteors() {
+  if (!document.body.classList.contains("home-page") || prefersReducedMotion) {
+    return;
+  }
+
+  const field = document.createElement("div");
+  field.className = "meteor-field";
+  field.setAttribute("aria-hidden", "true");
+  document.body.appendChild(field);
+
+  function spawnMeteor() {
+    const meteor = document.createElement("span");
+    const top = Math.round(Math.random() * 26 + 8);
+    const left = Math.round(Math.random() * 30 + 62);
+    const length = Math.round(Math.random() * 90 + 120);
+    const duration = (Math.random() * 0.55 + 0.9).toFixed(2);
+    const opacity = (Math.random() * 0.18 + 0.68).toFixed(2);
+
+    meteor.className = "meteor";
+    meteor.style.setProperty("--meteor-top", `${top}vh`);
+    meteor.style.setProperty("--meteor-left", `${left}vw`);
+    meteor.style.setProperty("--meteor-length", `${length}px`);
+    meteor.style.setProperty("--meteor-duration", `${duration}s`);
+    meteor.style.setProperty("--meteor-opacity", opacity);
+    field.appendChild(meteor);
+
+    meteor.addEventListener("animationend", () => meteor.remove(), { once: true });
+  }
+
+  function scheduleMeteor() {
+    const delay = Math.random() * 9000 + 7000;
+    window.setTimeout(() => {
+      spawnMeteor();
+      scheduleMeteor();
+    }, delay);
+  }
+
+  window.setTimeout(() => {
+    spawnMeteor();
+    scheduleMeteor();
+  }, 2600);
+}
+
 initTheme();
 resizeCanvas();
 drawStars();
 revealOnScroll();
 initAccountDialog();
+initMeteors();
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
