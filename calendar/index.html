@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="止鹜个人博客的个人日历页面，包含月历、今日事项、本周计划、倒计时、日记和最近记录。"
+      content="止鹜个人博客的日历页面，包含月历、今日事项、本周计划、倒计时、日记和最近记录。"
     />
-    <title>个人日历 | 止鹜个人博客</title>
+    <title>日历 | 止鹜个人博客</title>
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg?v=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -44,12 +44,12 @@
 
       <main>
         <section class="page-hero reveal">
-          <p class="eyebrow">Personal Calendar</p>
-          <h1>个人日历</h1>
+          <p class="eyebrow">Calendar</p>
+          <h1>日历</h1>
           <p>一个轻量的本地日历工作台，用来记录今日事项、本周计划、重要倒计时和日记。</p>
         </section>
 
-        <section class="calendar-dashboard section-block reveal" aria-label="个人日历工作台">
+        <section class="calendar-dashboard section-block reveal" aria-label="日历工作台">
           <div class="glass-card calendar-panel calendar-month">
             <div class="calendar-toolbar">
               <button class="calendar-nav" type="button" id="prev-month" aria-label="上个月">‹</button>
@@ -66,6 +66,34 @@
               <span>日</span>
             </div>
             <div class="calendar-grid-days" id="calendar-days"></div>
+            <div class="calendar-overview" aria-label="今日概览">
+              <div class="calendar-section-title">
+                <p class="eyebrow">Overview</p>
+                <h2>今日概览</h2>
+              </div>
+              <div class="calendar-clock">
+                <span id="calendar-date-label">今天</span>
+                <strong id="calendar-time-label">--:--</strong>
+              </div>
+              <div class="calendar-stat-grid">
+                <div class="calendar-stat">
+                  <span>事项进度</span>
+                  <strong id="overview-tasks">0/0</strong>
+                </div>
+                <div class="calendar-stat">
+                  <span>本周计划</span>
+                  <strong id="overview-week">未填写</strong>
+                </div>
+                <div class="calendar-stat">
+                  <span>倒计时</span>
+                  <strong id="overview-countdown">未设置</strong>
+                </div>
+                <div class="calendar-stat">
+                  <span>日记</span>
+                  <strong id="overview-diary">未记录</strong>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="calendar-side">
@@ -137,7 +165,7 @@
 
       <footer class="site-footer">
         <span>© 2026 止鹜个人博客</span>
-        <span>Local Calendar Workspace</span>
+        <span>Calendar Workspace</span>
       </footer>
     </div>
     <script src="../assets/main.js"></script>
