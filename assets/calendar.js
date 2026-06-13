@@ -14,6 +14,12 @@ const diaryInput = document.querySelector("#diary-input");
 const saveDiaryButton = document.querySelector("#save-diary");
 const openDiaryLinkButton = document.querySelector("#open-diary-link");
 const recentRecords = document.querySelector("#recent-records");
+const calendarDateLabel = document.querySelector("#calendar-date-label");
+const calendarTimeLabel = document.querySelector("#calendar-time-label");
+const overviewTasks = document.querySelector("#overview-tasks");
+const overviewWeek = document.querySelector("#overview-week");
+const overviewCountdown = document.querySelector("#overview-countdown");
+const overviewDiary = document.querySelector("#overview-diary");
 
 const today = new Date();
 let visibleDate = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -148,6 +154,19 @@ function renderSidePanels() {
   renderCountdown();
   renderTasks();
   renderRecentRecords();
+  renderOverview();
+}
+
+function getCountdownText(store = getStore()) {
+  if (!store.countdown?.title || !store.countdown?.date) {
+    return "还没有设置倒计时。";
+  }
+
+  const target = new Date(`${store.countdown.date}T00:00:00`);
+  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const diffDays = Math.ceil((target - startOfToday) / 86400000);
+  const unitText = diffDays >= 0 ? `还有 ${diffDays} 天` : `已过去 ${Math.abs(diffDays)} 天`;
+  return `${store.countdown.title}：${unitText}`;
 }
 
 function renderCountdown() {
@@ -158,11 +177,46 @@ function renderCountdown() {
     return;
   }
 
-  const target = new Date(`${store.countdown.date}T00:00:00`);
-  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const diffDays = Math.ceil((target - startOfToday) / 86400000);
-  const unitText = diffDays >= 0 ? `还有 ${diffDays} 天` : `已过去 ${Math.abs(diffDays)} 天`;
-  countdownResult.textContent = `${store.countdown.title}：${unitText}`;
+  countdownResult.textContent = getCountdownText(store);
+}
+
+function renderOverview() {
+  const store = getStore();
+  const entry = getTodayEntry(store);
+  const finished = entry.tasks.filter((task) => task.done).length;
+  const total = entry.tasks.length;
+
+  if (calendarDateLabel) {
+    calendarDateLabel.textContent = today.toLocaleDateString("zh-CN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+    });
+  }
+
+  if (calendarTimeLabel) {
+    calendarTimeLabel.textContent = new Date().toLocaleTimeString("zh-CN", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  if (overviewTasks) {
+    overviewTasks.textContent = `${finished}/${total}`;
+  }
+
+  if (overviewWeek) {
+    overviewWeek.textContent = store.weekPlan?.trim() ? "已填写" : "未填写";
+  }
+
+  if (overviewCountdown) {
+    overviewCountdown.textContent = store.countdown?.title ? getCountdownText(store) : "未设置";
+  }
+
+  if (overviewDiary) {
+    overviewDiary.textContent = entry.diary?.trim() ? "已记录" : "未记录";
+  }
 }
 
 function renderRecentRecords() {
@@ -218,6 +272,7 @@ taskForm?.addEventListener("submit", (event) => {
   renderTasks();
   renderCalendar();
   renderRecentRecords();
+  renderOverview();
 });
 
 taskList?.addEventListener("click", (event) => {
@@ -240,12 +295,14 @@ taskList?.addEventListener("click", (event) => {
   renderTasks();
   renderCalendar();
   renderRecentRecords();
+  renderOverview();
 });
 
 weekPlan?.addEventListener("input", () => {
   const store = getStore();
   store.weekPlan = weekPlan.value;
   setStore(store);
+  renderOverview();
 });
 
 countdownForm?.addEventListener("submit", (event) => {
@@ -257,6 +314,7 @@ countdownForm?.addEventListener("submit", (event) => {
   };
   setStore(store);
   renderCountdown();
+  renderOverview();
 });
 
 saveDiaryButton?.addEventListener("click", () => {
@@ -265,6 +323,7 @@ saveDiaryButton?.addEventListener("click", () => {
   saveTodayEntry(entry);
   renderCalendar();
   renderRecentRecords();
+  renderOverview();
 });
 
 function closeDiaryLock() {
@@ -332,3 +391,4 @@ document.addEventListener("keydown", (event) => {
 
 renderCalendar();
 renderSidePanels();
+window.setInterval(renderOverview, 30000);

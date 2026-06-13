@@ -2439,6 +2439,70 @@ body:not(.home-page) .page-hero p {
   box-shadow: 0 0 12px rgba(97, 218, 251, 0.7);
 }
 
+.calendar-overview {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid rgba(248, 250, 252, 0.12);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 16% 8%, rgba(97, 218, 251, 0.13), transparent 30%),
+    rgba(248, 250, 252, 0.045);
+}
+
+.calendar-clock {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid rgba(97, 218, 251, 0.14);
+  border-radius: 8px;
+  background: rgba(7, 12, 24, 0.22);
+}
+
+.calendar-clock span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.calendar-clock strong {
+  color: var(--text);
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.calendar-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.calendar-stat {
+  min-height: 86px;
+  padding: 14px;
+  border: 1px solid rgba(248, 250, 252, 0.1);
+  border-radius: 8px;
+  background: rgba(248, 250, 252, 0.055);
+}
+
+.calendar-stat span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--muted-soft);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.calendar-stat strong {
+  display: block;
+  overflow: hidden;
+  color: rgba(248, 250, 252, 0.94);
+  font-size: 20px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .calendar-inline-form {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -2677,6 +2741,10 @@ body:not(.home-page) .page-hero p {
 
   .calendar-day {
     min-height: 44px;
+  }
+
+  .calendar-stat-grid {
+    grid-template-columns: 1fr;
   }
 
   .recent-records {
