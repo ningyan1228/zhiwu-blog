@@ -100,10 +100,48 @@ body.light-theme #starfield {
   pointer-events: none;
 }
 
+.firefly-field {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.firefly {
+  position: absolute;
+  top: var(--firefly-top);
+  left: var(--firefly-left);
+  width: var(--firefly-size);
+  height: var(--firefly-size);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 248, 188, 0.95) 0%, rgba(166, 232, 159, 0.58) 36%, transparent 72%);
+  box-shadow:
+    0 0 12px rgba(255, 241, 163, 0.5),
+    0 0 26px rgba(125, 222, 146, 0.28);
+  opacity: 0;
+  animation:
+    fireflyDrift var(--firefly-duration) ease-in-out infinite alternate,
+    fireflyGlow var(--firefly-pulse) ease-in-out infinite;
+  animation-delay: var(--firefly-delay);
+}
+
+.home-page .firefly-field {
+  z-index: 1;
+  opacity: 0.44;
+}
+
+body:not(.home-page) .firefly-field {
+  opacity: 0.72;
+}
+
 .page-shell {
   width: min(1160px, calc(100% - 40px));
   min-height: 100vh;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
 .site-header {
@@ -977,6 +1015,35 @@ body.light-theme .link-list a {
 @keyframes cursorBlink {
   50% {
     opacity: 0;
+  }
+}
+
+@keyframes fireflyDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.82);
+  }
+
+  50% {
+    transform: translate3d(calc(var(--firefly-x) * 0.42), calc(var(--firefly-y) * 0.58), 0) scale(1.08);
+  }
+
+  100% {
+    transform: translate3d(var(--firefly-x), var(--firefly-y), 0) scale(0.9);
+  }
+}
+
+@keyframes fireflyGlow {
+  0%,
+  100% {
+    opacity: 0.14;
+  }
+
+  42% {
+    opacity: 0.86;
+  }
+
+  68% {
+    opacity: 0.34;
   }
 }
 

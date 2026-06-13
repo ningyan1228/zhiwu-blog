@@ -297,11 +297,50 @@ function initMeteors() {
   }, 2600);
 }
 
+function initFireflies() {
+  if (prefersReducedMotion) {
+    return;
+  }
+
+  const field = document.createElement("div");
+  const isHome = document.body.classList.contains("home-page");
+  const count = isHome ? 8 : 16;
+
+  field.className = "firefly-field";
+  field.setAttribute("aria-hidden", "true");
+
+  for (let i = 0; i < count; i += 1) {
+    const firefly = document.createElement("span");
+    const size = Math.random() * 7 + 4;
+    const top = Math.random() * 84 + 8;
+    const left = Math.random() * 96 + 2;
+    const driftX = (Math.random() - 0.5) * 150;
+    const driftY = (Math.random() - 0.5) * 110;
+    const duration = Math.random() * 12 + 14;
+    const pulse = Math.random() * 3 + 2.8;
+    const delay = Math.random() * -18;
+
+    firefly.className = "firefly";
+    firefly.style.setProperty("--firefly-size", `${size.toFixed(1)}px`);
+    firefly.style.setProperty("--firefly-top", `${top.toFixed(1)}vh`);
+    firefly.style.setProperty("--firefly-left", `${left.toFixed(1)}vw`);
+    firefly.style.setProperty("--firefly-x", `${driftX.toFixed(1)}px`);
+    firefly.style.setProperty("--firefly-y", `${driftY.toFixed(1)}px`);
+    firefly.style.setProperty("--firefly-duration", `${duration.toFixed(1)}s`);
+    firefly.style.setProperty("--firefly-pulse", `${pulse.toFixed(1)}s`);
+    firefly.style.setProperty("--firefly-delay", `${delay.toFixed(1)}s`);
+    field.appendChild(firefly);
+  }
+
+  document.body.appendChild(field);
+}
+
 initTheme();
 resizeCanvas();
 drawStars();
 revealOnScroll();
 initAccountDialog();
+initFireflies();
 initMeteors();
 
 if (themeToggle) {
