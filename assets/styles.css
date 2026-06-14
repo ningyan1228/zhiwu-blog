@@ -658,6 +658,106 @@ body.light-theme .link-list a {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.recent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.recent-card {
+  display: block;
+  min-height: 180px;
+  padding: 24px;
+  text-decoration: none;
+}
+
+.recent-date {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(103, 232, 249, 0.24);
+  border-radius: 999px;
+  color: var(--cyan);
+  background: rgba(103, 232, 249, 0.08);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.recent-card h3 {
+  margin: 16px 0 10px;
+  color: var(--text);
+  font-size: clamp(22px, 2.2vw, 30px);
+}
+
+.recent-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.knowledge-section + .knowledge-section {
+  margin-top: 34px;
+}
+
+.knowledge-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.knowledge-section-heading h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(28px, 4vw, 44px);
+}
+
+.knowledge-section-heading span {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.knowledge-card {
+  position: relative;
+}
+
+.knowledge-card.is-locked {
+  border-color: rgba(167, 139, 250, 0.22);
+}
+
+.knowledge-card.is-locked .card-icon {
+  box-shadow:
+    0 14px 34px rgba(167, 139, 250, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.access-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.access-public {
+  color: #082016;
+  background: linear-gradient(135deg, #dffbe8, #a8f3ce);
+}
+
+.access-private {
+  color: #1e1738;
+  background: linear-gradient(135deg, #e1e8ff, #dccdff);
+}
+
 .about-hero {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(360px, 0.8fr);
@@ -1289,6 +1389,44 @@ body.light-theme .finder-window {
   transform: translateY(-1px);
 }
 
+.tool-filterbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(248, 250, 252, 0.035);
+}
+
+.tool-filter-button {
+  min-height: 34px;
+  padding: 0 13px;
+  border: 1px solid rgba(248, 250, 252, 0.12);
+  border-radius: 8px;
+  color: var(--muted);
+  background: rgba(248, 250, 252, 0.055);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.tool-filter-button:hover,
+.tool-filter-button.is-active {
+  color: #122033;
+  border-color: rgba(206, 255, 239, 0.5);
+  background: linear-gradient(135deg, #dff7ff, #d9ffe9);
+}
+
+.tool-filter-button:hover {
+  transform: translateY(-1px);
+}
+
 .finder-columns {
   display: none;
   grid-template-columns: minmax(240px, 1fr) 120px 130px 190px;
@@ -1325,6 +1463,10 @@ body.light-theme .finder-window {
     background 180ms ease,
     box-shadow 180ms ease;
   overflow: hidden;
+}
+
+.finder-project-card.is-hidden {
+  display: none;
 }
 
 body.light-theme .finder-project-card {
@@ -1907,6 +2049,7 @@ body.light-theme .practice-subcard {
 
   .project-grid,
   .knowledge-grid,
+  .recent-grid,
   .practice-grid,
   .about-hero,
   .article-list,
