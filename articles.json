@@ -1,20 +1,20 @@
 [
   {
     "slug": "how-to-build-blog",
-    "title": "我是如何搭建个人博客工作台的",
-    "excerpt": "记录这个个人数字工作台从首页、项目入口、知识库到 Deno Deploy 代理的搭建思路。",
-    "date": "2026-06-12",
+    "title": "为什么我要搭建这个个人数字工作台",
+    "excerpt": "记录我搭建止鹜个人博客的理由：把阅读、学习、项目、笔记和创作入口整理成一个长期可维护的个人系统。",
+    "date": "2026-06-14",
     "category": "建站",
-    "readTime": 5,
-    "tags": ["GitHub Pages", "Deno Deploy", "数字花园"]
+    "readTime": 6,
+    "tags": ["个人博客", "数字花园", "GitHub Pages"]
   },
   {
-    "slug": "reading-note-xxx",
-    "title": "《XXX》读书笔记与思考",
-    "excerpt": "这篇文章示范如何把阅读摘录、观点和行动清单整理成一篇 Markdown 笔记。",
-    "date": "2026-06-10",
-    "category": "阅读",
-    "readTime": 8,
-    "tags": ["阅读", "笔记", "复盘"]
+    "slug": "civil-service-exam-advice",
+    "title": "考公考编备考的一些建议和提醒",
+    "excerpt": "从目标选择、资料整理、刷题节奏、复盘方法和心态管理几个角度，记录我对公考考编备考的理解。",
+    "date": "2026-06-14",
+    "category": "学习",
+    "readTime": 7,
+    "tags": ["公考", "考编", "学习方法"]
   }
 ]
