@@ -1,6 +1,17 @@
 const articleList = document.querySelector("#articles");
 const articleContent = document.querySelector("#article-content");
-const articleSlug = document.body.dataset.articleSlug;
+
+function getArticleSlug() {
+  const explicitSlug = document.body.dataset.articleSlug || new URLSearchParams(window.location.search).get("slug");
+  if (explicitSlug) {
+    return explicitSlug;
+  }
+
+  const fileSlug = window.location.pathname.split("/").pop()?.replace(".html", "");
+  return fileSlug && !["index", "post"].includes(fileSlug) ? fileSlug : null;
+}
+
+const articleSlug = getArticleSlug();
 
 function escapeHtml(value) {
   return String(value)
@@ -91,7 +102,7 @@ async function renderArticleList() {
 
         return `
           <article class="glass-card article-card reveal is-visible">
-            <a href="${escapeHtml(article.slug)}.html">
+            <a href="post.html?slug=${encodeURIComponent(article.slug)}">
               <p class="article-card-meta">${escapeHtml(articleMeta(article))}</p>
               <h2>${escapeHtml(article.title)}</h2>
               <p>${escapeHtml(article.excerpt)}</p>
@@ -107,7 +118,12 @@ async function renderArticleList() {
 }
 
 async function renderArticleDetail() {
-  if (!articleContent || !articleSlug) {
+  if (!articleContent) {
+    return;
+  }
+
+  if (!articleSlug) {
+    articleContent.innerHTML = "<p>请从文章列表进入具体文章。</p>";
     return;
   }
 

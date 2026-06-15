@@ -2,6 +2,7 @@ const toolFinder = document.querySelector("#tool-finder");
 const toolButtons = document.querySelectorAll(".finder-view-button");
 const toolFilterButtons = document.querySelectorAll(".tool-filter-button");
 const toolWindow = document.querySelector(".finder-window");
+const validToolFilters = new Set(["all", "daily", "content", "study", "design", "sports", "info"]);
 
 function setToolView(view) {
   if (!toolFinder) {
@@ -43,7 +44,7 @@ toolButtons.forEach((button) => {
 });
 
 function setToolFilter(filter) {
-  const activeFilter = filter || "all";
+  const activeFilter = validToolFilters.has(filter) ? filter : "all";
 
   document.querySelectorAll("#tool-finder .finder-project-card").forEach((card) => {
     const categories = (card.dataset.category || "").split(/\s+/);
