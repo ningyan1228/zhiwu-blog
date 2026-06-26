@@ -2524,6 +2524,12 @@ body:not(.home-page) .page-hero p {
   body:not(.home-page) .finder-window {
     margin-top: 18px;
   }
+
+  body:not(.home-page) .finder-window.reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 @media (max-width: 520px) {
