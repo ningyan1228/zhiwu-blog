@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg: #0b1020;
   --bg-soft: #121a2f;
   --panel: rgba(18, 26, 47, 0.68);
@@ -3103,6 +3103,7 @@ body.home-page #starfield {
 }
 
 .home-page main > .split-section,
+.home-page main > .status-section,
 .home-page main > .recent-section {
   width: min(1160px, calc(100% - 40px));
   margin-right: auto;
@@ -3121,6 +3122,113 @@ body.home-page #starfield {
   margin-left: 0;
 }
 
+
+.status-section {
+  padding-top: clamp(18px, 4vw, 44px);
+  padding-bottom: clamp(18px, 4vw, 44px);
+}
+
+.status-panel {
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.status-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.status-heading h2 {
+  margin: 6px 0 0;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+  color: rgba(226, 232, 240, 0.9);
+  background: rgba(15, 23, 42, 0.36);
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.status-pill.is-ok {
+  border-color: rgba(76, 211, 194, 0.36);
+  color: #c8fff5;
+  background: rgba(20, 184, 166, 0.16);
+  box-shadow: 0 0 22px rgba(20, 184, 166, 0.12);
+}
+
+.status-pill.is-error {
+  border-color: rgba(248, 113, 113, 0.36);
+  color: #fee2e2;
+  background: rgba(239, 68, 68, 0.14);
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.status-item {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 16px;
+  background: rgba(8, 13, 26, 0.28);
+}
+
+.status-item span {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(203, 213, 225, 0.72);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-item strong {
+  display: block;
+  overflow: hidden;
+  color: #f8fafc;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-message {
+  margin: 18px 0 0;
+  color: rgba(203, 213, 225, 0.82);
+  font-size: clamp(15px, 1.8vw, 18px);
+  line-height: 1.8;
+}
+
+@media (max-width: 860px) {
+  .status-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .status-heading {
+    flex-direction: column;
+  }
+
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .home-page .site-header,
 body.home-page.light-theme .site-header {
   z-index: 20;
@@ -3490,3 +3598,6 @@ body.home-page.light-theme .intro-hero {
     font-size: clamp(48px, 16vw, 68px);
   }
 }
+
+
+

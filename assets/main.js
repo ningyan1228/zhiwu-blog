@@ -1,4 +1,4 @@
-const canvas = document.querySelector("#starfield");
+﻿const canvas = document.querySelector("#starfield");
 const ctx = canvas.getContext("2d");
 const fxCanvas = document.querySelector("#click-effects");
 const fxCtx = fxCanvas.getContext("2d");
@@ -409,6 +409,64 @@ function initFireflies() {
   document.body.appendChild(field);
 }
 
+const BLOG_PROXY_BASE = "https://api.gjsx.uno";
+
+function setStatusText(root, selector, value) {
+  const node = root.querySelector(selector);
+  if (node) {
+    node.textContent = value;
+  }
+}
+
+function formatStatusTime(value) {
+  if (!value) return "--";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "--";
+  return date.toLocaleString("zh-CN", {
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+async function initSiteStatus() {
+  const panel = document.querySelector("[data-site-status-panel]");
+  if (!panel) return;
+
+  const pill = panel.querySelector("[data-status-pill]");
+  const setPill = (text, state) => {
+    if (!pill) return;
+    pill.textContent = text;
+    pill.classList.remove("is-loading", "is-ok", "is-error");
+    pill.classList.add(state);
+  };
+
+  try {
+    const [statusRes, versionRes] = await Promise.all([
+      fetch(`${BLOG_PROXY_BASE}/api/status`, { cache: "no-store" }),
+      fetch(`${BLOG_PROXY_BASE}/api/version`, { cache: "no-store" })
+    ]);
+
+    if (!statusRes.ok || !versionRes.ok) {
+      throw new Error("Proxy status request failed");
+    }
+
+    const status = await statusRes.json();
+    const version = await versionRes.json();
+
+    setStatusText(panel, "[data-status-frontend]", status.frontend || "GitHub Pages");
+    setStatusText(panel, "[data-status-proxy]", status.proxy || status.service || "Tencent Cloud Proxy");
+    setStatusText(panel, "[data-status-version]", version.version || "--");
+    setStatusText(panel, "[data-status-time]", formatStatusTime(status.time || version.updatedAt));
+    setStatusText(panel, "[data-status-message]", status.message || "代理服务运行正常，前端已接入腾讯云。");
+    setPill("运行正常", "is-ok");
+  } catch (error) {
+    setStatusText(panel, "[data-status-proxy]", "连接失败");
+    setStatusText(panel, "[data-status-message]", "暂时无法连接代理服务，GitHub Pages 静态页面仍可正常浏览。");
+    setPill("连接异常", "is-error");
+  }
+}
 initTheme();
 resizeCanvas();
 drawStars();
@@ -417,6 +475,7 @@ initAccountDialog();
 initLockedLinks();
 initFireflies();
 initMeteors();
+initSiteStatus();
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
@@ -445,3 +504,5 @@ window.addEventListener("pointerdown", (event) => {
 
   burstAt(event.clientX, event.clientY);
 });
+
+
