@@ -435,6 +435,64 @@ function initFireflies() {
 
 const BLOG_PROXY_BASE = "https://api.gjsx.uno";
 
+const ANALYTICS_ENDPOINT = `${BLOG_PROXY_BASE}/api/analytics/track`;
+
+function getAnalyticsVisitorId() {
+  const key = "zhiwu_visitor_id";
+  let id = localStorage.getItem(key);
+  if (!id) {
+    id = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+    localStorage.setItem(key, id);
+  }
+  return id;
+}
+
+function sendAnalyticsEvent(payload) {
+  const body = JSON.stringify({
+    site: "zhiwu-blog",
+    type: payload.type,
+    path: location.pathname || "/",
+    pageTitle: document.title,
+    href: payload.href || "",
+    label: payload.label || "",
+    visitorId: getAnalyticsVisitorId(),
+    time: new Date().toISOString(),
+  });
+
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon(
+      ANALYTICS_ENDPOINT,
+      new Blob([body], { type: "application/json" })
+    );
+    return;
+  }
+
+  fetch(ANALYTICS_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+    keepalive: true,
+  }).catch(() => {});
+}
+
+function initAnalytics() {
+  sendAnalyticsEvent({ type: "pageview" });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target.closest("a, button");
+    if (!target) return;
+
+    sendAnalyticsEvent({
+      type: "click",
+      label: (target.textContent || target.title || "unknown")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 100),
+      href: target.href || "",
+    });
+  });
+}
+
 function setStatusText(root, selector, value) {
   const node = root.querySelector(selector);
   if (node) {
@@ -500,6 +558,7 @@ initLockedLinks();
 initFireflies();
 initMeteors();
 initSiteStatus();
+initAnalytics();
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
