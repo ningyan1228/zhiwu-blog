@@ -255,7 +255,7 @@ function initAccountDialog() {
 }
 
 function initLockedLinks() {
-  const lockedLinks = document.querySelectorAll("[data-locked-url]");
+  const lockedLinks = document.querySelectorAll("[data-secret-id]");
 
   if (!lockedLinks.length) {
     return;
@@ -276,7 +276,7 @@ function initLockedLinks() {
         <button class="diary-lock-close" type="button" aria-label="关闭">×</button>
         <p class="eyebrow">Private Notes</p>
         <h2>${titleText}</h2>
-        <p>这个知识库已加锁，输入密码后会打开 Notion 页面。</p>
+        <p>这个知识库已加锁，服务器验证通过后会打开 Notion 页面。</p>
         <input id="locked-link-password" type="password" placeholder="请输入访问密码" autocomplete="current-password" />
         <div class="diary-lock-error" role="alert" aria-live="polite"></div>
         <button class="button button-primary" type="submit">解锁打开</button>
@@ -289,6 +289,7 @@ function initLockedLinks() {
     const input = backdrop.querySelector("#locked-link-password");
     const error = backdrop.querySelector(".diary-lock-error");
     const closeButton = backdrop.querySelector(".diary-lock-close");
+    const submitButton = backdrop.querySelector("button[type='submit']");
 
     input.focus();
 
@@ -299,18 +300,41 @@ function initLockedLinks() {
       }
     });
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const password = link.dataset.password || "";
+      error.textContent = "";
+      submitButton.disabled = true;
+      submitButton.textContent = "验证中";
 
-      if (input.value.trim() !== password) {
-        error.textContent = "密码不正确，再试一次。";
+      try {
+        const response = await fetch(`${BLOG_PROXY_BASE}/api/private-link/unlock`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id: link.dataset.secretId,
+            password: input.value.trim()
+          })
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok || !data.url) {
+          error.textContent = data.message || "密码不正确，再试一次。";
+          input.select();
+          return;
+        }
+
+        window.open(data.url, "_blank", "noopener,noreferrer");
+        closeLockDialog();
+      } catch {
+        error.textContent = "暂时无法连接服务器，请稍后再试。";
         input.select();
-        return;
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "解锁打开";
       }
-
-      window.open(link.dataset.lockedUrl, "_blank", "noopener,noreferrer");
-      closeLockDialog();
     });
   }
 
@@ -504,5 +528,6 @@ window.addEventListener("pointerdown", (event) => {
 
   burstAt(event.clientX, event.clientY);
 });
+
 
 
