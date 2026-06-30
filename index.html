@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
@@ -57,6 +57,7 @@
             <div class="hero-actions" aria-label="快捷入口">
               <a class="button button-primary" href="knowledge/">进入知识库</a>
               <a class="button button-ghost" href="practice/">刷题导航</a>
+              <a class="button button-ghost" href="#project-constellation">项目星图</a>
             </div>
           </div>
 
@@ -78,7 +79,7 @@
           <a class="glass-card feature-card reveal" href="projects/">
             <span class="feature-kicker">Projects</span>
             <h2>项目入口</h2>
-            <p>学习资料库、微信读书 Skills、朝夕壁纸、考公备考助手、拾音匣、小红书文案工具、网盘链接提取器、电子书资料库和个人作品入口。</p>
+            <p>学习资料库、微信读书 Skills、朝夕壁纸、公考早自习、电子书资料库，以及更多个人作品入口。</p>
           </a>
 
           <a class="glass-card feature-card reveal" href="knowledge/">
@@ -86,6 +87,24 @@
             <h2>个人笔记</h2>
             <p>阅读摘录、灵感收集、复盘记录和日常知识沉淀。</p>
           </a>
+        </section>
+
+        <section id="project-constellation" class="section-block constellation-section" aria-labelledby="constellation-title" data-project-stars>
+          <div class="constellation-copy reveal">
+            <p class="eyebrow">Project Constellation</p>
+            <h2 id="constellation-title">项目星图</h2>
+            <p>
+              把常用项目连成一片星域：服务器会检测有健康接口的项目，最近更新和访问更活跃的星会更亮。
+            </p>
+          </div>
+          <div class="constellation-shell reveal">
+            <div class="constellation-sky" data-star-map aria-label="项目星图状态"></div>
+            <aside class="constellation-panel" data-star-panel>
+              <span class="constellation-status">检测中</span>
+              <h3>正在读取星图状态</h3>
+              <p>优先连接腾讯云统一状态接口；不可用时会回退到本地项目清单和各项目 health 检测。</p>
+            </aside>
+          </div>
         </section>
         <section class="section-block status-section" aria-label="站点状态">
           <div class="glass-card status-panel reveal" data-site-status-panel>
@@ -148,7 +167,7 @@
         <span>GitHub Pages · Personal Digital Garden</span>
       </footer>
     </div>
-    <script src="assets/main.js?v=20260628-analytics"></script>
+    <script src="assets/main.js?v=20260630-stars"></script>
   </body>
 </html>
 
