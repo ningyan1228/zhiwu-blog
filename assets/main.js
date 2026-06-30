@@ -455,6 +455,7 @@ function sendAnalyticsEvent(payload) {
     pageTitle: document.title,
     href: payload.href || "",
     label: payload.label || "",
+    projectId: payload.projectId || "",
     visitorId: getAnalyticsVisitorId(),
     time: new Date().toISOString(),
   });
@@ -489,6 +490,7 @@ function initAnalytics() {
         .trim()
         .slice(0, 100),
       href: target.href || "",
+    projectId: (target.closest("[data-star-id]") || target).dataset.starId || "",
     });
   });
 }
@@ -593,7 +595,7 @@ function mergeProjectStarStatus(stars, remoteItems) {
   return stars.map((star) => ({ ...star, ...(remoteById.get(star.id) || remoteById.get(star.name) || {}) }));
 }
 
-function renderProjectStars(stars, sourceLabel = "本地星图") {
+function renderProjectStars(stars, sourceLabel = "本地星图", metrics = {}) {
   const root = document.querySelector("[data-project-stars]");
   if (!root) return;
 
@@ -628,14 +630,22 @@ function renderProjectStars(stars, sourceLabel = "本地星图") {
 
   const onlineCount = normalizedStars.filter((star) => star.status === "online").length;
   const hottest = normalizedStars.slice().sort((a, b) => b.brightness - a.brightness)[0];
+  const visitorsToday = Number(metrics.visitorsToday || metrics.uniqueVisitorsToday || 0);
+  const fallbackDust = normalizedStars.reduce((sum, star) => sum + Number(star.visitsToday || 0), 0);
+  const dustCount = visitorsToday || fallbackDust;
+  const dustLabel = dustCount > 0 ? `今日有 ${dustCount} 粒星尘经过` : "今日星尘正在汇聚";
 
   panel.innerHTML = `
     <span class="constellation-status">${sourceLabel} · ${onlineCount}/${normalizedStars.length} 在线</span>
+    <div class="constellation-dust" aria-live="polite">
+      <span></span>
+      <strong>${dustLabel}</strong>
+    </div>
     <h3>${hottest ? hottest.name : "项目星图"}</h3>
     <p>${hottest ? hottest.description : "项目正在汇聚成星图。"}</p>
     <div class="constellation-meta">
       ${normalizedStars.map((star) => `
-        <a href="${star.url}" target="_blank" rel="noopener noreferrer">
+        <a href="${star.url}" target="_blank" rel="noopener noreferrer" data-star-id="${star.id}">
           <span>${star.kind || "项目星"}</span>
           <strong>${star.name}</strong>
           <em>${getProjectStarStatusText(star)} · ${star.visitsToday || 0} 粒星尘 · ${getProjectStarTime(star.lastUpdated)}</em>
@@ -662,7 +672,7 @@ async function initProjectStars() {
     const remote = await fetchProjectStarJson(PROJECT_STARS_STATUS_ENDPOINT);
     const remoteItems = Array.isArray(remote) ? remote : remote.items;
     stars = mergeProjectStarStatus(stars, remoteItems);
-    renderProjectStars(stars, "服务器星图");
+    renderProjectStars(stars, "服务器星图", remote);
     return;
   } catch {
     // The unified server endpoint can be added later; per-star health checks keep the map useful now.

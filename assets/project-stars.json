@@ -1,5 +1,19 @@
 [
   {
+    "id": "study-resource",
+    "name": "学习资料库",
+    "kind": "资料星",
+    "tone": "mint",
+    "url": "https://ningyan1228.github.io/study-resource-library/",
+    "healthUrl": "https://study-resource-api.gjsx.uno/health",
+    "description": "公考、考编和学习资料的总入口。",
+    "lastUpdated": "2026-06-30",
+    "activity": 92,
+    "visitsToday": 0,
+    "x": 43,
+    "y": 53
+  },
+  {
     "id": "weread-skills",
     "name": "微信读书 Skills",
     "kind": "阅读星",
@@ -9,9 +23,9 @@
     "description": "微信读书笔记、阅读工具和卡片入口。",
     "lastUpdated": "2026-06-28",
     "activity": 86,
-    "visitsToday": 18,
-    "x": 24,
-    "y": 34
+    "visitsToday": 0,
+    "x": 25,
+    "y": 32
   },
   {
     "id": "gongkao-morning",
@@ -23,23 +37,23 @@
     "description": "晨间学习、刷题节奏和公考复盘入口。",
     "lastUpdated": "2026-06-28",
     "activity": 74,
-    "visitsToday": 9,
-    "x": 70,
-    "y": 30
+    "visitsToday": 0,
+    "x": 72,
+    "y": 28
   },
   {
-    "id": "study-resource",
-    "name": "学习资料库",
-    "kind": "资料星",
-    "tone": "mint",
-    "url": "https://ningyan1228.github.io/study-resource-library/",
-    "healthUrl": "https://study-resource-api.gjsx.uno/health",
-    "description": "公考、考编和学习资料的总入口。",
-    "lastUpdated": "2026-06-30",
-    "activity": 92,
-    "visitsToday": 31,
-    "x": 45,
-    "y": 58
+    "id": "echo-shelf",
+    "name": "拾音匣",
+    "kind": "声波星",
+    "tone": "cyan",
+    "url": "https://ningyan1228.github.io/echo-shelf/",
+    "healthUrl": "https://echo-shelf-api.gjsx.uno/health",
+    "description": "本地音乐播放器，服务器代理提供状态回响。",
+    "lastUpdated": "2026-06-16",
+    "activity": 78,
+    "visitsToday": 0,
+    "x": 60,
+    "y": 66
   },
   {
     "id": "zhaoxi-wallpaper",
@@ -51,9 +65,51 @@
     "description": "原创壁纸、头像和视觉作品展示。",
     "lastUpdated": "2026-06-12",
     "activity": 58,
-    "visitsToday": 7,
-    "x": 18,
-    "y": 72
+    "visitsToday": 0,
+    "x": 17,
+    "y": 70
+  },
+  {
+    "id": "ai-kaogong-assistant",
+    "name": "考公备考助手",
+    "kind": "备考星",
+    "tone": "green",
+    "url": "https://ningyan1228.github.io/ai-kaogong-assistant/",
+    "healthUrl": "",
+    "description": "面向公考考编备考的 AI 辅助学习入口。",
+    "lastUpdated": "2026-06-15",
+    "activity": 54,
+    "visitsToday": 0,
+    "x": 80,
+    "y": 48
+  },
+  {
+    "id": "xiaohongshu-copy",
+    "name": "小红书情绪文案生成器",
+    "kind": "文案星",
+    "tone": "rose",
+    "url": "https://ningyan1228.github.io/xiaohongshu-emotional-copy-generator/",
+    "healthUrl": "",
+    "description": "情绪化种草文案生成工具。",
+    "lastUpdated": "2026-06-19",
+    "activity": 50,
+    "visitsToday": 0,
+    "x": 31,
+    "y": 79
+  },
+  {
+    "id": "wangpan-extractor",
+    "name": "网盘链接提取器",
+    "kind": "链接星",
+    "tone": "teal",
+    "url": "https://ningyan1228.github.io/wangpan-link-extractor/",
+    "healthUrl": "",
+    "description": "从分享文本中提取网盘链接和提取码。",
+    "lastUpdated": "2026-06-24",
+    "activity": 56,
+    "visitsToday": 0,
+    "x": 54,
+    "y": 22
   },
   {
     "id": "ebook-library",
@@ -65,8 +121,8 @@
     "description": "电子书检索、分类浏览和阅读资料入口。",
     "lastUpdated": "2026-06-24",
     "activity": 68,
-    "visitsToday": 12,
-    "x": 82,
-    "y": 70
+    "visitsToday": 0,
+    "x": 84,
+    "y": 74
   }
 ]

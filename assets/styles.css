@@ -3734,6 +3734,10 @@ body.home-page.light-theme .intro-hero {
 .project-star-mint { --star-color: #34d399; --star-color-soft: rgba(52, 211, 153, 0.72); --star-color-faint: rgba(45, 212, 191, 0.24); }
 .project-star-violet { --star-color: #a78bfa; --star-color-soft: rgba(167, 139, 250, 0.74); --star-color-faint: rgba(216, 180, 254, 0.24); }
 .project-star-amber { --star-color: #fcd34d; --star-color-soft: rgba(252, 211, 77, 0.7); --star-color-faint: rgba(251, 191, 36, 0.22); }
+.project-star-cyan { --star-color: #67e8f9; --star-color-soft: rgba(103, 232, 249, 0.74); --star-color-faint: rgba(34, 211, 238, 0.22); }
+.project-star-green { --star-color: #86efac; --star-color-soft: rgba(134, 239, 172, 0.7); --star-color-faint: rgba(74, 222, 128, 0.22); }
+.project-star-rose { --star-color: #fda4af; --star-color-soft: rgba(253, 164, 175, 0.72); --star-color-faint: rgba(244, 114, 182, 0.22); }
+.project-star-teal { --star-color: #5eead4; --star-color-soft: rgba(94, 234, 212, 0.72); --star-color-faint: rgba(45, 212, 191, 0.22); }
 
 .project-star.is-offline .project-star-core,
 .project-star.is-pending .project-star-core {
@@ -3761,6 +3765,32 @@ body.home-page.light-theme .intro-hero {
   font-weight: 900;
 }
 
+
+.constellation-dust {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  padding: 8px 11px;
+  border: 1px solid rgba(248, 250, 252, 0.12);
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.06);
+  color: rgba(226, 232, 240, 0.82);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.constellation-dust span {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  box-shadow: 0 0 16px rgba(224, 242, 254, 0.72), 14px -4px 0 -3px rgba(191, 219, 254, 0.72), 24px 5px 0 -4px rgba(165, 243, 252, 0.58);
+}
+
+.constellation-dust strong {
+  font-size: inherit;
+}
 .constellation-panel h3 {
   margin: 0;
   font-size: clamp(24px, 3vw, 34px);
