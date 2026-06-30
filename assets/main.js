@@ -1,4 +1,4 @@
-﻿const canvas = document.querySelector("#starfield");
+const canvas = document.querySelector("#starfield");
 const ctx = canvas.getContext("2d");
 const fxCanvas = document.querySelector("#click-effects");
 const fxCtx = fxCanvas.getContext("2d");
@@ -512,6 +512,165 @@ function formatStatusTime(value) {
   });
 }
 
+
+const PROJECT_STARS_FALLBACK = "assets/project-stars.json";
+const PROJECT_STARS_STATUS_ENDPOINT = `${BLOG_PROXY_BASE}/api/project-stars`;
+
+function clampProjectStar(value, min, max) {
+  return Math.min(max, Math.max(min, Number(value) || 0));
+}
+
+function daysSinceProjectUpdate(value) {
+  if (!value) return 999;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 999;
+  return Math.max(0, Math.floor((Date.now() - date.getTime()) / 86400000));
+}
+
+function getProjectStarBrightness(star) {
+  const activity = clampProjectStar(star.activity, 0, 100) / 100;
+  const freshness = Math.max(0.22, 1 - daysSinceProjectUpdate(star.lastUpdated) / 45);
+  const health = star.status === "online" ? 1 : star.status === "checking" ? 0.62 : star.status === "static" ? 0.72 : 0.38;
+  return Math.max(0.28, Math.min(1, activity * 0.42 + freshness * 0.34 + health * 0.24));
+}
+
+function getProjectStarStatusText(star) {
+  if (star.status === "online") return "在线";
+  if (star.status === "offline") return "离线";
+  if (star.status === "static") return "静态星";
+  if (star.status === "checking") return "检测中";
+  return star.healthUrl ? "待检测" : "静态星";
+}
+
+function getProjectStarTime(value) {
+  if (!value) return "未记录";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("zh-CN", { month: "2-digit", day: "2-digit" });
+}
+
+async function fetchProjectStarJson(url, options = {}) {
+  const response = await fetch(url, { cache: "no-store", ...options });
+  if (!response.ok) throw new Error(`Request failed: ${url}`);
+  return response.json();
+}
+
+async function fetchProjectStarHealth(star) {
+  if (!star.healthUrl) return { ...star, status: star.status || "static" };
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 3600);
+
+  try {
+    const startedAt = performance.now();
+    const response = await fetch(star.healthUrl, {
+      cache: "no-store",
+      mode: "no-cors",
+      signal: controller.signal
+    });
+    const latency = Math.round(performance.now() - startedAt);
+    if (!response.ok && response.type !== "opaque") throw new Error("health failed");
+    return {
+      ...star,
+      status: "online",
+      latency,
+      checkedAt: new Date().toISOString()
+    };
+  } catch {
+    return {
+      ...star,
+      status: star.status || "offline",
+      checkedAt: new Date().toISOString()
+    };
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+function mergeProjectStarStatus(stars, remoteItems) {
+  if (!Array.isArray(remoteItems) || !remoteItems.length) return stars;
+  const remoteById = new Map(remoteItems.map((item) => [item.id || item.name, item]));
+  return stars.map((star) => ({ ...star, ...(remoteById.get(star.id) || remoteById.get(star.name) || {}) }));
+}
+
+function renderProjectStars(stars, sourceLabel = "本地星图") {
+  const root = document.querySelector("[data-project-stars]");
+  if (!root) return;
+
+  const map = root.querySelector("[data-star-map]");
+  const panel = root.querySelector("[data-star-panel]");
+  if (!map || !panel) return;
+
+  const normalizedStars = stars.map((star) => ({
+    ...star,
+    status: star.status || (star.healthUrl ? "checking" : "static"),
+    brightness: getProjectStarBrightness(star)
+  }));
+
+  map.innerHTML = normalizedStars.map((star, index) => {
+    const size = 42 + Math.round(star.brightness * 28);
+    const glow = 0.45 + star.brightness * 0.75;
+    const style = [
+      `--star-x:${clampProjectStar(star.x ?? 50, 8, 92)}%`,
+      `--star-y:${clampProjectStar(star.y ?? 50, 10, 88)}%`,
+      `--star-size:${size}px`,
+      `--star-glow:${glow}`,
+      `--star-delay:${index * 0.18}s`
+    ].join(";");
+
+    return `
+      <a class="project-star project-star-${star.tone || "blue"} is-${star.status}" href="${star.url}" target="_blank" rel="noopener noreferrer" style="${style}" data-star-id="${star.id}">
+        <span class="project-star-core"></span>
+        <span class="project-star-name">${star.name}</span>
+      </a>
+    `;
+  }).join("");
+
+  const onlineCount = normalizedStars.filter((star) => star.status === "online").length;
+  const hottest = normalizedStars.slice().sort((a, b) => b.brightness - a.brightness)[0];
+
+  panel.innerHTML = `
+    <span class="constellation-status">${sourceLabel} · ${onlineCount}/${normalizedStars.length} 在线</span>
+    <h3>${hottest ? hottest.name : "项目星图"}</h3>
+    <p>${hottest ? hottest.description : "项目正在汇聚成星图。"}</p>
+    <div class="constellation-meta">
+      ${normalizedStars.map((star) => `
+        <a href="${star.url}" target="_blank" rel="noopener noreferrer">
+          <span>${star.kind || "项目星"}</span>
+          <strong>${star.name}</strong>
+          <em>${getProjectStarStatusText(star)} · ${star.visitsToday || 0} 粒星尘 · ${getProjectStarTime(star.lastUpdated)}</em>
+        </a>
+      `).join("")}
+    </div>
+  `;
+}
+
+async function initProjectStars() {
+  const root = document.querySelector("[data-project-stars]");
+  if (!root) return;
+
+  let stars = [];
+  try {
+    stars = await fetchProjectStarJson(PROJECT_STARS_FALLBACK);
+  } catch {
+    return;
+  }
+
+  renderProjectStars(stars, "本地星图");
+
+  try {
+    const remote = await fetchProjectStarJson(PROJECT_STARS_STATUS_ENDPOINT);
+    const remoteItems = Array.isArray(remote) ? remote : remote.items;
+    stars = mergeProjectStarStatus(stars, remoteItems);
+    renderProjectStars(stars, "服务器星图");
+    return;
+  } catch {
+    // The unified server endpoint can be added later; per-star health checks keep the map useful now.
+  }
+
+  const checkedStars = await Promise.all(stars.map(fetchProjectStarHealth));
+  renderProjectStars(checkedStars, "Health 自动检测");
+}
 async function initSiteStatus() {
   const panel = document.querySelector("[data-site-status-panel]");
   if (!panel) return;
@@ -558,6 +717,7 @@ initLockedLinks();
 initFireflies();
 initMeteors();
 initSiteStatus();
+initProjectStars();
 initAnalytics();
 
 if (themeToggle) {

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "weread-skills",
+    "name": "微信读书 Skills",
+    "kind": "阅读星",
+    "tone": "blue",
+    "url": "https://ningyan1228.github.io/weread-skills-web/",
+    "healthUrl": "https://weread-api.gjsx.uno/health",
+    "description": "微信读书笔记、阅读工具和卡片入口。",
+    "lastUpdated": "2026-06-28",
+    "activity": 86,
+    "visitsToday": 18,
+    "x": 24,
+    "y": 34
+  },
+  {
+    "id": "gongkao-morning",
+    "name": "公考早自习",
+    "kind": "晨光星",
+    "tone": "sunrise",
+    "url": "https://ningyan1228.github.io/gongkao-morning-study/",
+    "healthUrl": "https://zaozixi-api.gjsx.uno/health",
+    "description": "晨间学习、刷题节奏和公考复盘入口。",
+    "lastUpdated": "2026-06-28",
+    "activity": 74,
+    "visitsToday": 9,
+    "x": 70,
+    "y": 30
+  },
+  {
+    "id": "study-resource",
+    "name": "学习资料库",
+    "kind": "资料星",
+    "tone": "mint",
+    "url": "https://ningyan1228.github.io/study-resource-library/",
+    "healthUrl": "https://study-resource-api.gjsx.uno/health",
+    "description": "公考、考编和学习资料的总入口。",
+    "lastUpdated": "2026-06-30",
+    "activity": 92,
+    "visitsToday": 31,
+    "x": 45,
+    "y": 58
+  },
+  {
+    "id": "zhaoxi-wallpaper",
+    "name": "朝夕壁纸网站",
+    "kind": "视觉星",
+    "tone": "violet",
+    "url": "https://ningyan1228.github.io/zhaoxi-wallpaper/",
+    "healthUrl": "",
+    "description": "原创壁纸、头像和视觉作品展示。",
+    "lastUpdated": "2026-06-12",
+    "activity": 58,
+    "visitsToday": 7,
+    "x": 18,
+    "y": 72
+  },
+  {
+    "id": "ebook-library",
+    "name": "电子书资料库",
+    "kind": "书星",
+    "tone": "amber",
+    "url": "https://ningyan1228.github.io/ebook-library/",
+    "healthUrl": "",
+    "description": "电子书检索、分类浏览和阅读资料入口。",
+    "lastUpdated": "2026-06-24",
+    "activity": 68,
+    "visitsToday": 12,
+    "x": 82,
+    "y": 70
+  }
+]
