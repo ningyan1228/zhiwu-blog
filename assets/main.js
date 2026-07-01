@@ -629,7 +629,6 @@ function renderProjectStars(stars, sourceLabel = "本地星图", metrics = {}) {
   }).join("");
 
   const onlineCount = normalizedStars.filter((star) => star.status === "online").length;
-  const staticCount = normalizedStars.filter((star) => star.status === "static").length;
   const visitorsToday = Number(metrics.visitorsToday || metrics.uniqueVisitorsToday || 0);
   const fallbackDust = normalizedStars.reduce((sum, star) => sum + Number(star.visitsToday || 0), 0);
   const dustCount = visitorsToday || fallbackDust;
@@ -642,7 +641,7 @@ function renderProjectStars(stars, sourceLabel = "本地星图", metrics = {}) {
       <strong>${dustLabel}</strong>
     </div>
     <h3>星图状态</h3>
-    <p>${onlineCount} 颗代理星在线，${staticCount} 颗静态星模拟显示；点击任意项目都会留下今日星尘。</p>
+    <p>最近更新和访问更活跃的项目会更亮；点击任意星星都会留下今日星尘。</p>
     <div class="constellation-meta">
       ${normalizedStars.map((star) => `
         <a href="${star.url}" target="_blank" rel="noopener noreferrer" data-star-id="${star.id}">
