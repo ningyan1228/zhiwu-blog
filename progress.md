@@ -283,3 +283,14 @@ assets/admin.css
 assets/admin.js
 progress.md
 ```
+### 2026-07-01 新增：首页隐藏站长入口
+- 已在 `assets/main.js` 新增 `initAdminEasterEgg()`。
+- 规则：只在首页 `body.home-page` 生效，连续点击左上角品牌/logo 5 次，会跳转到 `admin/`。
+- 首页不显示“登录 / 后台 / 控制台”等显性入口，公开访问者不容易注意到。
+- 已更新 `index.html` 中 `assets/main.js` 的缓存版本为 `v=20260701-admin-easter-egg`。
+- GitHub Pages 需要上传：
+```text
+index.html
+assets/main.js
+progress.md
+```
