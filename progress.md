@@ -229,3 +229,57 @@ res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Anal
   - `admin/SERVER_ADMIN_SETUP.md`
   - `assets/admin.css`
   - `assets/admin.js`
+
+## 2026-07-01 新增：控制台文章发布第一版
+
+### 已完成
+- 在 `admin/index.html` 新增“文章发布 / Article Publisher”模块。
+- 在 `assets/admin.css` 增加发布表单、Markdown 编辑框、预览区和后台文章列表样式。
+- 在 `assets/admin.js` 增加文章发布逻辑：
+  - 标题、摘要、分类、标签、阅读分钟数表单。
+  - slug 自动生成；中文标题会退回到 `post-年月日时分` 格式。
+  - 支持上传 `.md` / `.markdown` 文件并自动填入正文。
+  - 支持 Markdown 预览。
+  - 登录后读取 `GET https://api.gjsx.uno/api/admin/articles`。
+  - 点击发布时调用 `POST https://api.gjsx.uno/api/admin/articles/publish`。
+- 更新 `admin/SERVER_ADMIN_SETUP.md`，补充服务器端文章发布接口、GitHub Token 环境变量和重建命令。
+
+### 文章发布链路
+```text
+/admin/ 写文章或上传 .md
+  -> api.gjsx.uno 后台接口校验站长 token
+  -> 服务器读取 .env 里的 GitHub Token
+  -> 写入 GitHub 仓库：posts/新文章.md
+  -> 更新 GitHub 仓库：articles.json
+  -> GitHub Pages 重新部署
+  -> /articles/ 自动多一篇文章
+```
+
+### 服务器仍需手动完成
+- 在 `~/projects/blog-proxy/.env` 增加：
+```env
+GITHUB_TOKEN=你的 fine-grained GitHub token
+GITHUB_OWNER=ningyan1228
+GITHUB_REPO=zhiwu-blog
+GITHUB_BRANCH=main
+```
+- GitHub Token 权限只给 `ningyan1228/zhiwu-blog`：
+```text
+Contents: Read and write
+Metadata: Read
+```
+- 按 `admin/SERVER_ADMIN_SETUP.md` 第 8-11 节，把 GitHub helper 和文章路由粘到 `~/projects/blog-proxy/server.js`。
+- 重建服务器容器：
+```bash
+cd ~/projects/blog-proxy
+docker compose up -d --build
+```
+
+### GitHub Pages 需要上传
+```text
+admin/index.html
+admin/SERVER_ADMIN_SETUP.md
+assets/admin.css
+assets/admin.js
+progress.md
+```

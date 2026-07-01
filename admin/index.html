@@ -4,35 +4,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex,nofollow" />
-    <title>&#27490;&#40540;&#25511;&#21046;&#21488;</title>
+    <title>止鸢控制台</title>
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg?v=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/admin.css?v=20260701-admin" />
+    <link rel="stylesheet" href="../assets/admin.css?v=20260701-publish" />
   </head>
   <body>
     <main class="admin-shell">
       <section class="admin-hero" aria-labelledby="admin-title">
-        <a class="admin-back" href="../index.html">&#36820;&#22238;&#21338;&#23458;</a>
+        <a class="admin-back" href="../index.html">返回博客</a>
         <p class="admin-kicker">Private Console</p>
-        <h1 id="admin-title">&#27490;&#40540;&#25511;&#21046;&#21488;</h1>
-        <p>&#36825;&#26159;&#21482;&#32473;&#31449;&#38271;&#20351;&#29992;&#30340;&#20837;&#21475;&#12290;&#20844;&#24320;&#39029;&#38754;&#32487;&#32493;&#20316;&#20026;&#25968;&#23383;&#33457;&#22253;&#65292;&#30331;&#24405;&#21518;&#36825;&#37324;&#20316;&#20026;&#39033;&#30446;&#26143;&#22270;&#12289;&#26381;&#21153;&#22120;&#29366;&#24577;&#21644;&#31169;&#23494;&#31508;&#35760;&#30340;&#25511;&#21046;&#23460;&#12290;</p>
+        <h1 id="admin-title">止鸢控制台</h1>
+        <p>这是只给站长使用的入口。公开页面继续作为数字花园，登录后这里作为项目星图、文章发布和服务器状态的控制室。</p>
       </section>
 
       <section class="admin-card login-card" data-login-panel>
         <div class="card-heading">
           <div>
             <p class="admin-kicker">Owner Login</p>
-            <h2>&#31449;&#38271;&#30331;&#24405;</h2>
+            <h2>站长登录</h2>
           </div>
-          <span class="state-pill" data-api-state>&#31561;&#24453;&#36830;&#25509;</span>
+          <span class="state-pill" data-api-state>等待连接</span>
         </div>
         <form class="login-form" data-login-form>
-          <label for="adminPassword">&#31649;&#29702;&#23494;&#30721;</label>
+          <label for="adminPassword">管理密码</label>
           <div class="password-row">
             <input id="adminPassword" name="password" type="password" autocomplete="current-password" placeholder="ADMIN_PASSWORD" required />
-            <button class="primary-button" type="submit">&#36827;&#20837;</button>
+            <button class="primary-button" type="submit">进入</button>
           </div>
           <p class="form-message" data-login-message aria-live="polite"></p>
         </form>
@@ -42,36 +42,101 @@
         <div class="dashboard-topline">
           <div>
             <p class="admin-kicker">Dashboard</p>
-            <h2>&#20170;&#26085;&#25511;&#21046;&#21488;</h2>
+            <h2>今日控制台</h2>
           </div>
-          <button class="ghost-button" type="button" data-logout>&#36864;&#20986;</button>
+          <button class="ghost-button" type="button" data-logout>退出</button>
         </div>
 
         <div class="metric-grid">
           <article class="metric-card">
-            <span>&#30331;&#24405;&#29366;&#24577;</span>
-            <strong data-session-state>&#24050;&#39564;&#35777;</strong>
+            <span>登录状态</span>
+            <strong data-session-state>已验证</strong>
             <small data-session-expiry>--</small>
           </article>
           <article class="metric-card">
-            <span>&#20170;&#26085;&#26143;&#23576;</span>
+            <span>今日星尘</span>
             <strong data-total-dust>--</strong>
-            <small>&#26469;&#33258;&#39033;&#30446;&#35775;&#38382;&#19982;&#26143;&#22270;&#28857;&#20987;</small>
+            <small>来自项目访问与星图点击</small>
           </article>
           <article class="metric-card">
-            <span>&#22312;&#32447;&#20195;&#29702;</span>
+            <span>在线代理</span>
             <strong data-online-count>--</strong>
-            <small>&#35835;&#21462;&#26381;&#21153;&#22120;&#26143;&#22270;&#25509;&#21475;</small>
+            <small>读取服务器星图接口</small>
           </article>
         </div>
+
+        <section class="admin-card article-publisher" aria-labelledby="publisher-title">
+          <div class="card-heading compact">
+            <div>
+              <p class="admin-kicker">Article Publisher</p>
+              <h2 id="publisher-title">文章发布</h2>
+            </div>
+            <button class="ghost-button" type="button" data-refresh-articles>刷新文章</button>
+          </div>
+
+          <form class="publisher-form" data-article-form>
+            <div class="form-grid two">
+              <label>
+                <span>标题</span>
+                <input name="title" type="text" placeholder="写一篇新的文章" required />
+              </label>
+              <label>
+                <span>slug / 英文路径</span>
+                <input name="slug" type="text" placeholder="自动生成，也可以手填" />
+              </label>
+            </div>
+
+            <label>
+              <span>摘要</span>
+              <textarea name="excerpt" rows="3" placeholder="文章列表里显示的一句话简介" required></textarea>
+            </label>
+
+            <div class="form-grid three">
+              <label>
+                <span>分类</span>
+                <input name="category" type="text" placeholder="建站 / 学习 / 阅读" required />
+              </label>
+              <label>
+                <span>标签</span>
+                <input name="tags" type="text" placeholder="用逗号分隔，例如 GitHub Pages, 个人博客" />
+              </label>
+              <label>
+                <span>阅读分钟数</span>
+                <input name="readTime" type="number" min="1" max="120" value="5" required />
+              </label>
+            </div>
+
+            <div class="publisher-toolbar">
+              <label class="file-button">
+                <input type="file" accept=".md,.markdown,text/markdown,text/plain" data-md-file />
+                上传 .md
+              </label>
+              <button class="ghost-button" type="button" data-fill-slug>生成路径</button>
+              <button class="ghost-button" type="button" data-preview-article>预览</button>
+              <button class="primary-button" type="submit" data-publish-button>发布到 GitHub</button>
+            </div>
+
+            <label>
+              <span>Markdown 正文</span>
+              <textarea class="markdown-editor" name="markdown" rows="16" placeholder="# 标题&#10;&#10;从这里开始写正文..." required></textarea>
+            </label>
+
+            <p class="form-message" data-publish-message aria-live="polite"></p>
+          </form>
+
+          <div class="publisher-preview is-hidden" data-article-preview></div>
+          <div class="article-list-panel" data-admin-articles>
+            <p class="empty-state">登录后会读取 GitHub 仓库里的文章列表。</p>
+          </div>
+        </section>
 
         <section class="admin-card">
           <div class="card-heading compact">
             <div>
               <p class="admin-kicker">Project Radar</p>
-              <h2>&#39033;&#30446;&#26143;&#22270;</h2>
+              <h2>项目星图</h2>
             </div>
-            <button class="ghost-button" type="button" data-refresh-stars>&#21047;&#26032;</button>
+            <button class="ghost-button" type="button" data-refresh-stars>刷新</button>
           </div>
           <div class="project-radar" data-project-radar>
             <p class="empty-state">Loading project status...</p>
@@ -82,18 +147,18 @@
           <div class="card-heading compact">
             <div>
               <p class="admin-kicker">Next Controls</p>
-              <h2>&#21518;&#32493;&#21487;&#20197;&#25509;&#20837;&#30340;&#25511;&#21046;</h2>
+              <h2>后续可以接入的控制</h2>
             </div>
           </div>
           <div class="admin-actions-grid">
-            <article><strong>&#26143;&#22270;&#32534;&#36753;</strong><span>&#20462;&#25913;&#39033;&#30446;&#21517;&#31216;&#12289;&#39068;&#33394;&#12289;&#25490;&#24207;&#12289;&#26174;&#31034;&#29366;&#24577;&#12290;</span></article>
-            <article><strong>&#20170;&#26085;&#26356;&#26032;</strong><span>&#22635;&#20889;&#19968;&#26465;&#26356;&#26032;&#65292;&#33258;&#21160;&#23637;&#31034;&#21040;&#39318;&#39029;&#25110;&#36164;&#26009;&#24211;&#12290;</span></article>
-            <article><strong>&#31169;&#23494;&#31508;&#35760;</strong><span>&#20445;&#23384;&#26381;&#21153;&#22120;&#37096;&#32626;&#12289;&#23494;&#38053;&#25552;&#37266;&#21644;&#39033;&#30446;&#35745;&#21010;&#12290;</span></article>
-            <article><strong>&#35775;&#38382;&#35814;&#24773;</strong><span>&#26597;&#30475;&#26143;&#23576;&#26469;&#28304;&#12289;&#39033;&#30446;&#36235;&#21183;&#21644;&#26368;&#36817;&#35775;&#38382;&#12290;</span></article>
+            <article><strong>星图编辑</strong><span>修改项目名称、颜色、排序、显示状态。</span></article>
+            <article><strong>今日更新</strong><span>填写一条更新，自动展示到首页或资料库。</span></article>
+            <article><strong>私密笔记</strong><span>保存服务器部署、密钥提醒和项目计划。</span></article>
+            <article><strong>访问详情</strong><span>查看星尘来源、项目趋势和最近访问。</span></article>
           </div>
         </section>
       </section>
     </main>
-    <script src="../assets/admin.js?v=20260701-admin"></script>
+    <script src="../assets/admin.js?v=20260701-publish"></script>
   </body>
 </html>
