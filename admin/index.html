@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>&#27490;&#40540;&#25511;&#21046;&#21488;</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg?v=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/admin.css?v=20260701-admin" />
+  </head>
+  <body>
+    <main class="admin-shell">
+      <section class="admin-hero" aria-labelledby="admin-title">
+        <a class="admin-back" href="../index.html">&#36820;&#22238;&#21338;&#23458;</a>
+        <p class="admin-kicker">Private Console</p>
+        <h1 id="admin-title">&#27490;&#40540;&#25511;&#21046;&#21488;</h1>
+        <p>&#36825;&#26159;&#21482;&#32473;&#31449;&#38271;&#20351;&#29992;&#30340;&#20837;&#21475;&#12290;&#20844;&#24320;&#39029;&#38754;&#32487;&#32493;&#20316;&#20026;&#25968;&#23383;&#33457;&#22253;&#65292;&#30331;&#24405;&#21518;&#36825;&#37324;&#20316;&#20026;&#39033;&#30446;&#26143;&#22270;&#12289;&#26381;&#21153;&#22120;&#29366;&#24577;&#21644;&#31169;&#23494;&#31508;&#35760;&#30340;&#25511;&#21046;&#23460;&#12290;</p>
+      </section>
+
+      <section class="admin-card login-card" data-login-panel>
+        <div class="card-heading">
+          <div>
+            <p class="admin-kicker">Owner Login</p>
+            <h2>&#31449;&#38271;&#30331;&#24405;</h2>
+          </div>
+          <span class="state-pill" data-api-state>&#31561;&#24453;&#36830;&#25509;</span>
+        </div>
+        <form class="login-form" data-login-form>
+          <label for="adminPassword">&#31649;&#29702;&#23494;&#30721;</label>
+          <div class="password-row">
+            <input id="adminPassword" name="password" type="password" autocomplete="current-password" placeholder="ADMIN_PASSWORD" required />
+            <button class="primary-button" type="submit">&#36827;&#20837;</button>
+          </div>
+          <p class="form-message" data-login-message aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="dashboard is-hidden" data-dashboard>
+        <div class="dashboard-topline">
+          <div>
+            <p class="admin-kicker">Dashboard</p>
+            <h2>&#20170;&#26085;&#25511;&#21046;&#21488;</h2>
+          </div>
+          <button class="ghost-button" type="button" data-logout>&#36864;&#20986;</button>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card">
+            <span>&#30331;&#24405;&#29366;&#24577;</span>
+            <strong data-session-state>&#24050;&#39564;&#35777;</strong>
+            <small data-session-expiry>--</small>
+          </article>
+          <article class="metric-card">
+            <span>&#20170;&#26085;&#26143;&#23576;</span>
+            <strong data-total-dust>--</strong>
+            <small>&#26469;&#33258;&#39033;&#30446;&#35775;&#38382;&#19982;&#26143;&#22270;&#28857;&#20987;</small>
+          </article>
+          <article class="metric-card">
+            <span>&#22312;&#32447;&#20195;&#29702;</span>
+            <strong data-online-count>--</strong>
+            <small>&#35835;&#21462;&#26381;&#21153;&#22120;&#26143;&#22270;&#25509;&#21475;</small>
+          </article>
+        </div>
+
+        <section class="admin-card">
+          <div class="card-heading compact">
+            <div>
+              <p class="admin-kicker">Project Radar</p>
+              <h2>&#39033;&#30446;&#26143;&#22270;</h2>
+            </div>
+            <button class="ghost-button" type="button" data-refresh-stars>&#21047;&#26032;</button>
+          </div>
+          <div class="project-radar" data-project-radar>
+            <p class="empty-state">Loading project status...</p>
+          </div>
+        </section>
+
+        <section class="admin-card">
+          <div class="card-heading compact">
+            <div>
+              <p class="admin-kicker">Next Controls</p>
+              <h2>&#21518;&#32493;&#21487;&#20197;&#25509;&#20837;&#30340;&#25511;&#21046;</h2>
+            </div>
+          </div>
+          <div class="admin-actions-grid">
+            <article><strong>&#26143;&#22270;&#32534;&#36753;</strong><span>&#20462;&#25913;&#39033;&#30446;&#21517;&#31216;&#12289;&#39068;&#33394;&#12289;&#25490;&#24207;&#12289;&#26174;&#31034;&#29366;&#24577;&#12290;</span></article>
+            <article><strong>&#20170;&#26085;&#26356;&#26032;</strong><span>&#22635;&#20889;&#19968;&#26465;&#26356;&#26032;&#65292;&#33258;&#21160;&#23637;&#31034;&#21040;&#39318;&#39029;&#25110;&#36164;&#26009;&#24211;&#12290;</span></article>
+            <article><strong>&#31169;&#23494;&#31508;&#35760;</strong><span>&#20445;&#23384;&#26381;&#21153;&#22120;&#37096;&#32626;&#12289;&#23494;&#38053;&#25552;&#37266;&#21644;&#39033;&#30446;&#35745;&#21010;&#12290;</span></article>
+            <article><strong>&#35775;&#38382;&#35814;&#24773;</strong><span>&#26597;&#30475;&#26143;&#23576;&#26469;&#28304;&#12289;&#39033;&#30446;&#36235;&#21183;&#21644;&#26368;&#36817;&#35775;&#38382;&#12290;</span></article>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="../assets/admin.js?v=20260701-admin"></script>
+  </body>
+</html>
