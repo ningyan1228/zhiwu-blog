@@ -1,6 +1,6 @@
 # GPT Plus / Pro 开通服务｜更强模型，更稳体验
 
-![GPT Plus / Pro 开通服务配图](assets/gpt-plus-pro-service-poster.png)
+![GPT Plus / Pro 开通服务配图](/assets/gpt-plus-pro-service-poster.png)
 
 > 适合经常使用 AI 工具进行学习、办公、写作、编程、资料整理和效率提升的用户。  
 > 本文仅作服务说明，具体开通方式以实际沟通为准。
