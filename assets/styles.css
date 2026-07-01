@@ -2167,6 +2167,12 @@ body.light-theme .practice-subcard {
   }
 }
 
+@media (max-width: 620px) {
+  .home-page main > .split-section {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 520px) {
   .page-shell {
     width: min(100% - 22px, 440px);
@@ -3367,7 +3373,7 @@ body.home-page.light-theme {
 }
 
 .home-page .hero-wallpaper {
-  min-height: clamp(430px, 54vh, 620px);
+  min-height: clamp(360px, 42vh, 520px);
   border-bottom: 0;
   background:
     radial-gradient(ellipse at 50% 58%, rgba(255, 255, 255, 0.42), transparent 17rem),
@@ -3411,9 +3417,9 @@ body.home-page.light-theme {
 body.home-page.light-theme .intro-hero {
   position: relative;
   z-index: 2;
-  min-height: clamp(470px, 52vh, 620px);
-  margin-top: clamp(-150px, -10vw, -90px);
-  padding: clamp(118px, 12vw, 178px) 0 clamp(54px, 7vw, 84px);
+  min-height: clamp(330px, 38vh, 460px);
+  margin-top: clamp(-130px, -9vw, -76px);
+  padding: clamp(72px, 8vw, 118px) 0 clamp(30px, 4vw, 48px);
 }
 
 .home-page .intro-hero::before {
@@ -3476,12 +3482,14 @@ body.home-page.light-theme .intro-hero {
   position: relative;
   z-index: 2;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(18px, 2vw, 24px);
-  padding-bottom: clamp(52px, 8vw, 96px);
+  gap: clamp(12px, 1.6vw, 18px);
+  padding-top: clamp(18px, 3vw, 34px);
+  padding-bottom: clamp(22px, 4vw, 44px);
 }
 
 .home-page .feature-card {
-  min-height: clamp(210px, 20vw, 270px);
+  min-height: clamp(132px, 12vw, 170px);
+  padding: clamp(16px, 2vw, 22px);
   border-color: rgba(120, 180, 255, 0.12);
   background:
     linear-gradient(145deg, rgba(152, 204, 255, 0.12), transparent 36%),
@@ -3499,6 +3507,16 @@ body.home-page.light-theme .intro-hero {
     rgba(20, 25, 40, 0.56);
 }
 
+
+.home-page .feature-card h2 {
+  margin-bottom: 8px;
+  font-size: clamp(24px, 2.4vw, 34px);
+}
+
+.home-page .feature-card p {
+  font-size: clamp(14px, 1.35vw, 17px);
+  line-height: 1.55;
+}
 .home-page .feature-kicker {
   color: #8ed8ff;
   letter-spacing: 0.14em;
@@ -3577,14 +3595,21 @@ body.home-page.light-theme .intro-hero {
 
 @media (max-width: 880px) {
   .home-page .hero-wallpaper {
-    min-height: 420px;
+    min-height: 340px;
   }
 
   .home-page .intro-hero,
   .home-page .intro-hero.hero {
-    margin-top: -92px;
+    min-height: 320px;
+    margin-top: -78px;
   }
 
+  .home-page main > .split-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
   .home-page main > .split-section {
     grid-template-columns: 1fr;
   }
@@ -3592,7 +3617,7 @@ body.home-page.light-theme .intro-hero {
 
 @media (max-width: 520px) {
   .home-page .hero-wallpaper {
-    min-height: 360px;
+    min-height: 300px;
   }
 
   .home-page .intro-hero h1 {
