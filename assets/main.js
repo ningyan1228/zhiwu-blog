@@ -717,6 +717,36 @@ async function initSiteStatus() {
     setPill("连接异常", "is-error");
   }
 }
+
+function initAdminEasterEgg() {
+  if (!document.body.classList.contains("home-page")) {
+    return;
+  }
+
+  const brand = document.querySelector(".brand");
+  if (!brand) {
+    return;
+  }
+
+  let taps = 0;
+  let timer = null;
+
+  brand.addEventListener("click", (event) => {
+    event.preventDefault();
+    taps += 1;
+
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      taps = 0;
+    }, 2600);
+
+    if (taps >= 5) {
+      window.clearTimeout(timer);
+      taps = 0;
+      window.location.href = "admin/";
+    }
+  });
+}
 initTheme();
 resizeCanvas();
 drawStars();
