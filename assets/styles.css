@@ -3874,6 +3874,38 @@ body.light-theme .project-star-name {
   color: #102033;
 }
 
+body.light-theme .constellation-status {
+  border-color: rgba(8, 145, 178, 0.38);
+  background: rgba(8, 145, 178, 0.12);
+  color: #075985;
+  text-shadow: none;
+}
+
+body.light-theme .constellation-dust {
+  border-color: rgba(15, 23, 42, 0.14);
+  background: rgba(15, 23, 42, 0.06);
+  color: #334155;
+}
+
+body.light-theme .constellation-dust span {
+  background: #0891b2;
+  box-shadow: 0 0 14px rgba(8, 145, 178, 0.42), 14px -4px 0 -3px rgba(14, 165, 233, 0.58), 24px 5px 0 -4px rgba(20, 184, 166, 0.48);
+}
+
+body.light-theme .constellation-panel h3 {
+  color: #0f172a;
+}
+
+body.light-theme .constellation-panel p,
+body.light-theme .constellation-meta span,
+body.light-theme .constellation-meta em {
+  color: #475569;
+}
+
+body.light-theme .constellation-meta strong {
+  color: #111827;
+}
+
 @media (max-width: 980px) {
   .constellation-section,
   .constellation-shell {
