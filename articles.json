@@ -1,12 +1,28 @@
 [
   {
+    "slug": "gpt-plus-pro",
+    "title": "GPT Plus / Pro 开通服务｜更强模型，更稳体验",
+    "excerpt": "一句话简介可以用这个： **提供 GPT codex Plus / Pro 开通与续费服务，适合学习、办公、写作和效率提升用户，体验更强模型、更快响应和更稳定的高级功能。**",
+    "date": "2026-07-01",
+    "category": "学习",
+    "readTime": 5,
+    "tags": [
+      "工具",
+      "gptplus"
+    ]
+  },
+  {
     "slug": "how-to-build-blog",
     "title": "为什么我要搭建这个个人数字工作台",
     "excerpt": "记录我搭建止鹜个人博客的理由：把阅读、学习、项目、笔记和创作入口整理成一个长期可维护的个人系统。",
     "date": "2026-06-14",
     "category": "建站",
     "readTime": 6,
-    "tags": ["个人博客", "数字花园", "GitHub Pages"]
+    "tags": [
+      "个人博客",
+      "数字花园",
+      "GitHub Pages"
+    ]
   },
   {
     "slug": "civil-service-exam-advice",
@@ -15,6 +31,10 @@
     "date": "2026-06-14",
     "category": "学习",
     "readTime": 7,
-    "tags": ["公考", "考编", "学习方法"]
+    "tags": [
+      "公考",
+      "考编",
+      "学习方法"
+    ]
   }
 ]
