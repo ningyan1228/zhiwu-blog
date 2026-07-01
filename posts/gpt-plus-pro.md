@@ -1,4 +1,4 @@
-# GPT Plus / Pro 开通服务｜更强模型，更稳体验
+
 
 ![GPT Plus / Pro 开通服务配图](/assets/gpt-plus-pro-service-poster.png)
 
