@@ -533,3 +533,118 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(226, 232, 240, 0.16);
+  border-radius: 8px;
+  color: var(--text);
+  background: rgba(2, 6, 23, 0.46);
+  padding: 0 14px;
+  outline: none;
+  font: inherit;
+}
+
+select:focus {
+  border-color: rgba(103, 232, 249, 0.52);
+  box-shadow: 0 0 0 4px rgba(103, 232, 249, 0.12);
+}
+
+input[readonly] {
+  color: var(--soft);
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+.form-grid.four {
+  grid-template-columns: 1fr 1.35fr 0.68fr 0.75fr;
+}
+
+.image-uploader {
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(103, 232, 249, 0.14);
+  border-radius: 8px;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(103, 232, 249, 0.08), transparent 42%),
+    rgba(2, 6, 23, 0.24);
+}
+
+.image-uploader h3 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.image-uploader p:not(.admin-kicker):not(.form-message) {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.image-upload-row {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.markdown-preview-body img {
+  display: block;
+  width: min(100%, 860px);
+  max-height: 720px;
+  object-fit: contain;
+  margin: 18px auto;
+  border-radius: 8px;
+  border: 1px solid rgba(226, 232, 240, 0.14);
+  background: rgba(2, 6, 23, 0.3);
+}
+
+.markdown-preview-body code {
+  border: 1px solid rgba(226, 232, 240, 0.12);
+  border-radius: 6px;
+  padding: 0.1em 0.35em;
+  color: #cffafe;
+  background: rgba(2, 6, 23, 0.42);
+}
+
+.admin-article-list article {
+  align-content: start;
+}
+
+.article-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.article-actions a,
+.tiny-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  border-radius: 7px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.article-actions a {
+  border: 1px solid rgba(103, 232, 249, 0.2);
+  color: #cffafe;
+  background: rgba(8, 145, 178, 0.12);
+}
+
+.tiny-button {
+  min-height: 32px;
+}
+
+@media (max-width: 900px) {
+  .form-grid.four,
+  .image-upload-row {
+    grid-template-columns: 1fr;
+  }
+}

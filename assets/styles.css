@@ -3932,3 +3932,13 @@ body.light-theme .constellation-meta strong {
     font-size: 11px;
   }
 }
+.markdown-body img {
+  display: block;
+  width: min(100%, 960px);
+  max-height: 760px;
+  object-fit: contain;
+  margin: 24px auto;
+  border-radius: 8px;
+  border: 1px solid rgba(248, 250, 252, 0.14);
+  background: rgba(8, 13, 26, 0.5);
+}

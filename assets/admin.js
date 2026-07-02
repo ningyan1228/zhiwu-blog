@@ -15,8 +15,17 @@ const publishMessage = document.querySelector("[data-publish-message]");
 const markdownFileInput = document.querySelector("[data-md-file]");
 const fillSlugButton = document.querySelector("[data-fill-slug]");
 const previewArticleButton = document.querySelector("[data-preview-article]");
+const cancelEditButton = document.querySelector("[data-cancel-edit]");
+const publishButton = document.querySelector("[data-publish-button]");
 const articlePreview = document.querySelector("[data-article-preview]");
 const adminArticles = document.querySelector("[data-admin-articles]");
+const imageFileInput = document.querySelector("[data-image-file]");
+const imageNameInput = document.querySelector("[data-image-name]");
+const uploadImageButton = document.querySelector("[data-upload-image]");
+const imageMessage = document.querySelector("[data-image-message]");
+
+let currentEditingSlug = "";
+let articleCache = [];
 
 function getToken() {
   try { return localStorage.getItem(TOKEN_KEY) || ""; } catch { return ""; }
@@ -39,13 +48,9 @@ function setMessage(target, text, state = "") {
   target.classList.toggle("is-ok", state === "ok");
 }
 
-function setLoginMessage(text, state = "") {
-  setMessage(loginMessage, text, state);
-}
-
-function setPublishMessage(text, state = "") {
-  setMessage(publishMessage, text, state);
-}
+function setLoginMessage(text, state = "") { setMessage(loginMessage, text, state); }
+function setPublishMessage(text, state = "") { setMessage(publishMessage, text, state); }
+function setImageMessage(text, state = "") { setMessage(imageMessage, text, state); }
 
 function setApiState(text, state = "") {
   if (!apiState) return;
@@ -121,6 +126,13 @@ function slugifyTitle(title) {
   return `post-${stamp}`;
 }
 
+function markdownInline(value) {
+  return escapeHtml(value)
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy" />')
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/`([^`]+)`/g, "<code>$1</code>");
+}
+
 function renderMarkdown(markdown) {
   const lines = String(markdown || "").split(/\r?\n/);
   const html = [];
@@ -138,22 +150,22 @@ function renderMarkdown(markdown) {
     }
 
     if (line.startsWith("# ")) {
-      html.push(`<h1>${escapeHtml(line.slice(2))}</h1>`);
+      html.push(`<h1>${markdownInline(line.slice(2))}</h1>`);
       continue;
     }
 
     if (line.startsWith("## ")) {
-      html.push(`<h2>${escapeHtml(line.slice(3))}</h2>`);
+      html.push(`<h2>${markdownInline(line.slice(3))}</h2>`);
       continue;
     }
 
     if (line.startsWith("### ")) {
-      html.push(`<h3>${escapeHtml(line.slice(4))}</h3>`);
+      html.push(`<h3>${markdownInline(line.slice(4))}</h3>`);
       continue;
     }
 
     if (line.startsWith("> ")) {
-      html.push(`<blockquote>${escapeHtml(line.slice(2))}</blockquote>`);
+      html.push(`<blockquote>${markdownInline(line.slice(2))}</blockquote>`);
       continue;
     }
 
@@ -162,7 +174,7 @@ function renderMarkdown(markdown) {
         html.push("<ul>");
         listOpen = true;
       }
-      html.push(`<li>${escapeHtml(line.slice(2))}</li>`);
+      html.push(`<li>${markdownInline(line.slice(2))}</li>`);
       continue;
     }
 
@@ -171,7 +183,7 @@ function renderMarkdown(markdown) {
       listOpen = false;
     }
 
-    html.push(`<p>${escapeHtml(line)}</p>`);
+    html.push(`<p>${markdownInline(line)}</p>`);
   }
 
   if (listOpen) html.push("</ul>");
@@ -192,19 +204,40 @@ function getArticleFormData() {
   return {
     title,
     slug,
+    originalSlug: currentEditingSlug,
     excerpt: String(formData.get("excerpt") || "").trim(),
     category: String(formData.get("category") || "").trim(),
+    status: String(formData.get("status") || "published"),
     tags,
     readTime: Number(formData.get("readTime") || 5),
     markdown: String(formData.get("markdown") || "").trim(),
   };
 }
 
+function setEditMode(slug = "") {
+  currentEditingSlug = slug;
+  if (!articleForm) return;
+  const slugInput = articleForm.elements.slug;
+  if (slugInput) slugInput.readOnly = Boolean(slug);
+  cancelEditButton?.classList.toggle("is-hidden", !slug);
+  if (publishButton) publishButton.textContent = slug ? "保存修订" : "发布到 GitHub";
+}
+
+function resetEditor() {
+  articleForm?.reset();
+  setEditMode("");
+  if (articlePreview) articlePreview.classList.add("is-hidden");
+  if (imageFileInput) imageFileInput.value = "";
+  if (imageNameInput) imageNameInput.value = "";
+  setPublishMessage("");
+  setImageMessage("");
+}
+
 function fillSlugFromTitle() {
   if (!articleForm) return;
   const titleInput = articleForm.elements.title;
   const slugInput = articleForm.elements.slug;
-  if (!titleInput || !slugInput) return;
+  if (!titleInput || !slugInput || slugInput.readOnly) return;
   slugInput.value = slugifyTitle(titleInput.value);
 }
 
@@ -221,6 +254,7 @@ function previewArticle() {
   articlePreview.innerHTML = `
     <div class="preview-meta">
       <span>${escapeHtml(data.category || "未分类")}</span>
+      <span>${escapeHtml(data.status === "draft" ? "草稿" : "已发布")}</span>
       <span>${escapeHtml(data.readTime || 5)} min read</span>
       <span>${escapeHtml(data.slug || "new-post")}</span>
     </div>
@@ -259,6 +293,7 @@ function renderStars(data) {
 function renderArticleList(data) {
   if (!adminArticles) return;
   const items = Array.isArray(data.items) ? data.items : [];
+  articleCache = items;
 
   if (!items.length) {
     adminArticles.innerHTML = `<p class="empty-state">还没有从仓库读取到文章。</p>`;
@@ -269,9 +304,13 @@ function renderArticleList(data) {
     <div class="admin-article-list">
       ${items.map((article) => `
         <article>
-          <span>${escapeHtml(article.date || "--")} · ${escapeHtml(article.category || "未分类")}</span>
+          <span>${escapeHtml(article.date || "--")} · ${escapeHtml(article.category || "未分类")} · ${article.status === "draft" ? "草稿" : "已发布"}</span>
           <strong>${escapeHtml(article.title || article.slug || "未命名文章")}</strong>
           <small>${escapeHtml(article.slug || "")} · ${Number(article.readTime || 0)} min</small>
+          <div class="article-actions">
+            <a href="../articles/post.html?slug=${encodeURIComponent(article.slug || "")}" target="_blank" rel="noreferrer">查看</a>
+            <button class="ghost-button tiny-button" type="button" data-edit-article="${escapeHtml(article.slug || "")}">编辑</button>
+          </div>
         </article>
       `).join("")}
     </div>
@@ -299,6 +338,29 @@ async function loadArticles() {
   }
 }
 
+async function editArticle(slug) {
+  if (!slug || !articleForm) return;
+  setPublishMessage(`正在读取 ${slug}...`);
+
+  try {
+    const data = await requestJson(`/api/admin/articles/detail?slug=${encodeURIComponent(slug)}`, { method: "GET" });
+    const article = data.article || articleCache.find((item) => item.slug === slug) || {};
+    setEditMode(slug);
+    articleForm.elements.title.value = article.title || "";
+    articleForm.elements.slug.value = article.slug || slug;
+    articleForm.elements.excerpt.value = article.excerpt || "";
+    articleForm.elements.category.value = article.category || "";
+    articleForm.elements.tags.value = Array.isArray(article.tags) ? article.tags.join(", ") : "";
+    articleForm.elements.readTime.value = article.readTime || 5;
+    articleForm.elements.status.value = article.status || "published";
+    articleForm.elements.markdown.value = data.markdown || "";
+    setPublishMessage(`已进入编辑：${article.title || slug}`, "ok");
+    articleForm.scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (error) {
+    setPublishMessage(error.message || "文章详情接口还没有部署。", "error");
+  }
+}
+
 async function verifySession() {
   const token = getToken();
   if (!token) {
@@ -321,6 +383,104 @@ async function verifySession() {
     showLogin();
     setApiState("API missing", "error");
     setLoginMessage(error.message || "Please enable the admin API on the server first.", "error");
+  }
+}
+
+function readImageAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = src;
+  });
+}
+
+async function compressImageToWebp(file) {
+  const dataUrl = await readImageAsDataUrl(file);
+  const image = await loadImage(dataUrl);
+  const maxWidth = 1600;
+  const scale = image.width > maxWidth ? maxWidth / image.width : 1;
+  const width = Math.max(1, Math.round(image.width * scale));
+  const height = Math.max(1, Math.round(image.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+  context.drawImage(image, 0, 0, width, height);
+  const webp = canvas.toDataURL("image/webp", 0.86);
+  return {
+    base64: webp.split(",")[1] || "",
+    width,
+    height,
+    originalWidth: image.width,
+    originalHeight: image.height,
+  };
+}
+
+function insertAtCursor(textarea, value) {
+  const start = textarea.selectionStart || 0;
+  const end = textarea.selectionEnd || 0;
+  const before = textarea.value.slice(0, start);
+  const after = textarea.value.slice(end);
+  const prefix = before && !before.endsWith("\n") ? "\n\n" : "";
+  const suffix = after && !after.startsWith("\n") ? "\n\n" : "";
+  textarea.value = `${before}${prefix}${value}${suffix}${after}`;
+  const next = before.length + prefix.length + value.length;
+  textarea.focus();
+  textarea.setSelectionRange(next, next);
+}
+
+async function uploadImage() {
+  if (!articleForm || !imageFileInput) return;
+  const file = imageFileInput.files?.[0];
+  if (!file) {
+    setImageMessage("先选择一张图片。", "error");
+    return;
+  }
+
+  let slug = String(articleForm.elements.slug.value || "").trim();
+  if (!slug) {
+    fillSlugFromTitle();
+    slug = String(articleForm.elements.slug.value || "").trim();
+  }
+  if (!slug) {
+    setImageMessage("先填写标题并生成 slug，再上传图片。", "error");
+    return;
+  }
+
+  const rawName = String(imageNameInput?.value || file.name.replace(/\.[^.]+$/, "") || "image").trim();
+  const filename = `${slugifyTitle(rawName) || "image"}.webp`;
+  uploadImageButton.disabled = true;
+  setImageMessage("正在压缩并上传图片...");
+
+  try {
+    const image = await compressImageToWebp(file);
+    const result = await requestJson("/api/admin/articles/upload-image", {
+      method: "POST",
+      body: JSON.stringify({
+        slug,
+        filename,
+        mime: "image/webp",
+        contentBase64: image.base64,
+      }),
+    });
+    const markdown = `![${rawName}](${result.url})`;
+    insertAtCursor(articleForm.elements.markdown, markdown);
+    setImageMessage(`已上传：${result.url}`, "ok");
+    imageFileInput.value = "";
+  } catch (error) {
+    setImageMessage(error.message || "图片上传失败，请检查服务器接口。", "error");
+  } finally {
+    uploadImageButton.disabled = false;
   }
 }
 
@@ -357,7 +517,6 @@ loginForm?.addEventListener("submit", async (event) => {
 articleForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const data = getArticleFormData();
-  const button = document.querySelector("[data-publish-button]");
 
   if (!data.title || !data.excerpt || !data.category || !data.markdown) {
     setPublishMessage("标题、摘要、分类和正文都要填写。", "error");
@@ -365,24 +524,23 @@ articleForm?.addEventListener("submit", async (event) => {
   }
 
   articleForm.elements.slug.value = data.slug;
-  button.disabled = true;
-  button.textContent = "发布中...";
+  publishButton.disabled = true;
+  publishButton.textContent = currentEditingSlug ? "保存中..." : "发布中...";
   setPublishMessage("正在提交到服务器，服务器会写入 GitHub 仓库...");
 
   try {
-    const result = await requestJson("/api/admin/articles/publish", {
+    const result = await requestJson("/api/admin/articles/save", {
       method: "POST",
       body: JSON.stringify(data),
     });
-    setPublishMessage(`发布成功：${result.article?.title || data.title}`, "ok");
-    articleForm.reset();
-    if (articlePreview) articlePreview.classList.add("is-hidden");
+    setPublishMessage(`${currentEditingSlug ? "保存" : "发布"}成功：${result.article?.title || data.title}`, "ok");
+    resetEditor();
     await loadArticles();
   } catch (error) {
-    setPublishMessage(error.message || "发布失败，请检查服务器 GitHub Token 和接口。", "error");
+    setPublishMessage(error.message || "保存失败，请检查服务器 GitHub Token 和接口。", "error");
   } finally {
-    button.disabled = false;
-    button.textContent = "发布到 GitHub";
+    publishButton.disabled = false;
+    publishButton.textContent = currentEditingSlug ? "保存修订" : "发布到 GitHub";
   }
 });
 
@@ -400,8 +558,16 @@ markdownFileInput?.addEventListener("change", async () => {
   setPublishMessage(`已读取 ${file.name}。`, "ok");
 });
 
+adminArticles?.addEventListener("click", (event) => {
+  const editButton = event.target.closest("[data-edit-article]");
+  if (!editButton) return;
+  editArticle(editButton.dataset.editArticle);
+});
+
 fillSlugButton?.addEventListener("click", fillSlugFromTitle);
 previewArticleButton?.addEventListener("click", previewArticle);
+cancelEditButton?.addEventListener("click", resetEditor);
+uploadImageButton?.addEventListener("click", uploadImage);
 refreshStarsButton?.addEventListener("click", loadStars);
 refreshArticlesButton?.addEventListener("click", loadArticles);
 

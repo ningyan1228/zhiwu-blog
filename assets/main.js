@@ -1,4 +1,4 @@
-const canvas = document.querySelector("#starfield");
+﻿const canvas = document.querySelector("#starfield");
 const ctx = canvas.getContext("2d");
 const fxCanvas = document.querySelector("#click-effects");
 const fxCtx = fxCanvas.getContext("2d");
@@ -269,14 +269,15 @@ function initLockedLinks() {
     closeLockDialog();
 
     const titleText = link.dataset.lockedTitle || "私密入口";
+    const descriptionText = link.dataset.lockedDescription || "这个入口已加锁，服务器验证通过后会打开对应页面。";
     const backdrop = document.createElement("div");
     backdrop.className = "diary-lock-backdrop";
     backdrop.innerHTML = `
       <form class="diary-lock-dialog" aria-label="${titleText}密码验证">
         <button class="diary-lock-close" type="button" aria-label="关闭">×</button>
-        <p class="eyebrow">Private Notes</p>
+        <p class="eyebrow">Protected Entry</p>
         <h2>${titleText}</h2>
-        <p>这个知识库已加锁，服务器验证通过后会打开 Notion 页面。</p>
+        <p>${descriptionText}</p>
         <input id="locked-link-password" type="password" placeholder="请输入访问密码" autocomplete="current-password" />
         <div class="diary-lock-error" role="alert" aria-live="polite"></div>
         <button class="button button-primary" type="submit">解锁打开</button>

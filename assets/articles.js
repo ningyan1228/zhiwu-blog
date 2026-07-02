@@ -78,11 +78,15 @@ function renderFallbackMarkdown(markdown) {
 }
 
 async function loadArticleData() {
-  const response = await fetch("../articles.json");
+  const response = await fetch("../articles.json", { cache: "no-store" });
   if (!response.ok) {
     throw new Error("文章索引加载失败");
   }
   return response.json();
+}
+
+function getPublicArticles(articles) {
+  return Array.isArray(articles) ? articles.filter((article) => article.status !== "draft") : [];
 }
 
 function articleMeta(article) {
@@ -95,7 +99,7 @@ async function renderArticleList() {
   }
 
   try {
-    const articles = await loadArticleData();
+    const articles = getPublicArticles(await loadArticleData());
     articleList.innerHTML = articles
       .map((article) => {
         const tags = (article.tags || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
@@ -128,9 +132,9 @@ async function renderArticleDetail() {
   }
 
   try {
-    const articles = await loadArticleData();
+    const articles = getPublicArticles(await loadArticleData());
     const article = articles.find((item) => item.slug === articleSlug);
-    const markdownResponse = await fetch(`../posts/${articleSlug}.md`);
+    const markdownResponse = await fetch(`../posts/${articleSlug}.md`, { cache: "no-store" });
 
     if (!article || !markdownResponse.ok) {
       throw new Error("文章不存在或 Markdown 文件缺失");

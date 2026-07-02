@@ -348,3 +348,8 @@ docker compose up -d --build
 - 项目地址：`https://ningyan1228.github.io/lesson-plan-generator/`
 - 项目说明：上传学校模板和网上教案资源，按年级、学科、课题生成教学设计，并支持导出 Word。
 - 当前只补入项目页入口，暂未加入首页星图；如果后续要统计星尘，需要再补 `lesson-plan-generator` 的星图配置和项目访问上报脚本。
+## 2026-07-02 新增：教师教案生成入口密码保护
+
+- 已把 `projects/index.html` 中“教师教案生成”的入口改为受保护入口，点击后先弹出密码验证。
+- 已复用博客已有的 `/api/private-link/unlock` 服务器校验逻辑，密码不写入 GitHub 前端文件。
+- 服务器还需要在 `~/projects/blog-proxy/server.js` 的 `privateLinks` 中增加 `lesson-plan-generator` 配置，并在 `.env` 中设置对应密码。
