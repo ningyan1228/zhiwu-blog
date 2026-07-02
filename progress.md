@@ -1,4 +1,4 @@
-# 止鹜个人博客进展记录
+﻿# 止鹜个人博客进展记录
 
 更新时间：2026-07-01
 
@@ -294,3 +294,57 @@ index.html
 assets/main.js
 progress.md
 ```
+## 2026-07-02 新增：控制台文章编辑与图片仓库第一版
+
+### 已完成
+- `admin/index.html` 的“文章发布”模块升级为轻量 CMS：
+  - 新增文章状态：`已发布 / 草稿`。
+  - 新增“退出编辑”按钮。
+  - 新增“图片仓库”上传区。
+- `assets/admin.js` 新增：
+  - 文章列表“查看 / 编辑”操作。
+  - 点击编辑后读取 `GET /api/admin/articles/detail?slug=...`，回填标题、摘要、分类、标签、阅读时间、状态和 Markdown 正文。
+  - 保存时调用 `POST /api/admin/articles/save`，用于新建或保存修订。
+  - 图片上传前会在浏览器端压缩为 WebP，最大宽度约 1600px。
+  - 上传图片调用 `POST /api/admin/articles/upload-image`，成功后自动插入 Markdown：`![图片名](/assets/articles/slug/图片名.webp)`。
+- `assets/admin.css` 新增图片仓库、编辑按钮、状态选择和后台预览图片样式。
+- `assets/articles.js` 新增草稿过滤：公开文章列表和详情页只展示 `status !== "draft"` 的文章。
+- `assets/styles.css` 新增文章正文图片尺寸约束，避免海报图撑爆页面。
+- `admin/SERVER_ADMIN_SETUP.md` 新增第 12 节，记录服务器端需要补充的文章详情、保存、图片上传接口。
+
+### 当前约定
+- 草稿只是在公开列表和详情页隐藏，不是严格私密，因为 GitHub 仓库仍是公开的。
+- 编辑文章时暂时锁定 slug，不做路径重命名，避免旧 Markdown 文件残留。
+- 图片会保存到 GitHub 仓库：`assets/articles/<slug>/<filename>.webp`。
+
+### GitHub Pages 需要上传
+```text
+admin/index.html
+admin/SERVER_ADMIN_SETUP.md
+assets/admin.css
+assets/admin.js
+assets/articles.js
+assets/styles.css
+articles/index.html
+articles/post.html
+progress.md
+```
+
+### 服务器仍需手动完成
+- 在 `~/projects/blog-proxy/server.js` 按 `admin/SERVER_ADMIN_SETUP.md` 第 12 节补充 helper 和 3 个接口：
+```text
+GET  /api/admin/articles/detail?slug=...
+POST /api/admin/articles/save
+POST /api/admin/articles/upload-image
+```
+- 保存后重建：
+```bash
+cd ~/projects/blog-proxy
+docker compose up -d --build
+```
+## 2026-07-02 新增：教师教案生成项目入口
+
+- 已在 `projects/index.html` 的项目页补充“教师教案生成”项目卡片。
+- 项目地址：`https://ningyan1228.github.io/lesson-plan-generator/`
+- 项目说明：上传学校模板和网上教案资源，按年级、学科、课题生成教学设计，并支持导出 Word。
+- 当前只补入项目页入口，暂未加入首页星图；如果后续要统计星尘，需要再补 `lesson-plan-generator` 的星图配置和项目访问上报脚本。
