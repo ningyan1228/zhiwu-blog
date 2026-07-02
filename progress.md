@@ -353,3 +353,8 @@ docker compose up -d --build
 - 已把 `projects/index.html` 中“教师教案生成”的入口改为受保护入口，点击后先弹出密码验证。
 - 已复用博客已有的 `/api/private-link/unlock` 服务器校验逻辑，密码不写入 GitHub 前端文件。
 - 服务器还需要在 `~/projects/blog-proxy/server.js` 的 `privateLinks` 中增加 `lesson-plan-generator` 配置，并在 `.env` 中设置对应密码。
+## 2026-07-02 新增：小红书情绪文案生成器入口密码保护
+
+- 已把 `projects/index.html` 中“小红书情绪文案生成器”的入口改为受保护入口，点击后先弹出密码验证。
+- 复用博客已有的 `/api/private-link/unlock` 服务器校验逻辑，密码不写入 GitHub 前端文件。
+- 服务器还需要在 `~/projects/blog-proxy/server.js` 的 `privateLinks` 中增加 `xiaohongshu-copy` 配置，并在 `.env` 中设置对应密码。
