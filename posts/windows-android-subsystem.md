@@ -5,7 +5,7 @@
 这篇文章整理一份从零开始的安装流程：包括检查虚拟化、开启 BIOS 虚拟化、安装 WSA、配置 ADB、连接安卓子系统，以及安装本地 APK。按照步骤操作，基本可以把 Windows 11 电脑变成一个更轻量的“安卓平板”。
 
 <!-- 可选配图：如果你已经把封面图上传到 GitHub 仓库，可以取消下一行注释，并确保路径真实存在。 -->
-<!-- ![Windows 11 安卓子系统安装教程配图](/assets/articles/windows-android-subsystem/cover.jpg) -->
+[Windows 11 安卓子系统安装教程配图](./assets/d7fbd621-7f5b-4402-b829-4c9bd18db8ad.png)
 
 ## 一、为什么不用传统安卓模拟器
 
