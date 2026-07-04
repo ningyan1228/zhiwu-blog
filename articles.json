@@ -1,19 +1,5 @@
 [
   {
-    "slug": "codex-admin-chain-test-20260704",
-    "title": "后台发布链路测试 2026-07-04",
-    "excerpt": "这是一篇由 Codex 自动发布的链路测试文章，用来验证后台登录、图片上传、文章保存和公开展示是否正常。",
-    "date": "2026-07-04",
-    "category": "站点维护",
-    "readTime": 1,
-    "tags": [
-      "链路测试",
-      "Codex",
-      "站点维护"
-    ],
-    "status": "published"
-  },
-  {
     "slug": "windows-android-subsystem",
     "title": "Windows 11 安卓子系统安装教程｜电脑也能流畅运行安卓 App",
     "excerpt": "从零开始安装 Windows 11 安卓子系统，配置 ADB，并在电脑上运行常用安卓 App。",
