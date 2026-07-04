@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/admin.css?v=20260701-publish" />
+    <link rel="stylesheet" href="../assets/admin.css?v=20260704-writing-system" />
   </head>
   <body>
     <main class="admin-shell">
@@ -91,7 +91,7 @@
               <textarea name="excerpt" rows="3" placeholder="文章列表里显示的一句话简介" required></textarea>
             </label>
 
-            <div class="form-grid three">
+            <div class="form-grid four">
               <label>
                 <span>分类</span>
                 <input name="category" type="text" placeholder="建站 / 学习 / 阅读" required />
@@ -104,6 +104,28 @@
                 <span>阅读分钟数</span>
                 <input name="readTime" type="number" min="1" max="120" value="5" required />
               </label>
+              <label>
+                <span>状态</span>
+                <select name="status">
+                  <option value="published">已发布</option>
+                  <option value="draft">草稿</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-grid three writing-meta-grid">
+              <label>
+                <span>系列 / 专题</span>
+                <input name="series" type="text" placeholder="例如 建站手记 / 公考复盘 / AI 工具记录" />
+              </label>
+              <label>
+                <span>封面图 URL</span>
+                <input name="coverImage" type="url" placeholder="/assets/articles/slug/cover.webp" />
+              </label>
+              <label class="check-field">
+                <input name="pinned" type="checkbox" value="true" />
+                <span>置顶文章</span>
+              </label>
             </div>
 
             <div class="publisher-toolbar">
@@ -113,7 +135,25 @@
               </label>
               <button class="ghost-button" type="button" data-fill-slug>生成路径</button>
               <button class="ghost-button" type="button" data-preview-article>预览</button>
+              <button class="ghost-button is-hidden" type="button" data-cancel-edit>退出编辑</button>
               <button class="primary-button" type="submit" data-publish-button>发布到 GitHub</button>
+            </div>
+
+            <div class="image-uploader" data-image-uploader>
+              <div>
+                <p class="admin-kicker">Image Warehouse</p>
+                <h3>图片仓库</h3>
+                <p>上传图片后会保存到当前文章目录，并自动插入 Markdown 图片语法。</p>
+              </div>
+              <div class="image-upload-row">
+                <label class="file-button">
+                  <input type="file" accept="image/png,image/jpeg,image/webp" data-image-file />
+                  选择图片
+                </label>
+                <input name="imageName" type="text" placeholder="图片文件名，例如 cover" data-image-name />
+                <button class="ghost-button" type="button" data-upload-image>上传并插入</button>
+              </div>
+              <p class="form-message" data-image-message aria-live="polite"></p>
             </div>
 
             <label>
@@ -125,6 +165,32 @@
           </form>
 
           <div class="publisher-preview is-hidden" data-article-preview></div>
+          <div class="article-manager-tools" aria-label="文章筛选">
+            <label>
+              <span>状态</span>
+              <select data-article-status-filter>
+                <option value="all">全部</option>
+                <option value="published">已发布</option>
+                <option value="draft">草稿</option>
+              </select>
+            </label>
+            <label>
+              <span>系列</span>
+              <select data-article-series-filter>
+                <option value="all">全部系列</option>
+              </select>
+            </label>
+            <label>
+              <span>标签</span>
+              <select data-article-tag-filter>
+                <option value="all">全部标签</option>
+              </select>
+            </label>
+            <label>
+              <span>搜索</span>
+              <input type="search" placeholder="标题 / slug" data-article-search />
+            </label>
+          </div>
           <div class="article-list-panel" data-admin-articles>
             <p class="empty-state">登录后会读取 GitHub 仓库里的文章列表。</p>
           </div>
@@ -159,6 +225,6 @@
         </section>
       </section>
     </main>
-    <script src="../assets/admin.js?v=20260701-publish"></script>
+    <script src="../assets/admin.js?v=20260704-writing-system"></script>
   </body>
 </html>

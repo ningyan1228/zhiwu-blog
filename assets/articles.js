@@ -1,5 +1,10 @@
 const articleList = document.querySelector("#articles");
 const articleContent = document.querySelector("#article-content");
+const articleFilters = {
+  series: "all",
+  tag: "all",
+  query: "",
+};
 
 function getArticleSlug() {
   const explicitSlug = document.body.dataset.articleSlug || new URLSearchParams(window.location.search).get("slug");
@@ -93,6 +98,57 @@ function articleMeta(article) {
   return `${article.date} · ${article.category} · ${article.readTime} min read`;
 }
 
+function uniqueSorted(values) {
+  return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, "zh-CN"));
+}
+
+function sortArticles(articles) {
+  return [...articles].sort((a, b) => {
+    const pinned = Number(Boolean(b.pinned)) - Number(Boolean(a.pinned));
+    if (pinned) return pinned;
+    return String(b.date || "").localeCompare(String(a.date || ""));
+  });
+}
+
+function getFilteredArticles(articles) {
+  const query = articleFilters.query.trim().toLowerCase();
+  return sortArticles(articles)
+    .filter((article) => articleFilters.series === "all" || article.series === articleFilters.series)
+    .filter((article) => articleFilters.tag === "all" || (article.tags || []).includes(articleFilters.tag))
+    .filter((article) => {
+      if (!query) return true;
+      return [article.title, article.excerpt, article.category, article.series, article.slug]
+        .some((value) => String(value || "").toLowerCase().includes(query));
+    });
+}
+
+function renderArticleFilters(articles) {
+  const series = uniqueSorted(articles.map((article) => article.series || ""));
+  const tags = uniqueSorted(articles.flatMap((article) => article.tags || []));
+  return `
+    <div class="article-filter-bar" aria-label="文章筛选">
+      <label>
+        <span>系列</span>
+        <select data-public-series-filter>
+          <option value="all">全部系列</option>
+          ${series.map((item) => `<option value="${escapeHtml(item)}"${item === articleFilters.series ? " selected" : ""}>${escapeHtml(item)}</option>`).join("")}
+        </select>
+      </label>
+      <label>
+        <span>标签</span>
+        <select data-public-tag-filter>
+          <option value="all">全部标签</option>
+          ${tags.map((item) => `<option value="${escapeHtml(item)}"${item === articleFilters.tag ? " selected" : ""}>${escapeHtml(item)}</option>`).join("")}
+        </select>
+      </label>
+      <label>
+        <span>搜索</span>
+        <input type="search" value="${escapeHtml(articleFilters.query)}" placeholder="标题 / 摘要 / slug" data-public-article-search />
+      </label>
+    </div>
+  `;
+}
+
 async function renderArticleList() {
   if (!articleList) {
     return;
@@ -100,14 +156,23 @@ async function renderArticleList() {
 
   try {
     const articles = getPublicArticles(await loadArticleData());
-    articleList.innerHTML = articles
+    const filteredArticles = getFilteredArticles(articles);
+    articleList.innerHTML = `
+      ${renderArticleFilters(articles)}
+      <div class="article-list-grid">
+        ${filteredArticles.length ? filteredArticles
       .map((article) => {
         const tags = (article.tags || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
 
         return `
           <article class="glass-card article-card reveal is-visible">
             <a href="post.html?slug=${encodeURIComponent(article.slug)}">
+              ${article.coverImage ? `<img class="article-card-cover" src="${escapeHtml(article.coverImage)}" alt="" loading="lazy" />` : ""}
               <p class="article-card-meta">${escapeHtml(articleMeta(article))}</p>
+              <div class="article-card-badges">
+                ${article.pinned ? "<span>置顶</span>" : ""}
+                ${article.series ? `<span>${escapeHtml(article.series)}</span>` : ""}
+              </div>
               <h2>${escapeHtml(article.title)}</h2>
               <p>${escapeHtml(article.excerpt)}</p>
               <div class="article-tags">${tags}</div>
@@ -115,10 +180,28 @@ async function renderArticleList() {
           </article>
         `;
       })
-      .join("");
+      .join("") : `<div class="article-empty">没有符合筛选条件的文章。</div>`}
+      </div>
+    `;
+    bindArticleFilters();
   } catch (error) {
     articleList.innerHTML = `<div class="article-empty">${escapeHtml(error.message)}</div>`;
   }
+}
+
+function bindArticleFilters() {
+  articleList.querySelector("[data-public-series-filter]")?.addEventListener("change", (event) => {
+    articleFilters.series = event.target.value;
+    renderArticleList();
+  });
+  articleList.querySelector("[data-public-tag-filter]")?.addEventListener("change", (event) => {
+    articleFilters.tag = event.target.value;
+    renderArticleList();
+  });
+  articleList.querySelector("[data-public-article-search]")?.addEventListener("change", (event) => {
+    articleFilters.query = event.target.value;
+    renderArticleList();
+  });
 }
 
 async function renderArticleDetail() {
@@ -146,8 +229,12 @@ async function renderArticleDetail() {
     document.title = `${article.title} | 止鹜个人博客`;
     document.querySelector("#article-title").textContent = article.title;
     document.querySelector("#article-category").textContent = article.category;
-    document.querySelector("#article-meta").textContent = articleMeta(article);
-    articleContent.innerHTML = parser(markdown);
+    document.querySelector("#article-meta").textContent = [
+      articleMeta(article),
+      article.series ? `系列：${article.series}` : "",
+      article.pinned ? "置顶文章" : "",
+    ].filter(Boolean).join(" · ");
+    articleContent.innerHTML = `${article.coverImage ? `<img class="article-detail-cover" src="${escapeHtml(article.coverImage)}" alt="" loading="lazy" />` : ""}${parser(markdown)}`;
   } catch (error) {
     articleContent.innerHTML = `<p>${escapeHtml(error.message)}</p>`;
   }

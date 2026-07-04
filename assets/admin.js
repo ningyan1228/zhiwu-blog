@@ -23,6 +23,10 @@ const imageFileInput = document.querySelector("[data-image-file]");
 const imageNameInput = document.querySelector("[data-image-name]");
 const uploadImageButton = document.querySelector("[data-upload-image]");
 const imageMessage = document.querySelector("[data-image-message]");
+const articleStatusFilter = document.querySelector("[data-article-status-filter]");
+const articleSeriesFilter = document.querySelector("[data-article-series-filter]");
+const articleTagFilter = document.querySelector("[data-article-tag-filter]");
+const articleSearch = document.querySelector("[data-article-search]");
 
 let currentEditingSlug = "";
 let articleCache = [];
@@ -208,6 +212,9 @@ function getArticleFormData() {
     excerpt: String(formData.get("excerpt") || "").trim(),
     category: String(formData.get("category") || "").trim(),
     status: String(formData.get("status") || "published"),
+    series: String(formData.get("series") || "").trim(),
+    coverImage: String(formData.get("coverImage") || "").trim(),
+    pinned: formData.get("pinned") === "true",
     tags,
     readTime: Number(formData.get("readTime") || 5),
     markdown: String(formData.get("markdown") || "").trim(),
@@ -255,11 +262,14 @@ function previewArticle() {
     <div class="preview-meta">
       <span>${escapeHtml(data.category || "未分类")}</span>
       <span>${escapeHtml(data.status === "draft" ? "草稿" : "已发布")}</span>
+      ${data.pinned ? "<span>置顶</span>" : ""}
+      ${data.series ? `<span>${escapeHtml(data.series)}</span>` : ""}
       <span>${escapeHtml(data.readTime || 5)} min read</span>
       <span>${escapeHtml(data.slug || "new-post")}</span>
     </div>
     <h2>${escapeHtml(data.title || "未命名文章")}</h2>
     <p class="preview-excerpt">${escapeHtml(data.excerpt || "暂无摘要")}</p>
+    ${data.coverImage ? `<img class="preview-cover" src="${escapeHtml(data.coverImage)}" alt="" loading="lazy" />` : ""}
     <div class="markdown-preview-body">${renderMarkdown(data.markdown)}</div>
   `;
 }
@@ -294,27 +304,71 @@ function renderArticleList(data) {
   if (!adminArticles) return;
   const items = Array.isArray(data.items) ? data.items : [];
   articleCache = items;
+  updateArticleFilters(items);
+  const filteredItems = getFilteredArticles(items);
 
   if (!items.length) {
     adminArticles.innerHTML = `<p class="empty-state">还没有从仓库读取到文章。</p>`;
     return;
   }
 
+  if (!filteredItems.length) {
+    adminArticles.innerHTML = `<p class="empty-state">没有符合筛选条件的文章。</p>`;
+    return;
+  }
+
   adminArticles.innerHTML = `
     <div class="admin-article-list">
-      ${items.map((article) => `
+      ${filteredItems.map((article) => `
         <article>
-          <span>${escapeHtml(article.date || "--")} · ${escapeHtml(article.category || "未分类")} · ${article.status === "draft" ? "草稿" : "已发布"}</span>
+          <span>${escapeHtml(article.date || "--")} · ${escapeHtml(article.category || "未分类")} · ${article.status === "draft" ? "草稿" : "已发布"}${article.pinned ? " · 置顶" : ""}</span>
           <strong>${escapeHtml(article.title || article.slug || "未命名文章")}</strong>
-          <small>${escapeHtml(article.slug || "")} · ${Number(article.readTime || 0)} min</small>
+          <small>${escapeHtml(article.slug || "")} · ${Number(article.readTime || 0)} min${article.series ? ` · ${escapeHtml(article.series)}` : ""}</small>
+          ${article.coverImage ? `<img class="admin-article-cover" src="${escapeHtml(article.coverImage)}" alt="" loading="lazy" />` : ""}
+          <div class="admin-article-tags">${(article.tags || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
           <div class="article-actions">
             <a href="../articles/post.html?slug=${encodeURIComponent(article.slug || "")}" target="_blank" rel="noreferrer">查看</a>
             <button class="ghost-button tiny-button" type="button" data-edit-article="${escapeHtml(article.slug || "")}">编辑</button>
+            <button class="ghost-button tiny-button danger-button" type="button" data-delete-article="${escapeHtml(article.slug || "")}">删除</button>
           </div>
         </article>
       `).join("")}
     </div>
   `;
+}
+
+function uniqueSorted(values) {
+  return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, "zh-CN"));
+}
+
+function updateSelectOptions(select, values, allLabel) {
+  if (!select) return;
+  const current = select.value || "all";
+  select.innerHTML = `<option value="all">${allLabel}</option>${values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("")}`;
+  select.value = values.includes(current) ? current : "all";
+}
+
+function updateArticleFilters(items) {
+  updateSelectOptions(articleSeriesFilter, uniqueSorted(items.map((article) => article.series || "")), "全部系列");
+  updateSelectOptions(articleTagFilter, uniqueSorted(items.flatMap((article) => article.tags || [])), "全部标签");
+}
+
+function getFilteredArticles(items) {
+  const status = articleStatusFilter?.value || "all";
+  const series = articleSeriesFilter?.value || "all";
+  const tag = articleTagFilter?.value || "all";
+  const query = String(articleSearch?.value || "").trim().toLowerCase();
+
+  return items
+    .filter((article) => status === "all" || (article.status || "published") === status)
+    .filter((article) => series === "all" || article.series === series)
+    .filter((article) => tag === "all" || (article.tags || []).includes(tag))
+    .filter((article) => {
+      if (!query) return true;
+      return [article.title, article.slug, article.excerpt, article.category, article.series]
+        .some((value) => String(value || "").toLowerCase().includes(query));
+    })
+    .sort((a, b) => Number(Boolean(b.pinned)) - Number(Boolean(a.pinned)));
 }
 
 async function loadStars() {
@@ -353,6 +407,9 @@ async function editArticle(slug) {
     articleForm.elements.tags.value = Array.isArray(article.tags) ? article.tags.join(", ") : "";
     articleForm.elements.readTime.value = article.readTime || 5;
     articleForm.elements.status.value = article.status || "published";
+    articleForm.elements.series.value = article.series || "";
+    articleForm.elements.coverImage.value = article.coverImage || "";
+    articleForm.elements.pinned.checked = Boolean(article.pinned);
     articleForm.elements.markdown.value = data.markdown || "";
     setPublishMessage(`已进入编辑：${article.title || slug}`, "ok");
     articleForm.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -475,6 +532,9 @@ async function uploadImage() {
     });
     const markdown = `![${rawName}](${result.url})`;
     insertAtCursor(articleForm.elements.markdown, markdown);
+    if (articleForm.elements.coverImage && !articleForm.elements.coverImage.value.trim()) {
+      articleForm.elements.coverImage.value = result.url;
+    }
     setImageMessage(`已上传：${result.url}`, "ok");
     imageFileInput.value = "";
   } catch (error) {
@@ -558,10 +618,35 @@ markdownFileInput?.addEventListener("change", async () => {
   setPublishMessage(`已读取 ${file.name}。`, "ok");
 });
 
+async function deleteArticle(slug) {
+  if (!slug) return;
+  const article = articleCache.find((item) => item.slug === slug);
+  const title = article?.title || slug;
+  if (!window.confirm(`确定删除「${title}」吗？这会从 GitHub 仓库删除 Markdown，并从 articles.json 移除条目。`)) return;
+
+  setPublishMessage(`正在删除 ${slug}...`);
+  try {
+    await requestJson("/api/admin/articles/delete", {
+      method: "POST",
+      body: JSON.stringify({ slug }),
+    });
+    if (currentEditingSlug === slug) resetEditor();
+    setPublishMessage(`已删除：${title}`, "ok");
+    await loadArticles();
+  } catch (error) {
+    setPublishMessage(error.message || "删除失败，请检查服务器接口。", "error");
+  }
+}
+
 adminArticles?.addEventListener("click", (event) => {
   const editButton = event.target.closest("[data-edit-article]");
-  if (!editButton) return;
-  editArticle(editButton.dataset.editArticle);
+  if (editButton) {
+    editArticle(editButton.dataset.editArticle);
+    return;
+  }
+
+  const deleteButton = event.target.closest("[data-delete-article]");
+  if (deleteButton) deleteArticle(deleteButton.dataset.deleteArticle);
 });
 
 fillSlugButton?.addEventListener("click", fillSlugFromTitle);
@@ -570,6 +655,10 @@ cancelEditButton?.addEventListener("click", resetEditor);
 uploadImageButton?.addEventListener("click", uploadImage);
 refreshStarsButton?.addEventListener("click", loadStars);
 refreshArticlesButton?.addEventListener("click", loadArticles);
+articleStatusFilter?.addEventListener("change", () => renderArticleList({ items: articleCache }));
+articleSeriesFilter?.addEventListener("change", () => renderArticleList({ items: articleCache }));
+articleTagFilter?.addEventListener("change", () => renderArticleList({ items: articleCache }));
+articleSearch?.addEventListener("input", () => renderArticleList({ items: articleCache }));
 
 logoutButton?.addEventListener("click", async () => {
   try { await requestJson("/api/admin/logout", { method: "POST", body: JSON.stringify({}) }); } catch {}

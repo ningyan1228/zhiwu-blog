@@ -1,6 +1,6 @@
 ﻿# 止鹜个人博客进展记录
 
-更新时间：2026-07-01
+更新时间：2026-07-04
 
 这份文件用于在新的 Codex 对话中快速接续当前项目，避免旧长上下文线程继续消耗额度。
 
@@ -53,7 +53,7 @@
 - 个人服务器当前背景信息：
   - 腾讯云轻量服务器：Ubuntu 22.04
   - 服务器 IP：`43.128.149.75`
-  - 主域名：`gjsx.uno`
+  - 服务器接口域名仍使用 `gjsx.uno` 的子域名；博客主站已在 2026-07-04 切换到 `101921.xyz`
   - 已有统一 nginx 网关、`nginx-proxy`、`acme-companion`、Docker network：`web`
   - 博客代理已可访问：`https://api.gjsx.uno/health`
   - 微信读书代理方向为：`https://weread-api.gjsx.uno/`
@@ -124,7 +124,7 @@
 
 ```html
 <script>window.ZHIWU_PROJECT_ID = "项目ID";</script>
-<script src="https://gjsx.uno/assets/project-visit-tracker.js"></script>
+<script src="https://101921.xyz/assets/project-visit-tracker.js"></script>
 ```
 
 - 已在多个项目仓库中加入访问上报脚本，并确认部分项目的“粒星尘”已经开始变化。
@@ -184,7 +184,7 @@ https://ningyan1228.github.io/echo-shelf/?v=6
 - 后台第一版可以考虑放在：
 
 ```text
-https://gjsx.uno/admin/
+https://101921.xyz/admin/
 ```
 
 - 不需要在首页明显放“登录”，可以做成很克制、隐蔽的站长入口。
@@ -207,7 +207,7 @@ https://gjsx.uno/admin/
 - 已新增后台样式：`assets/admin.css`。
 - 已新增后台脚本：`assets/admin.js`。
 - 已新增服务器接入说明：`admin/SERVER_ADMIN_SETUP.md`。
-- 后台访问地址规划为：`https://gjsx.uno/admin/`。
+- 后台访问地址规划为：`https://101921.xyz/admin/`。
 - 当前后台不是普通访客系统，而是“站长控制台”：
   - 登录前显示站长密码输入框。
   - 登录后显示今日星尘、在线代理、项目星图状态。
@@ -365,3 +365,194 @@ docker compose up -d --build
 - 切换后服务器 `blog-proxy` 的 CORS 需要允许 `https://101921.xyz`，否则管理后台、星图统计、私密入口解锁等接口可能被浏览器拦截。
 - DNS 需要在域名服务商处为 `101921.xyz` 配置 GitHub Pages 的 A 记录；GitHub Pages 设置里 Custom domain 填 `101921.xyz` 并等待 HTTPS 证书签发。
 - 如果还想保留 `gjsx.uno` 作为旧入口，需要额外做 URL 转发或服务器 301 跳转到 `https://101921.xyz/`。
+
+## 2026-07-04 新增：主域名已切换到 101921.xyz
+
+### 已完成
+- GitHub Pages 的 Custom domain 已成功绑定为 `101921.xyz`。
+- `101921.xyz` 的 DNS 检查已通过，根域名 A 记录指向 GitHub Pages：
+```text
+@  A  185.199.108.153
+@  A  185.199.109.153
+@  A  185.199.110.153
+@  A  185.199.111.153
+```
+- `www.101921.xyz` 已配置为：
+```text
+www  CNAME  ningyan1228.github.io
+```
+- 排查过程中发现 `www` 记录值末尾带 `.` 时 GitHub / DNS 平台检测容易异常；重新保存为不带末尾点的 `ningyan1228.github.io` 后检查通过。
+- 当前主站入口改为：
+```text
+http://101921.xyz/
+http://101921.xyz/admin/
+```
+- GitHub Pages 的 HTTPS 证书仍在签发等待中，`Enforce HTTPS` 暂时不可勾选；等证书完成后再勾选。
+
+### gjsx.uno 当前状态
+- `gjsx.uno` / `www.gjsx.uno` 已不再被当前博客 GitHub Pages 站点认领，所以访问会出现 GitHub Pages 404。
+- 这表示 `gjsx.uno` 的根域名和 `www.gjsx.uno` 可以给其他网站使用。
+- 不要删除这些后端接口域名，它们仍指向腾讯云服务器 `43.128.149.75`：
+```text
+api.gjsx.uno
+xhs-copy-api.gjsx.uno
+lesson-plan-api.gjsx.uno
+study-resource-api.gjsx.uno
+echo-shelf-api.gjsx.uno
+zaozixi-api.gjsx.uno
+weread-api.gjsx.uno
+```
+- 如果要把 `gjsx.uno` 分配给新网站，只改 `@` 和 `www` 记录即可，保留所有 `*-api` 和 `api` 子域名。
+
+### 后续待办
+- 等 GitHub Pages HTTPS 证书签发完成后，在 Pages 设置中勾选 `Enforce HTTPS`。
+- 如果博客后台或私密入口请求被 CORS 拦截，需要在服务器 `~/projects/blog-proxy/server.js` 的 `allowedOrigins` 中确认包含：
+```js
+"http://101921.xyz",
+"https://101921.xyz",
+"http://www.101921.xyz",
+"https://www.101921.xyz",
+```
+- 修改服务器配置后重建：
+```bash
+cd ~/projects/blog-proxy
+docker compose up -d --build
+```
+
+## 2026-07-04 修复：新域名访问后台和密码入口的 CORS
+
+- 现象：从 `http://101921.xyz` 打开博客后，后台登录和所有“密码查看”入口都提示 `Failed to fetch` / `暂时无法连接服务器`。
+- 原因：前端仍请求 `https://api.gjsx.uno`，但服务器 `~/projects/blog-proxy/server.js` 的 `allowedOrigins` 当时只允许旧主站、旧 `www` 站点和 `ningyan1228.github.io`。
+- 已在服务器 `allowedOrigins` 中补充：
+```js
+"http://101921.xyz",
+"https://101921.xyz",
+"http://www.101921.xyz",
+"https://www.101921.xyz",
+```
+- 已在服务器备份原文件：
+```text
+~/projects/blog-proxy/server.js.bak-20260704-cors
+```
+- 已重建并启动 `blog-proxy`：
+```bash
+cd ~/projects/blog-proxy
+docker compose up -d --build
+```
+- 已验证 CORS 预检请求从 `Origin: http://101921.xyz` 访问 `https://api.gjsx.uno/api/private-link/unlock` 返回：
+```text
+HTTP/2 204
+access-control-allow-origin: http://101921.xyz
+```
+- 修复后需要在浏览器刷新 `http://101921.xyz/admin/` 和项目页，再重新尝试登录或密码解锁。
+
+## 2026-07-04 完成：站内链接统一与后台发布链路测试
+
+### 站内链接统一
+- 已把文档中仍指向旧博客页面的后台入口、文章返回链接等改为：
+```text
+https://101921.xyz/admin/
+https://101921.xyz/articles/post.html?slug=...
+```
+- 已把项目访问上报脚本示例从旧主域名改为：
+```html
+<script src="https://101921.xyz/assets/project-visit-tracker.js"></script>
+```
+- 保留以下服务器接口域名不变：
+```text
+https://api.gjsx.uno
+https://study-resource-api.gjsx.uno
+https://weread-api.gjsx.uno
+https://zaozixi-api.gjsx.uno
+https://echo-shelf-api.gjsx.uno
+```
+
+### 后台 CMS 路由补齐
+- 发现线上 `~/projects/blog-proxy/server.js` 只有旧版文章发布接口 `/api/admin/articles/publish`，而新版后台实际调用：
+```text
+GET  /api/admin/articles/detail?slug=...
+POST /api/admin/articles/save
+POST /api/admin/articles/upload-image
+```
+- 已在服务器补齐上述 3 个接口，并保留旧 `/api/admin/articles/publish` 兼容接口。
+- 已将服务器 `/api/status` 和文章接口返回的 `articleUrl` 更新为 `https://101921.xyz/...`。
+- 已在服务器备份旧文件：
+```text
+~/projects/blog-proxy/server.js.bak-20260704-cms-routes
+```
+- 已重建并启动：
+```bash
+cd ~/projects/blog-proxy
+docker compose up -d --build
+```
+
+### 完整链路测试结果
+- 已用测试 slug 跑通后台发布链路：
+```text
+codex-admin-chain-test-20260704
+```
+- 测试结果：
+```text
+后台登录：成功
+Session 校验：成功
+图片上传：成功
+文章保存：成功
+文章详情读取：成功
+公开 articles.json：成功
+公开 posts/*.md：成功
+公开图片文件：成功
+文章页 shell：成功
+```
+- 2026-07-04 用户确认不需要保留测试内容，已从 GitHub 仓库和公开站点清理：
+```text
+articles.json 中的测试条目
+posts/codex-admin-chain-test-20260704.md
+assets/articles/codex-admin-chain-test-20260704/chain-test.webp
+```
+- 清理后已验证：公开 `articles.json` 不再包含测试 slug，测试 Markdown 返回 `404`。
+
+## 2026-07-04 完成：首页定位与写作系统增强
+
+### 首页定位
+- 已把首页第一屏定位收束为：
+```text
+止鹜个人博客：我的阅读、学习、创作与工具实验室。
+```
+- 第一屏新增三个清晰主入口：
+```text
+读文章 -> /articles/
+看项目 -> /projects/
+进知识库 -> /knowledge/
+```
+- 已更新首页样式和移动端布局兜底，避免三个入口在窄屏拥挤。
+
+### 写作系统增强
+- 后台文章表单新增：
+```text
+系列 / 专题
+封面图 URL
+置顶文章
+```
+- 后台文章列表新增筛选和搜索：
+```text
+按状态筛选
+按系列筛选
+按标签筛选
+按标题 / 摘要 / slug 搜索
+```
+- 后台文章列表新增删除入口；服务器已新增：
+```text
+POST /api/admin/articles/delete
+```
+- 删除逻辑会同步清理：
+```text
+articles.json 中的文章条目
+posts/{slug}.md
+assets/articles/{slug}/ 下的文章图片
+```
+- 公开文章列表新增系列、标签、关键词筛选；文章列表和详情页支持封面图、置顶标记和系列展示。
+- 已在服务器备份旧文件：
+```text
+~/projects/blog-proxy/server.js.bak-20260704-writing-system
+```
+- 已重建并启动 `blog-proxy`，并用不存在的测试 slug 验证删除接口返回 `404`，未改动现有文章内容。
