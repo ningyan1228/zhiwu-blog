@@ -586,5 +586,7 @@ Docker publish runtime: node:20-alpine
 ```text
 PowerShell 语法解析通过
 DryRun 打包 progress.md 成功
+真实发布 progress.md 成功，提交：83b914b53c518276aad6adb0d9259f8ac92cd0a4
 ```
+- 实战测试中发现并修复：PowerShell 5 默认写出的 UTF-8 JSON 带 BOM，会导致服务器 Node 脚本 `JSON.parse` 失败；现已改为无 BOM UTF-8 写入 `manifest.json` 和 `publish.js`。
 - 说明：`skill-creator` 的 `quick_validate.py` 在当前 Python 环境缺少 `PyYAML`，因此官方校验脚本未能运行；已人工检查 `SKILL.md` frontmatter、`agents/openai.yaml` 和脚本结构。
