@@ -358,3 +358,10 @@ docker compose up -d --build
 - 已把 `projects/index.html` 中“小红书情绪文案生成器”的入口改为受保护入口，点击后先弹出密码验证。
 - 复用博客已有的 `/api/private-link/unlock` 服务器校验逻辑，密码不写入 GitHub 前端文件。
 - 服务器还需要在 `~/projects/blog-proxy/server.js` 的 `privateLinks` 中增加 `xiaohongshu-copy` 配置，并在 `.env` 中设置对应密码。
+## 2026-07-04 计划：GitHub Pages 主域名切换到 101921.xyz
+
+- 已将仓库根目录 `CNAME` 从 `gjsx.uno` 改为 `101921.xyz`，用于让 GitHub Pages 绑定新的根域名。
+- 现有服务器 API 域名继续使用 `api.gjsx.uno`，前端 `assets/main.js`、`assets/admin.js`、`assets/project-visit-tracker.js` 暂不改动。
+- 切换后服务器 `blog-proxy` 的 CORS 需要允许 `https://101921.xyz`，否则管理后台、星图统计、私密入口解锁等接口可能被浏览器拦截。
+- DNS 需要在域名服务商处为 `101921.xyz` 配置 GitHub Pages 的 A 记录；GitHub Pages 设置里 Custom domain 填 `101921.xyz` 并等待 HTTPS 证书签发。
+- 如果还想保留 `gjsx.uno` 作为旧入口，需要额外做 URL 转发或服务器 301 跳转到 `https://101921.xyz/`。
