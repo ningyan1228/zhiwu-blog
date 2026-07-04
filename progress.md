@@ -556,3 +556,35 @@ assets/articles/{slug}/ 下的文章图片
 ~/projects/blog-proxy/server.js.bak-20260704-writing-system
 ```
 - 已重建并启动 `blog-proxy`，并用不存在的测试 slug 验证删除接口返回 `404`，未改动现有文章内容。
+
+## 2026-07-04 新增：Codex 复用技能 GitHub API Server Publisher
+
+- 已创建本机 Codex skill：
+```text
+C:\Users\zhiwu\.codex\skills\github-api-server-publisher
+```
+- 用途：其他 Codex 窗口可以通过 `$github-api-server-publisher`，把指定本地文件经由服务器临时中转，再用服务器 `.env` 中的 `GITHUB_TOKEN` 直接提交到对应 GitHub 仓库。
+- 技能内置脚本：
+```text
+scripts/publish_via_server.ps1
+```
+- 默认服务器配置：
+```text
+Server: ubuntu@43.128.149.75
+SSH key: .ssh/gjsx_server_codex
+Token env: /home/ubuntu/projects/blog-proxy/.env
+Docker publish runtime: node:20-alpine
+```
+- 安全边界：
+```text
+只发布明确传入的文件列表
+拒绝 .env / .ssh / token / cookie / credential / secret 等疑似敏感路径
+默认清理本地和服务器临时文件
+支持 -DryRun 先检查文件打包，不连接服务器、不提交 GitHub
+```
+- 已验证：
+```text
+PowerShell 语法解析通过
+DryRun 打包 progress.md 成功
+```
+- 说明：`skill-creator` 的 `quick_validate.py` 在当前 Python 环境缺少 `PyYAML`，因此官方校验脚本未能运行；已人工检查 `SKILL.md` frontmatter、`agents/openai.yaml` 和脚本结构。
