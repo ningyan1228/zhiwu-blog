@@ -590,3 +590,13 @@ DryRun 打包 progress.md 成功
 ```
 - 实战测试中发现并修复：PowerShell 5 默认写出的 UTF-8 JSON 带 BOM，会导致服务器 Node 脚本 `JSON.parse` 失败；现已改为无 BOM UTF-8 写入 `manifest.json` 和 `publish.js`。
 - 说明：`skill-creator` 的 `quick_validate.py` 在当前 Python 环境缺少 `PyYAML`，因此官方校验脚本未能运行；已人工检查 `SKILL.md` frontmatter、`agents/openai.yaml` 和脚本结构。
+
+## 2026-07-09 新增：知识库私密学习笔记网站入口
+
+- 已在 `/knowledge/` 的“私密内容”区域新增 `学习笔记网站` 卡片。
+- 新入口对应网站：
+```text
+https://notes.101921.xyz/
+```
+- 前端只保留 `data-secret-id="study-notes-site"`，真实 URL 仍由服务器 `/api/private-link/unlock` 验证通过后返回。
+- 服务器 `blog-proxy` 新增 `study-notes-site` 私密链接映射，并复用 `PRIVATE_PERSONAL_NOTES_PASSWORD` 作为访问密码。
