@@ -615,7 +615,8 @@ function renderProjectStars(stars, sourceLabel = "本地星图", metrics = {}) {
   const visibleStars = starLimit > 0 ? normalizedStars.slice(0, starLimit) : normalizedStars;
 
   map.innerHTML = visibleStars.map((star, index) => {
-    const size = 42 + Math.round(star.brightness * 28);
+    const starScale = Math.max(0.5, Number(root.dataset.starScale || 1));
+    const size = Math.round((42 + Math.round(star.brightness * 28)) * starScale);
     const glow = 0.45 + star.brightness * 0.75;
     const style = [
       `--star-x:${clampProjectStar(star.x ?? 50, 8, 92)}%`,
@@ -700,6 +701,19 @@ function formatRecentUpdateDate(value) {
   }).format(date).replace(/\//g, "-");
 }
 
+function localizeRecentUpdateTitle(value) {
+  const titles = {
+    "Load real recent updates and fix light contrast": "加载真实更新记录并优化浅色模式对比度",
+    "Clarify project preview link": "明确项目预览跳转入口",
+    "Streamline homepage and glass materials": "精简首页结构并统一玻璃材质",
+    "Blend homepage hero backgrounds": "优化首页晨曦与夜景背景过渡",
+    "Fix homepage light contrast": "修复首页浅色模式文字对比度",
+    "Assign section wallpapers": "为网站栏目配置专属壁纸"
+  };
+
+  return titles[value] || value || "网站更新";
+}
+
 function createRecentUpdateCard(update) {
   const card = document.createElement("a");
   const date = document.createElement("span");
@@ -759,7 +773,7 @@ async function initRecentUpdates() {
 
     renderRecentUpdates(root, commits.map((commit) => ({
       date: commit.commit?.author?.date || commit.commit?.committer?.date,
-      title: commit.commit?.message?.split("\n")[0] || "网站更新",
+      title: localizeRecentUpdateTitle(commit.commit?.message?.split("\n")[0]),
       summary: "来自 GitHub 仓库的实际更新记录。",
       url: commit.html_url || "https://github.com/ningyan1228/zhiwu-blog/commits/main"
     })));
@@ -867,6 +881,14 @@ function initSystemIcons() {
       element.setAttribute("aria-hidden", "true");
     });
   };
+
+  document.querySelectorAll(".theme-toggle-sun").forEach((element) => {
+    element.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+  });
+
+  document.querySelectorAll(".theme-toggle-moon").forEach((element) => {
+    element.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.4A8.5 8.5 0 0 1 9.6 3.8 8.5 8.5 0 1 0 20.2 14.4Z"/></svg>';
+  });
 
   replace("#project-finder .project-icon", ["book", "book", "image", "bot", "headphones", "file", "link", "folder", "image", "file"]);
   replace("#tool-finder .project-icon", ["calendar", "trophy", "map", "image", "folder", "file", "map", "map", "bot", "brain", "newspaper", "book", "smartphone", "link", "sliders", "palette"]);
