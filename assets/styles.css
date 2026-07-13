@@ -4871,3 +4871,82 @@ body.home-page.light-theme .feature-card:hover {
     gap: clamp(22px, 3vw, 42px);
   }
 }
+
+/* Homepage only: blend the dawn plate into the night-earth wallpaper. */
+.home-page .hero-wallpaper {
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+  isolation: isolate;
+  background: none;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+.home-page .hero-wallpaper::before {
+  position: absolute;
+  inset: 0 0 clamp(-210px, -15vw, -132px);
+  z-index: 0;
+  display: block;
+  height: auto;
+  content: "";
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3, 10, 20, 0.04) 0%,
+      rgba(3, 10, 20, 0.08) 35%,
+      rgba(3, 10, 20, 0.28) 62%,
+      rgba(3, 10, 20, 0.56) 100%
+    ),
+    url("earth-dawn-panorama.png") center 58% / cover no-repeat;
+  opacity: 1;
+  filter: none;
+  animation: none;
+  mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #000 38%,
+    rgba(0, 0, 0, 0.9) 54%,
+    rgba(0, 0, 0, 0.45) 74%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #000 38%,
+    rgba(0, 0, 0, 0.9) 54%,
+    rgba(0, 0, 0, 0.45) 74%,
+    transparent 100%
+  );
+}
+
+.home-page .hero-wallpaper::after {
+  display: none;
+}
+
+.home-page .intro-hero,
+.home-page .intro-hero.hero,
+body.home-page.light-theme .intro-hero {
+  position: relative;
+  z-index: 1;
+}
+
+.home-page .intro-hero .hero-content {
+  position: relative;
+  z-index: 0;
+}
+
+.home-page .intro-hero .hero-content::before {
+  position: absolute;
+  inset: -76px -140px;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(3, 9, 18, 0.4) 0%,
+    rgba(3, 9, 18, 0.17) 48%,
+    transparent 75%
+  );
+}
