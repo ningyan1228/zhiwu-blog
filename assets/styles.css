@@ -4733,3 +4733,80 @@ body.light-theme .theme-toggle {
   color: var(--text-primary);
   background: rgba(255, 255, 255, 0.78);
 }
+
+/* Section wallpapers: each area keeps its own visual identity. */
+body.articles-page {
+  --section-wallpaper: url("cozy-wallpaper3.png");
+  --section-wallpaper-position: center;
+}
+
+body.projects-page,
+body.about-page {
+  --section-wallpaper: url("cozy-wallpaper.png");
+  --section-wallpaper-position: center;
+}
+
+body.practice-page {
+  --section-wallpaper: url("cozy-wallpaper1.png");
+  --section-wallpaper-position: center;
+}
+
+body.knowledge-page {
+  --section-wallpaper: url("css-macbook-wallpaper.png");
+  --section-wallpaper-position: center;
+}
+
+body.tools-page,
+body.contact-page {
+  --section-wallpaper: url("coast-green-wallpaper.png");
+  --section-wallpaper-position: center;
+}
+
+body.articles-page,
+body.projects-page,
+body.practice-page,
+body.knowledge-page,
+body.tools-page,
+body.about-page,
+body.contact-page {
+  --page-bg-overlay-top: rgba(3, 8, 15, 0.18);
+  --page-bg-overlay-bottom: rgba(3, 8, 15, 0.38);
+  --page-bg-overlay-dense: rgba(3, 8, 15, 0.3);
+  background:
+    linear-gradient(180deg, var(--page-bg-overlay-top), var(--page-bg-overlay-bottom)),
+    var(--section-wallpaper) var(--section-wallpaper-position) / cover fixed no-repeat;
+}
+
+body.articles-page #starfield,
+body.projects-page #starfield,
+body.practice-page #starfield,
+body.knowledge-page #starfield,
+body.tools-page #starfield,
+body.about-page #starfield,
+body.contact-page #starfield {
+  display: none;
+}
+
+body.light-theme.articles-page,
+body.light-theme.projects-page,
+body.light-theme.practice-page,
+body.light-theme.knowledge-page,
+body.light-theme.tools-page,
+body.light-theme.about-page,
+body.light-theme.contact-page {
+  --page-bg-overlay-top: rgba(225, 235, 242, 0.16);
+  --page-bg-overlay-bottom: rgba(225, 235, 242, 0.42);
+  --page-bg-overlay-dense: rgba(225, 235, 242, 0.32);
+}
+
+@media (max-width: 760px) {
+  body.articles-page,
+  body.projects-page,
+  body.practice-page,
+  body.knowledge-page,
+  body.tools-page,
+  body.about-page,
+  body.contact-page {
+    background-attachment: scroll;
+  }
+}
