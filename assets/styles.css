@@ -4810,3 +4810,64 @@ body.light-theme.contact-page {
     background-attachment: scroll;
   }
 }
+
+/* Homepage light mode keeps the cosmic wallpaper readable. */
+body.home-page.light-theme .site-header {
+  border-color: rgba(31, 59, 83, 0.18);
+  background: rgba(248, 251, 253, 0.94);
+  box-shadow: 0 14px 34px rgba(20, 42, 64, 0.14);
+}
+
+body.home-page.light-theme .brand,
+body.home-page.light-theme .site-nav a {
+  color: #142231 !important;
+  text-shadow: none;
+}
+
+body.home-page.light-theme .site-nav a:hover,
+body.home-page.light-theme .site-nav a[aria-current="page"] {
+  color: #0b66a4 !important;
+}
+
+body.home-page.light-theme .theme-toggle {
+  border-color: rgba(31, 59, 83, 0.16);
+  color: #142231;
+  background: rgba(21, 48, 72, 0.07);
+}
+
+body.home-page.light-theme .intro-hero h1,
+body.home-page.light-theme .intro-hero .subtitle,
+body.home-page.light-theme .intro-hero .hero-copy,
+body.home-page.light-theme .feature-card h2,
+body.home-page.light-theme .feature-card h2 a,
+body.home-page.light-theme .feature-card p {
+  color: rgba(255, 255, 255, 0.96) !important;
+}
+
+body.home-page.light-theme .intro-hero h1,
+body.home-page.light-theme .intro-hero .subtitle,
+body.home-page.light-theme .feature-card h2,
+body.home-page.light-theme .feature-card h2 a {
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.42);
+}
+
+body.home-page.light-theme .intro-hero .hero-copy,
+body.home-page.light-theme .feature-card p {
+  color: rgba(231, 240, 249, 0.92) !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.36);
+}
+
+body.home-page.light-theme .feature-card {
+  border-color: rgba(210, 231, 250, 0.2);
+  background: rgba(15, 31, 50, 0.76);
+}
+
+body.home-page.light-theme .feature-card:hover {
+  background: rgba(25, 47, 71, 0.84);
+}
+
+@media (min-width: 881px) {
+  .site-nav {
+    gap: clamp(22px, 3vw, 42px);
+  }
+}
