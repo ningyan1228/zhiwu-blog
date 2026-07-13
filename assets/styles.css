@@ -4400,3 +4400,198 @@ body.home-page.light-theme .intro-hero { min-height: 0; margin: -80px 0 0; paddi
   .finder-titlebar { align-items: flex-start; }
   .finder-toolbar { flex-wrap: wrap; justify-content: flex-end; }
 }
+
+/* Homepage composition restoration: preserve the original centered landing page. */
+.home-page .page-shell {
+  width: 100%;
+  max-width: none;
+}
+
+.home-page .site-header,
+body.home-page.light-theme .site-header {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: min(1280px, calc(100% - 64px));
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+.home-page main {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 8, 18, 0.08) 0%,
+      rgba(2, 8, 18, 0.18) 45%,
+      rgba(2, 8, 18, 0.34) 100%
+    ),
+    url("earth-starry-panorama.png") center 52% / cover fixed no-repeat;
+}
+
+.home-page main::before,
+.home-page .intro-hero::before,
+.home-page .intro-hero::after {
+  display: none;
+}
+
+.home-page .hero-wallpaper {
+  display: block;
+  min-height: clamp(330px, 40vh, 480px);
+  margin: 0;
+  padding-top: 126px;
+  opacity: 1;
+  filter: none;
+  mask-image: none;
+  background:
+    linear-gradient(180deg, rgba(2, 8, 18, 0.04), rgba(2, 8, 18, 0.22)),
+    url("earth-dawn-panorama.png") center 58% / cover no-repeat;
+}
+
+.home-page .hero-wallpaper::before,
+.home-page .hero-wallpaper::after {
+  display: none;
+}
+
+.home-page .intro-hero,
+.home-page .intro-hero.hero,
+body.home-page.light-theme .intro-hero {
+  display: block;
+  min-height: 0;
+  width: 100vw;
+  margin: clamp(-116px, -8vw, -72px) 0 0;
+  padding: clamp(44px, 6vw, 80px) 32px 56px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.home-page .intro-hero .hero-content {
+  position: static;
+  left: auto;
+  display: block;
+  width: min(900px, 100%);
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  transform: none;
+}
+
+.home-page .intro-hero .eyebrow {
+  margin-bottom: 14px;
+  color: rgba(192, 226, 255, 0.92);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.28);
+}
+
+.home-page .intro-hero h1 {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.98);
+  font-size: clamp(64px, 6.2vw, 104px);
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  text-shadow: 0 12px 38px rgba(0, 0, 0, 0.32);
+}
+
+.home-page .intro-hero .subtitle {
+  margin: 20px auto 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(24px, 2.2vw, 34px);
+  line-height: 1.3;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
+}
+
+.home-page .intro-hero .hero-copy {
+  width: min(760px, 100%);
+  max-width: none;
+  margin: 24px auto 0;
+  color: rgba(235, 242, 248, 0.88);
+  font-size: 17px;
+  line-height: 1.8;
+  text-align: center;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.26);
+}
+
+.home-page .intro-hero .hero-actions {
+  display: flex;
+  justify-content: center;
+  margin: 28px 0 0;
+}
+
+.home-page .hero-entry-grid {
+  display: grid;
+  width: min(960px, 100%);
+  margin: 32px auto 0;
+  padding: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.home-page .hero-entry-grid a,
+.home-page .glass-card.feature-card {
+  min-height: 178px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  background: rgba(25, 38, 50, 0.58);
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(125%);
+  -webkit-backdrop-filter: blur(20px) saturate(125%);
+}
+
+.home-page .hero-entry-grid a:hover,
+.home-page .glass-card.feature-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(35, 52, 67, 0.66);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+}
+
+.home-page main > .split-section,
+.home-page main > .constellation-section,
+.home-page main > .status-section,
+.home-page main > .recent-section {
+  width: min(1280px, calc(100% - 64px));
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (max-width: 880px) {
+  .home-page .site-header,
+  body.home-page.light-theme .site-header {
+    top: 14px;
+    width: min(100% - 28px, 720px);
+  }
+
+  .home-page .hero-entry-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .home-page .site-header,
+  body.home-page.light-theme .site-header {
+    top: 10px;
+    width: min(100% - 22px, 440px);
+  }
+
+  .home-page .hero-wallpaper { min-height: 285px; padding-top: 210px; }
+  .home-page .intro-hero,
+  .home-page .intro-hero.hero { margin-top: -60px; padding: 34px 18px 40px; }
+  .home-page .intro-hero h1 { font-size: clamp(48px, 14vw, 68px); }
+  .home-page .intro-hero .subtitle { font-size: 23px; }
+  .home-page .intro-hero .hero-copy { font-size: 16px; }
+  .home-page .hero-entry-grid { grid-template-columns: 1fr; gap: 12px; }
+  .home-page .hero-entry-grid a { min-height: 150px; }
+  .home-page main > .split-section,
+  .home-page main > .constellation-section,
+  .home-page main > .status-section,
+  .home-page main > .recent-section { width: min(100% - 24px, 480px); }
+}
