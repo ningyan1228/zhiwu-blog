@@ -518,6 +518,7 @@ function formatStatusTime(value) {
 
 const PROJECT_STARS_FALLBACK = "assets/project-stars.json";
 const PROJECT_STARS_STATUS_ENDPOINT = `${BLOG_PROXY_BASE}/api/project-stars`;
+const RECENT_UPDATES_ENDPOINT = "https://api.github.com/repos/ningyan1228/zhiwu-blog/commits?per_page=3";
 
 function clampProjectStar(value, min, max) {
   return Math.min(max, Math.max(min, Number(value) || 0));
@@ -686,6 +687,91 @@ async function initProjectStars() {
   const checkedStars = await Promise.all(stars.map(fetchProjectStarHealth));
   renderProjectStars(checkedStars, "Health 自动检测");
 }
+
+function formatRecentUpdateDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "近期";
+
+  return new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(date).replace(/\//g, "-");
+}
+
+function createRecentUpdateCard(update) {
+  const card = document.createElement("a");
+  const date = document.createElement("span");
+  const title = document.createElement("h3");
+  const summary = document.createElement("p");
+
+  card.className = "glass-card recent-card";
+  card.href = update.url;
+  if (/^https?:\/\//.test(update.url)) {
+    card.target = "_blank";
+    card.rel = "noopener noreferrer";
+  }
+
+  date.className = "recent-date";
+  date.textContent = formatRecentUpdateDate(update.date);
+  title.textContent = update.title;
+  summary.textContent = update.summary;
+  card.append(date, title, summary);
+  return card;
+}
+
+function renderRecentUpdates(root, updates) {
+  root.replaceChildren(...updates.slice(0, 3).map(createRecentUpdateCard));
+}
+
+async function loadArticleUpdateFallback() {
+  const response = await fetch("articles.json", { cache: "no-store" });
+  if (!response.ok) throw new Error("Article index request failed");
+
+  const articles = await response.json();
+  if (!Array.isArray(articles) || !articles.length) throw new Error("No article updates available");
+
+  return [...articles]
+    .sort((left, right) => new Date(right.date) - new Date(left.date))
+    .slice(0, 3)
+    .map((article) => ({
+      date: article.date,
+      title: article.title || "新文章发布",
+      summary: article.excerpt || "已发布新的文章内容。",
+      url: `articles/${article.slug}.html`
+    }));
+}
+
+async function initRecentUpdates() {
+  const root = document.querySelector("[data-recent-updates]");
+  if (!root) return;
+
+  try {
+    const response = await fetch(RECENT_UPDATES_ENDPOINT, {
+      cache: "no-store",
+      headers: { Accept: "application/vnd.github+json" }
+    });
+    if (!response.ok) throw new Error("GitHub updates request failed");
+
+    const commits = await response.json();
+    if (!Array.isArray(commits) || !commits.length) throw new Error("No GitHub updates available");
+
+    renderRecentUpdates(root, commits.map((commit) => ({
+      date: commit.commit?.author?.date || commit.commit?.committer?.date,
+      title: commit.commit?.message?.split("\n")[0] || "网站更新",
+      summary: "来自 GitHub 仓库的实际更新记录。",
+      url: commit.html_url || "https://github.com/ningyan1228/zhiwu-blog/commits/main"
+    })));
+  } catch {
+    try {
+      renderRecentUpdates(root, await loadArticleUpdateFallback());
+    } catch {
+      root.innerHTML = '<div class="glass-card recent-card"><span class="recent-date">暂无更新</span><h3>更新记录暂不可用</h3><p>请稍后刷新页面重试。</p></div>';
+    }
+  }
+}
+
 async function initSiteStatus() {
   const panel = document.querySelector("[data-site-status-panel]");
   if (!panel) return;
@@ -799,6 +885,7 @@ initFireflies();
 initMeteors();
 initSiteStatus();
 initProjectStars();
+initRecentUpdates();
 initAnalytics();
 
 if (themeToggle) {

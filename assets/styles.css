@@ -5157,8 +5157,8 @@ body.home-page.light-theme .constellation-shell {
 }
 
 body.home-page.light-theme .constellation-copy h2 {
-  color: #132235 !important;
-  text-shadow: none;
+  color: rgba(255, 255, 255, 0.96) !important;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.34);
 }
 
 body.home-page.light-theme .recent-section .section-heading h2 {
@@ -5167,7 +5167,13 @@ body.home-page.light-theme .recent-section .section-heading h2 {
 }
 
 body.home-page.light-theme .constellation-copy p {
-  color: #41536a;
+  color: rgba(231, 240, 249, 0.9);
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.28);
+}
+
+body.home-page.light-theme .constellation-copy .eyebrow {
+  color: rgb(86, 190, 255) !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
 }
 
 body.home-page.light-theme .constellation-link,
