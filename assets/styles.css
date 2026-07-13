@@ -4595,3 +4595,141 @@ body.home-page.light-theme .intro-hero {
   .home-page main > .status-section,
   .home-page main > .recent-section { width: min(100% - 24px, 480px); }
 }
+
+/* Light theme contrast repair: keep the wallpaper as a backdrop, never as text. */
+body.light-theme {
+  --page-bg-overlay-top: rgba(222, 232, 241, 0.24);
+  --page-bg-overlay-bottom: rgba(222, 232, 241, 0.54);
+  --page-bg-overlay-dense: rgba(226, 235, 243, 0.5);
+  --surface-primary: rgba(250, 252, 254, 0.92);
+  --surface-secondary: rgba(246, 249, 252, 0.88);
+  --surface-secondary-hover: rgba(238, 244, 249, 0.96);
+  --surface-subtle: rgba(21, 48, 72, 0.07);
+  --border-primary: rgba(31, 59, 83, 0.2);
+  --border-secondary: rgba(31, 59, 83, 0.15);
+  --border-hover: rgba(27, 102, 156, 0.38);
+  --text-primary: #132235;
+  --text-body: #41536a;
+  --text-secondary: #586b82;
+  --text-muted: #708197;
+  --accent-blue: #1479bd;
+  --accent-blue-soft: rgba(20, 121, 189, 0.12);
+  --shadow-surface: 0 14px 38px rgba(38, 65, 89, 0.12);
+  --shadow-hover: 0 18px 46px rgba(38, 65, 89, 0.16);
+}
+
+body.light-theme .page-hero,
+body.light-theme .finder-window,
+body.light-theme .article-shell,
+body.light-theme .about-intro,
+body.light-theme .contact-card,
+body.light-theme .code-window {
+  background: var(--surface-primary);
+}
+
+body.light-theme .finder-titlebar,
+body.light-theme .finder-columns,
+body.light-theme .tool-filterbar,
+body.light-theme .article-filter-bar {
+  background: rgba(240, 246, 251, 0.9);
+}
+
+body.light-theme .glass-card,
+body.light-theme .finder-project-card,
+body.light-theme .practice-folder,
+body.light-theme .article-card,
+body.light-theme .calendar-panel,
+body.light-theme .calendar-overview,
+body.light-theme .calendar-clock,
+body.light-theme .calendar-stat,
+body.light-theme .recent-record {
+  background: var(--surface-secondary);
+}
+
+body.light-theme :is(
+  .intro-hero h1,
+  .intro-hero .subtitle,
+  .page-hero h1,
+  .section-heading h2,
+  .knowledge-section-heading h2,
+  .project-main h2,
+  .project-main h2 a,
+  .practice-folder-main h2,
+  .practice-folder-main h2 a,
+  .article-card h2,
+  .article-card h2 a,
+  .knowledge-card h2,
+  .knowledge-card h2 a,
+  .feature-card h2,
+  .feature-card h2 a,
+  .project-card h3,
+  .project-card h3 a,
+  .about-intro h1,
+  .contact-card strong,
+  .markdown-body h1,
+  .markdown-body h2,
+  .markdown-body h3
+) {
+  color: var(--text-primary);
+  text-shadow: none;
+}
+
+body.light-theme :is(
+  .intro-hero .hero-copy,
+  .page-hero p,
+  .project-main p,
+  .practice-folder-main p,
+  .article-card p,
+  .article-card-meta,
+  .article-meta,
+  .knowledge-card p,
+  .feature-card p,
+  .project-card p,
+  .about-intro p,
+  .markdown-body p,
+  .markdown-body li
+) {
+  color: var(--text-body);
+  text-shadow: none;
+}
+
+body.light-theme :is(
+  .article-tags span,
+  .knowledge-tags span,
+  .about-tags span,
+  .practice-subcard,
+  .finder-view-button,
+  .tool-filter-button,
+  .backup-link,
+  .link-list a
+) {
+  border-color: rgba(20, 121, 189, 0.22);
+  color: #175777 !important;
+  background: rgba(223, 242, 252, 0.72);
+  text-shadow: none;
+}
+
+body.light-theme :is(.article-tags span, .knowledge-tags span) {
+  font-weight: 700;
+}
+
+body.light-theme .access-public {
+  color: #08734d;
+  background: rgba(16, 185, 129, 0.15);
+}
+
+body.light-theme .access-private {
+  color: #6d3bb6;
+  background: rgba(139, 92, 246, 0.13);
+}
+
+body.light-theme .knowledge-card.is-locked {
+  border-color: rgba(128, 88, 188, 0.22);
+  background: rgba(248, 245, 255, 0.9);
+}
+
+body.light-theme .button-ghost,
+body.light-theme .theme-toggle {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.78);
+}
