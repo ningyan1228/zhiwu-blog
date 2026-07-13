@@ -748,6 +748,42 @@ function initAdminEasterEgg() {
     }
   });
 }
+
+function initSystemIcons() {
+  const paths = {
+    book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 0 4 24.5V4.5A2.5 2.5 0 0 1 6.5 2Z"/>',
+    folder: '<path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H10l2 2h6.5A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5Z"/>',
+    image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-4.5-4.5L7 20"/>',
+    bot: '<rect x="4" y="7" width="16" height="13" rx="3"/><path d="M12 3v4M8 13h.01M16 13h.01M8 17h8"/>',
+    headphones: '<path d="M4 14a8 8 0 0 1 16 0"/><path d="M4 14v3a2 2 0 0 0 2 2h1v-6H6a2 2 0 0 0-2 1ZM20 14v3a2 2 0 0 1-2 2h-1v-6h1a2 2 0 0 1 2 1Z"/>',
+    link: '<path d="M10 13a5 5 0 0 0 7.07.07l2-2a5 5 0 0 0-7.07-7.07l-1.15 1.15"/><path d="M14 11a5 5 0 0 0-7.07-.07l-2 2A5 5 0 0 0 12 20l1.15-1.15"/>',
+    file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h6"/>',
+    code: '<path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/>',
+    language: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+    brain: '<path d="M9.5 4.5A3.5 3.5 0 0 0 5 7.8 3.6 3.6 0 0 0 5.8 15 3.6 3.6 0 0 0 12 17.5V5.2A3.5 3.5 0 0 0 9.5 4.5Z"/><path d="M14.5 4.5A3.5 3.5 0 0 1 19 7.8 3.6 3.6 0 0 1 18.2 15 3.6 3.6 0 0 1 12 17.5M8 9.5h4M12 13h4"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/>',
+    map: '<path d="m9 18-6 3V6l6-3 6 3 6-3v15l-6 3Z"/><path d="M9 3v15M15 6v15"/>',
+    trophy: '<path d="M8 4h8v4a4 4 0 0 1-8 0Z"/><path d="M8 6H5v1a4 4 0 0 0 4 4M16 6h3v1a4 4 0 0 1-4 4M12 12v5M8 21h8"/>',
+    sliders: '<path d="M4 6h16M4 12h16M4 18h16"/><path d="M8 4v4M16 10v4M11 16v4"/>',
+    palette: '<path d="M12 3a9 9 0 0 0 0 18h1.2a1.8 1.8 0 0 0 0-3.6h-.8a1.8 1.8 0 0 1 0-3.6H15a6 6 0 0 0-3-10.8Z"/><path d="M7.5 10h.01M9.5 6.8h.01M14.5 7h.01M17 10h.01"/>',
+    newspaper: '<path d="M4 5h14a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2Z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+    smartphone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>'
+  };
+  const toSvg = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${paths[name] || paths.file}</svg>`;
+  const replace = (selector, names) => {
+    document.querySelectorAll(selector).forEach((element, index) => {
+      element.innerHTML = toSvg(names[index % names.length]);
+      element.setAttribute("aria-hidden", "true");
+    });
+  };
+
+  replace("#project-finder .project-icon", ["book", "book", "image", "bot", "headphones", "file", "link", "folder", "image", "file"]);
+  replace("#tool-finder .project-icon", ["calendar", "trophy", "map", "image", "folder", "file", "map", "map", "bot", "brain", "newspaper", "book", "smartphone", "link", "sliders", "palette"]);
+  replace(".practice-folder-icon", ["file", "code", "language", "book"]);
+  replace(".knowledge-card .card-icon", ["book", "file", "newspaper", "book", "brain", "code", "book", "file", "smartphone", "folder"]);
+}
+
+initSystemIcons();
 initTheme();
 resizeCanvas();
 drawStars();
@@ -787,6 +823,4 @@ window.addEventListener("pointerdown", (event) => {
 
   burstAt(event.clientX, event.clientY);
 });
-
-
 
