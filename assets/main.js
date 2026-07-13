@@ -602,7 +602,7 @@ function renderProjectStars(stars, sourceLabel = "本地星图", metrics = {}) {
 
   const map = root.querySelector("[data-star-map]");
   const panel = root.querySelector("[data-star-panel]");
-  if (!map || !panel) return;
+  if (!map) return;
 
   const normalizedStars = stars.map((star) => ({
     ...star,
@@ -610,7 +610,10 @@ function renderProjectStars(stars, sourceLabel = "本地星图", metrics = {}) {
     brightness: getProjectStarBrightness(star)
   }));
 
-  map.innerHTML = normalizedStars.map((star, index) => {
+  const starLimit = Number(root.dataset.starLimit || 0);
+  const visibleStars = starLimit > 0 ? normalizedStars.slice(0, starLimit) : normalizedStars;
+
+  map.innerHTML = visibleStars.map((star, index) => {
     const size = 42 + Math.round(star.brightness * 28);
     const glow = 0.45 + star.brightness * 0.75;
     const style = [
@@ -629,14 +632,16 @@ function renderProjectStars(stars, sourceLabel = "本地星图", metrics = {}) {
     `;
   }).join("");
 
-  const onlineCount = normalizedStars.filter((star) => star.status === "online").length;
+  if (!panel) return;
+
+  const onlineCount = visibleStars.filter((star) => star.status === "online").length;
   const visitorsToday = Number(metrics.visitorsToday || metrics.uniqueVisitorsToday || 0);
-  const fallbackDust = normalizedStars.reduce((sum, star) => sum + Number(star.visitsToday || 0), 0);
+  const fallbackDust = visibleStars.reduce((sum, star) => sum + Number(star.visitsToday || 0), 0);
   const dustCount = visitorsToday || fallbackDust;
   const dustLabel = dustCount > 0 ? `今日有 ${dustCount} 粒星尘经过` : "今日星尘正在汇聚";
 
   panel.innerHTML = `
-    <span class="constellation-status">${sourceLabel} · ${onlineCount}/${normalizedStars.length} 在线</span>
+    <span class="constellation-status">${sourceLabel} · ${onlineCount}/${visibleStars.length} 在线</span>
     <div class="constellation-dust" aria-live="polite">
       <span></span>
       <strong>${dustLabel}</strong>
@@ -644,7 +649,7 @@ function renderProjectStars(stars, sourceLabel = "本地星图", metrics = {}) {
     <h3>星图状态</h3>
     <p>最近更新和访问更活跃的项目会更亮；点击任意星星都会留下今日星尘。</p>
     <div class="constellation-meta">
-      ${normalizedStars.map((star) => `
+      ${visibleStars.map((star) => `
         <a href="${star.url}" target="_blank" rel="noopener noreferrer" data-star-id="${star.id}">
           <span>${star.kind || "项目星"}</span>
           <strong>${star.name}</strong>
@@ -823,4 +828,3 @@ window.addEventListener("pointerdown", (event) => {
 
   burstAt(event.clientX, event.clientY);
 });
-

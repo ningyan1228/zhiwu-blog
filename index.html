@@ -79,77 +79,17 @@
 
         </section>
 
-        <section class="section-block split-section">
-          <a class="glass-card feature-card reveal" href="knowledge/">
-            <span class="feature-kicker">Knowledge</span>
-            <h2>Notion 知识库入口</h2>
-            <p>AI、编程、公考、写作、阅读、微信读书记录、B站知识库和读书漫画连载。</p>
-          </a>
-
-          <a class="glass-card feature-card reveal" href="practice/">
-            <span class="feature-kicker">Practice</span>
-            <h2>刷题与学习导航</h2>
-            <p>公务员刷题、编程刷题、英语学习与综合学习入口。</p>
-          </a>
-
-          <a class="glass-card feature-card reveal" href="projects/">
-            <span class="feature-kicker">Projects</span>
-            <h2>项目入口</h2>
-            <p>学习资料库、微信读书 Skills、朝夕壁纸、公考早自习、电子书资料库，以及更多个人作品入口。</p>
-          </a>
-
-          <a class="glass-card feature-card reveal" href="knowledge/">
-            <span class="feature-kicker">Notes</span>
-            <h2>个人笔记</h2>
-            <p>阅读摘录、灵感收集、复盘记录和日常知识沉淀。</p>
-          </a>
-        </section>
-
-        <section id="project-constellation" class="section-block constellation-section" aria-labelledby="constellation-title" data-project-stars>
-          <div class="constellation-copy reveal">
-            <p class="eyebrow">Project Constellation</p>
-            <h2 id="constellation-title">项目星图</h2>
-            <p>
-              把常用项目连成一片星域：服务器会检测有健康接口的项目，最近更新和访问更活跃的星会更亮。
-            </p>
+        <section id="project-constellation" class="section-block constellation-section" aria-labelledby="constellation-title" data-project-stars data-star-limit="6">
+          <div class="constellation-heading reveal">
+            <div class="constellation-copy">
+              <p class="eyebrow">Project Constellation</p>
+              <h2 id="constellation-title">项目星图</h2>
+              <p>展示近期活跃的重点项目；点击任意星球即可访问对应作品。</p>
+            </div>
+            <a class="constellation-link" href="projects/">查看完整星图 <span aria-hidden="true">→</span></a>
           </div>
           <div class="constellation-shell reveal">
-            <div class="constellation-sky" data-star-map aria-label="项目星图状态"></div>
-            <aside class="constellation-panel" data-star-panel>
-              <span class="constellation-status">检测中</span>
-              <h3>正在读取星图状态</h3>
-              <p>优先连接腾讯云统一状态接口；不可用时会回退到本地项目清单和各项目 health 检测。</p>
-            </aside>
-          </div>
-        </section>
-        <section class="section-block status-section" aria-label="站点状态">
-          <div class="glass-card status-panel reveal" data-site-status-panel>
-            <div class="status-heading">
-              <div>
-                <p class="eyebrow">Site Status</p>
-                <h2>站点状态</h2>
-              </div>
-              <span class="status-pill is-loading" data-status-pill>检测中</span>
-            </div>
-            <div class="status-grid">
-              <div class="status-item">
-                <span>前端</span>
-                <strong data-status-frontend>GitHub Pages</strong>
-              </div>
-              <div class="status-item">
-                <span>代理</span>
-                <strong data-status-proxy>连接中</strong>
-              </div>
-              <div class="status-item">
-                <span>版本</span>
-                <strong data-status-version>--</strong>
-              </div>
-              <div class="status-item">
-                <span>更新时间</span>
-                <strong data-status-time>--</strong>
-              </div>
-            </div>
-            <p class="status-message" data-status-message>正在连接腾讯云代理...</p>
+            <div class="constellation-sky" data-star-map aria-label="项目星图预览"></div>
           </div>
         </section>
 
@@ -176,6 +116,15 @@
             </a>
           </div>
         </section>
+
+        <section class="site-status-strip reveal" aria-label="站点状态" data-site-status-panel>
+          <span class="status-pill is-loading" data-status-pill>检测中</span>
+          <span data-status-frontend>GitHub Pages</span>
+          <span data-status-proxy>Tencent Cloud Lighthouse</span>
+          <span data-status-version>v0.2.1</span>
+          <span>更新于 <time data-status-time>--</time></span>
+          <span class="sr-only" data-status-message>正在连接腾讯云代理...</span>
+        </section>
       </main>
 
       <footer class="site-footer">
@@ -186,4 +135,3 @@
     <script src="assets/main.js?v=20260701-admin-easter-egg"></script>
   </body>
 </html>
-
