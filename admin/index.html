@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/admin.css?v=20260704-writing-system" />
+    <link rel="stylesheet" href="../assets/admin.css?v=20260716-analytics" />
   </head>
   <body>
     <main class="admin-shell">
@@ -65,6 +65,24 @@
           </article>
         </div>
 
+        <section class="admin-card analytics-card" aria-labelledby="analytics-title">
+          <div class="card-heading compact">
+            <div>
+              <p class="admin-kicker">Traffic Analytics</p>
+              <h2 id="analytics-title">访问统计</h2>
+              <p class="analytics-caption">按页面区块统计近 7 天访问次数（PV），数据按北京时间汇总。</p>
+            </div>
+            <button class="ghost-button" type="button" data-refresh-analytics>刷新统计</button>
+          </div>
+          <div class="analytics-overview" aria-live="polite">
+            <span>近 7 天访问 <strong data-analytics-total>--</strong></span>
+            <span>独立访客 <strong data-analytics-visitors>--</strong></span>
+            <small data-analytics-updated>等待服务器统计数据</small>
+          </div>
+          <div class="analytics-table-scroll" data-analytics-table>
+            <p class="empty-state">登录后将读取真实访问统计。</p>
+          </div>
+        </section>
         <section class="admin-card article-publisher" aria-labelledby="publisher-title">
           <div class="card-heading compact">
             <div>
@@ -225,6 +243,6 @@
         </section>
       </section>
     </main>
-    <script src="../assets/admin.js?v=20260704-writing-system"></script>
+    <script src="../assets/admin.js?v=20260716-analytics"></script>
   </body>
 </html>

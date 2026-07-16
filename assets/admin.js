@@ -10,6 +10,11 @@ const apiState = document.querySelector("[data-api-state]");
 const logoutButton = document.querySelector("[data-logout]");
 const refreshStarsButton = document.querySelector("[data-refresh-stars]");
 const refreshArticlesButton = document.querySelector("[data-refresh-articles]");
+const refreshAnalyticsButton = document.querySelector("[data-refresh-analytics]");
+const analyticsTable = document.querySelector("[data-analytics-table]");
+const analyticsTotal = document.querySelector("[data-analytics-total]");
+const analyticsVisitors = document.querySelector("[data-analytics-visitors]");
+const analyticsUpdated = document.querySelector("[data-analytics-updated]");
 const articleForm = document.querySelector("[data-article-form]");
 const publishMessage = document.querySelector("[data-publish-message]");
 const markdownFileInput = document.querySelector("[data-md-file]");
@@ -300,6 +305,72 @@ function renderStars(data) {
   `).join("");
 }
 
+function getAnalyticsHeatClass(value, max) {
+  if (!value) return "is-zero";
+  const ratio = max ? value / max : 0;
+  if (ratio >= 0.7) return "is-heat-4";
+  if (ratio >= 0.4) return "is-heat-3";
+  if (ratio >= 0.15) return "is-heat-2";
+  return "is-heat-1";
+}
+
+function renderAnalytics(data) {
+  if (!analyticsTable) return;
+
+  const days = Array.isArray(data.days) ? data.days : [];
+  const sections = Array.isArray(data.sections) ? data.sections : [];
+  const maxValue = Math.max(0, ...sections.flatMap((section) => days.map((day) => Number(section.daily?.[day.key] || 0))));
+
+  if (analyticsTotal) analyticsTotal.textContent = String(data.totalPageviews || 0);
+  if (analyticsVisitors) analyticsVisitors.textContent = String(data.uniqueVisitors || 0);
+  if (analyticsUpdated) analyticsUpdated.textContent = data.updatedAt ? `更新于 ${formatDateTime(data.updatedAt)}` : "暂无更新时间";
+
+  if (!days.length || !sections.length) {
+    analyticsTable.innerHTML = `<p class="empty-state">暂时还没有可展示的访问记录。</p>`;
+    return;
+  }
+
+  analyticsTable.innerHTML = `
+    <table class="analytics-table">
+      <thead>
+        <tr>
+          <th scope="col">页面区块</th>
+          ${days.map((day) => `<th scope="col"><time datetime="${escapeHtml(day.key || "")}">${escapeHtml(day.label || day.key || "--")}</time></th>`).join("")}
+          <th scope="col">累计</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${sections.map((section) => `
+          <tr>
+            <th scope="row">${escapeHtml(section.label || section.key || "未分类")}</th>
+            ${days.map((day) => {
+              const value = Number(section.daily?.[day.key] || 0);
+              return `<td class="${getAnalyticsHeatClass(value, maxValue)}">${value}</td>`;
+            }).join("")}
+            <td class="analytics-total-cell">${Number(section.total || 0)}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">每日合计</th>
+          ${days.map((day) => `<td>${Number(day.total || 0)}</td>`).join("")}
+          <td class="analytics-total-cell">${Number(data.totalPageviews || 0)}</td>
+        </tr>
+      </tfoot>
+    </table>
+  `;
+}
+
+async function loadAnalytics() {
+  if (analyticsTable) analyticsTable.innerHTML = `<p class="empty-state">正在汇总近 7 天访问数据...</p>`;
+  try {
+    const data = await requestJson("/api/admin/analytics/daily?days=7", { method: "GET" });
+    renderAnalytics(data);
+  } catch (error) {
+    if (analyticsTable) analyticsTable.innerHTML = `<p class="empty-state">${escapeHtml(error.message || "访问统计接口还没有部署。")}</p>`;
+  }
+}
 function renderArticleList(data) {
   if (!adminArticles) return;
   const items = Array.isArray(data.items) ? data.items : [];
@@ -434,7 +505,7 @@ async function verifySession() {
     if (sessionExpiry) sessionExpiry.textContent = `Expires at ${formatDateTime(data.expiresAt || localStorage.getItem(EXPIRY_KEY))}`;
     setApiState("Connected", "ok");
     showDashboard();
-    await Promise.all([loadStars(), loadArticles()]);
+    await Promise.all([loadStars(), loadArticles(), loadAnalytics()]);
   } catch (error) {
     clearToken();
     showLogin();
@@ -655,6 +726,7 @@ cancelEditButton?.addEventListener("click", resetEditor);
 uploadImageButton?.addEventListener("click", uploadImage);
 refreshStarsButton?.addEventListener("click", loadStars);
 refreshArticlesButton?.addEventListener("click", loadArticles);
+refreshAnalyticsButton?.addEventListener("click", loadAnalytics);
 articleStatusFilter?.addEventListener("change", () => renderArticleList({ items: articleCache }));
 articleSeriesFilter?.addEventListener("change", () => renderArticleList({ items: articleCache }));
 articleTagFilter?.addEventListener("change", () => renderArticleList({ items: articleCache }));

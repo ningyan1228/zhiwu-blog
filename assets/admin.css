@@ -260,6 +260,97 @@ button:disabled {
   line-height: 1;
 }
 
+.analytics-card {
+  overflow: hidden;
+}
+
+.analytics-caption {
+  max-width: 620px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.analytics-overview {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.analytics-overview strong {
+  margin-left: 4px;
+  color: var(--cyan);
+  font-size: 18px;
+}
+
+.analytics-overview small {
+  margin-left: auto;
+  color: var(--soft);
+  font-size: 12px;
+}
+
+.analytics-table-scroll {
+  overflow-x: auto;
+  border: 1px solid rgba(226, 232, 240, 0.12);
+  border-radius: 12px;
+  background: rgba(2, 6, 23, 0.25);
+}
+
+.analytics-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.analytics-table th,
+.analytics-table td {
+  min-width: 72px;
+  padding: 13px 12px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.1);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.analytics-table thead th {
+  color: #c9eaff;
+  background: rgba(15, 23, 42, 0.56);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.analytics-table th[scope="row"] {
+  min-width: 112px;
+  color: #edf7ff;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.analytics-table td {
+  color: #d8e8f5;
+  font-weight: 800;
+  transition: background-color 160ms ease;
+}
+
+.analytics-table td.is-zero { color: rgba(174, 187, 213, 0.64); }
+.analytics-table td.is-heat-1 { background: rgba(103, 232, 249, 0.1); }
+.analytics-table td.is-heat-2 { background: rgba(103, 232, 249, 0.18); }
+.analytics-table td.is-heat-3 { background: rgba(103, 232, 249, 0.28); color: #f4feff; }
+.analytics-table td.is-heat-4 { background: rgba(125, 211, 199, 0.36); color: #f4feff; }
+
+.analytics-table tfoot th,
+.analytics-table tfoot td,
+.analytics-table .analytics-total-cell {
+  color: #d1fae5;
+  background: rgba(20, 184, 166, 0.1);
+  font-weight: 900;
+}
+
 .project-radar {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
