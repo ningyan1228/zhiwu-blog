@@ -14,6 +14,20 @@
         "y":  42
     },
     {
+        "id":  "legend-hall",
+        "name":  "星耀展馆",
+        "kind":  "人物星",
+        "tone":  "amber",
+        "url":  "https://ningyan1228.github.io/legend-hall/",
+        "healthUrl":  "",
+        "description":  "收录球星与明星人物档案，按领域、国家和年代浏览他们的故事与成就。",
+        "lastUpdated":  "2026-07-17",
+        "activity":  80,
+        "visitsToday":  0,
+        "x":  78,
+        "y":  66
+    },
+    {
         "id":  "study-resource",
         "name":  "学习资料库",
         "kind":  "资料星",
