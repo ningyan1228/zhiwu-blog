@@ -946,13 +946,13 @@ function initCommandPalette() {
 
   const mainScript = [...document.scripts].find((script) => /assets\/main\.js/.test(script.src));
   const siteRoot = new URL("../", mainScript?.src || window.location.href);
-  const shortcut = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent) ? "? K" : "Ctrl K";
+  const shortcut = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent) ? "\u2318 K" : "Ctrl K";
   const trigger = document.createElement("button");
   trigger.className = "command-trigger";
   trigger.type = "button";
   trigger.dataset.commandTrigger = "";
-  trigger.setAttribute("aria-label", `???????${shortcut}?`);
-  trigger.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.2 4.2"></path></svg><span>??</span><kbd>' + shortcut + '</kbd>';
+  trigger.setAttribute("aria-label", `\u6253\u5f00\u5168\u7ad9\u641c\u7d22\uff08${shortcut}\uff09`);
+  trigger.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.2 4.2"></path></svg><span>\u641c\u7d22</span><kbd>' + shortcut + '</kbd>';
   header.insertBefore(trigger, themeButton);
 
   const palette = document.createElement("div");
@@ -963,11 +963,11 @@ function initCommandPalette() {
     '<section class="command-palette-dialog" role="dialog" aria-modal="true" aria-labelledby="command-palette-title">',
     '  <div class="command-searchbar">',
     '    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.2 4.2"></path></svg>',
-    '    <input type="search" autocomplete="off" placeholder="??????????????" aria-label="????" data-command-input />',
+    '    <input type="search" autocomplete="off" placeholder="\u641c\u7d22\u6587\u7ae0\u3001\u9879\u76ee\u3001\u7b14\u8bb0\u3001\u5de5\u5177\u2026" aria-label="\u5168\u7ad9\u641c\u7d22" data-command-input />',
     '    <kbd>Esc</kbd>',
     '  </div>',
     '  <div class="command-results" data-command-results aria-live="polite"></div>',
-    '  <footer class="command-palette-footer"><span><kbd>??</kbd> ??</span><span><kbd>?</kbd> ??</span><span>????</span></footer>',
+    '  <footer class="command-palette-footer"><span><kbd>&#8593;&#8595;</kbd> \u9009\u62e9</span><span><kbd>&#8629;</kbd> \u6253\u5f00</span><span>\u5168\u7ad9\u641c\u7d22</span></footer>',
     '</section>'
   ].join("");
   document.body.append(palette);
@@ -980,12 +980,12 @@ function initCommandPalette() {
   let indexPromise = null;
 
   const builtinItems = [
-    { title: "????", description: "??????????", type: "??", url: new URL("./", siteRoot).href, keywords: "?? ???? ????" },
-    { title: "??????", description: "????????????", type: "??", url: new URL("articles/", siteRoot).href, keywords: "?? ?? ?? ??" },
-    { title: "??????", description: "???????????", type: "??", url: new URL("#project-constellation", siteRoot).href, keywords: "?? ?? ??" },
-    { title: "???????", description: "??????????????", type: "??", url: "https://ningyan1228.github.io/study-resource-library/", keywords: "????? ?? ?? ??" },
-    { title: "?????", description: "??????????", type: "??", url: new URL("knowledge/", siteRoot).href, keywords: "??? ?? notion" },
-    { title: "???", description: "???????????", type: "??", url: new URL("contact/", siteRoot).href, keywords: "?? ?? ???" }
+    { title: "\u8fd4\u56de\u9996\u9875", description: "\u6253\u5f00\u4e2a\u4eba\u6570\u5b57\u82b1\u56ed\u9996\u9875", type: "\u547d\u4ee4", url: new URL("./", siteRoot).href, keywords: "\u9996\u9875 \u4e2a\u4eba\u535a\u5ba2 \u6570\u5b57\u82b1\u56ed" },
+    { title: "\u67e5\u770b\u6700\u65b0\u6587\u7ae0", description: "\u6d4f\u89c8\u5efa\u7ad9\u3001\u9605\u8bfb\u4e0e\u5b66\u4e60\u8bb0\u5f55", type: "\u547d\u4ee4", url: new URL("articles/", siteRoot).href, keywords: "\u6587\u7ae0 \u6700\u65b0 \u5199\u4f5c \u9605\u8bfb" },
+    { title: "\u6253\u5f00\u9879\u76ee\u661f\u56fe", description: "\u67e5\u770b\u8fd1\u671f\u6d3b\u8dc3\u7684\u91cd\u70b9\u9879\u76ee", type: "\u547d\u4ee4", url: new URL("#project-constellation", siteRoot).href, keywords: "\u661f\u56fe \u9879\u76ee \u4f5c\u54c1" },
+    { title: "\u6253\u5f00\u5b66\u4e60\u8d44\u6599\u5e93", description: "\u516c\u8003\u3001\u8003\u7f16\u4e0e\u5b66\u4e60\u8d44\u6599\u6574\u7406\u5165\u53e3", type: "\u547d\u4ee4", url: "https://ningyan1228.github.io/study-resource-library/", keywords: "\u5b66\u4e60\u8d44\u6599\u5e93 \u516c\u8003 \u8003\u7f16 \u6587\u6863" },
+    { title: "\u8fdb\u5165\u77e5\u8bc6\u5e93", description: "\u9605\u8bfb\u3001\u5b66\u4e60\u4e0e\u521b\u4f5c\u7b14\u8bb0", type: "\u547d\u4ee4", url: new URL("knowledge/", siteRoot).href, keywords: "\u77e5\u8bc6\u5e93 \u7b14\u8bb0 notion" },
+    { title: "\u8054\u7cfb\u6211", description: "\u67e5\u770b\u8054\u7cfb\u65b9\u5f0f\u4e0e\u534f\u4f5c\u5165\u53e3", type: "\u547d\u4ee4", url: new URL("contact/", siteRoot).href, keywords: "\u8054\u7cfb \u90ae\u7bb1 \u5173\u4e8e\u6211" }
   ];
 
   const normalize = (value = "") => value.toLocaleLowerCase("zh-CN").replace(/\s+/g, " ").trim();
@@ -1044,7 +1044,7 @@ function initCommandPalette() {
       collected.push(...articles.value.map((article) => toItem({
         title: article.title,
         description: article.excerpt,
-        type: "??",
+        type: "\u6587\u7ae0",
         url: `articles/${article.slug}.html`,
         keywords: [article.category, ...(article.tags || [])].join(" ")
       })).filter(Boolean));
@@ -1054,17 +1054,17 @@ function initCommandPalette() {
       collected.push(...stars.value.map((star) => toItem({
         title: star.name,
         description: star.description || star.kind,
-        type: "??",
+        type: "\u9879\u76ee",
         url: star.url,
         keywords: [star.kind, star.tone, star.id].join(" ")
       })).filter(Boolean));
     }
 
-    if (toolsPage.status === "fulfilled") collected.push(...extractCards(toolsPage.value, new URL("tools/", siteRoot), ".finder-project-card", "??"));
-    if (knowledgePage.status === "fulfilled") collected.push(...extractCards(knowledgePage.value, new URL("knowledge/", siteRoot), ".knowledge-card:not(.is-locked)", "???"));
+    if (toolsPage.status === "fulfilled") collected.push(...extractCards(toolsPage.value, new URL("tools/", siteRoot), ".finder-project-card", "\u5de5\u5177"));
+    if (knowledgePage.status === "fulfilled") collected.push(...extractCards(knowledgePage.value, new URL("knowledge/", siteRoot), ".knowledge-card:not(.is-locked)", "\u77e5\u8bc6\u5e93"));
     if (practicePage.status === "fulfilled") {
-      collected.push(...extractCards(practicePage.value, new URL("practice/", siteRoot), ".practice-folder", "??"));
-      collected.push(...extractCards(practicePage.value, new URL("practice/", siteRoot), ".practice-subcard", "????"));
+      collected.push(...extractCards(practicePage.value, new URL("practice/", siteRoot), ".practice-folder", "\u5b66\u4e60"));
+      collected.push(...extractCards(practicePage.value, new URL("practice/", siteRoot), ".practice-subcard", "\u5b66\u4e60\u5165\u53e3"));
     }
 
     const seen = new Set();
@@ -1104,14 +1104,14 @@ function initCommandPalette() {
     if (!matches.length) {
       const empty = document.createElement("p");
       empty.className = "command-empty";
-      empty.textContent = "?????????????????????????";
+      empty.textContent = "\u6ca1\u6709\u627e\u5230\u5339\u914d\u5185\u5bb9\uff0c\u8bd5\u8bd5\u201c\u9879\u76ee\u201d\u3001\u201c\u516c\u8003\u201d\u6216\u201c\u9605\u8bfb\u201d\u3002";
       resultsRoot.append(empty);
       return;
     }
 
     const label = document.createElement("p");
     label.className = "command-result-label";
-    label.textContent = input.value.trim() ? `?? ${matches.length} ???` : "????";
+    label.textContent = input.value.trim() ? `\u627e\u5230 ${matches.length} \u6761\u7ed3\u679c` : "\u5e38\u7528\u547d\u4ee4";
     resultsRoot.append(label);
 
     matches.forEach((item, index) => {
@@ -1127,7 +1127,7 @@ function initCommandPalette() {
       meta.className = "command-result-type";
       meta.textContent = item.type;
       title.textContent = item.title;
-      description.textContent = item.description || "?????";
+      description.textContent = item.description || "\u6253\u5f00\u6b64\u5165\u53e3";
       copy.append(title, description);
       button.append(meta, copy);
       button.addEventListener("mouseenter", () => {
