@@ -5474,3 +5474,82 @@ body.about-page.light-theme .about-intro-card .about-skill-tag:hover {
     font-size: 13px;
   }
 }
+/* Homepage constellation: let the projects inhabit the wallpaper instead of a separate card. */
+.home-page .constellation-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 520px;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.home-page .constellation-shell::before {
+  position: absolute;
+  z-index: -1;
+  inset: -54px -46px;
+  content: "";
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 46% 44% at 24% 28%, rgba(24, 91, 125, 0.2), transparent 72%),
+    radial-gradient(ellipse 42% 48% at 76% 66%, rgba(54, 63, 128, 0.16), transparent 74%),
+    radial-gradient(ellipse 64% 68% at 50% 50%, rgba(2, 10, 22, 0.08), transparent 72%);
+  filter: blur(1px);
+}
+
+.home-page .constellation-sky {
+  min-height: 520px;
+  overflow: visible;
+  background: transparent;
+}
+
+.home-page .constellation-sky::before,
+.home-page .constellation-sky::after {
+  border-color: rgba(164, 212, 255, 0.13);
+  box-shadow: 0 0 28px rgba(80, 169, 255, 0.035);
+}
+
+.home-page .constellation-sky::before {
+  inset: 7% 8%;
+}
+
+.home-page .constellation-sky::after {
+  inset: 23% 19%;
+}
+
+.home-page .project-star {
+  gap: 8px;
+}
+
+.home-page .project-star-name {
+  border-color: rgba(186, 222, 248, 0.12);
+  background: linear-gradient(135deg, rgba(5, 15, 28, 0.68), rgba(9, 22, 37, 0.36));
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+}
+
+body.home-page.light-theme .constellation-shell {
+  background: transparent;
+}
+
+body.home-page.light-theme .constellation-shell::before {
+  background:
+    radial-gradient(ellipse 46% 44% at 24% 28%, rgba(109, 183, 225, 0.18), transparent 72%),
+    radial-gradient(ellipse 42% 48% at 76% 66%, rgba(145, 153, 230, 0.13), transparent 74%);
+}
+
+@media (max-width: 760px) {
+  .home-page .constellation-shell,
+  .home-page .constellation-sky {
+    min-height: 460px;
+  }
+
+  .home-page .constellation-shell::before {
+    inset: -34px -18px;
+  }
+}
