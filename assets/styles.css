@@ -6479,3 +6479,74 @@ body.light-theme .theme-toggle {
   .brand-mark::after { animation: none; }
 }
 
+/* Airier header pass: one shell only, with navigation carried by a light rail. */
+.site-header,
+body.light-theme .site-header,
+.home-page .site-header,
+body.home-page.light-theme .site-header {
+  gap: 18px;
+}
+
+.site-nav {
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.site-nav a {
+  min-height: 38px;
+  padding: 8px 11px;
+  border-color: transparent;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.site-nav a::after {
+  right: 11px;
+  bottom: 2px;
+  left: 11px;
+  height: 2px;
+}
+
+.site-nav a:hover {
+  border-color: transparent;
+  background: rgba(102, 184, 232, 0.04);
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+.site-nav a[aria-current="page"] {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.site-nav a[aria-current="page"]::before {
+  margin-right: 5px;
+}
+
+.command-trigger {
+  min-width: 0;
+  gap: 7px;
+  padding: 0 9px;
+  border-radius: 11px;
+}
+
+.command-trigger > span {
+  display: none;
+}
+
+.command-trigger kbd {
+  min-height: 20px;
+  padding: 0 5px;
+  transform: translateY(0.5px);
+}
+
+@media (max-width: 880px) {
+  .site-nav { gap: 3px; }
+  .site-nav a { padding: 7px 10px; }
+}
+
