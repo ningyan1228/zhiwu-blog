@@ -1255,7 +1255,7 @@ function initPageTransitions() {
 
     window.setTimeout(() => {
       window.location.assign(destination.href);
-    }, 360);
+    }, 240);
   }, true);
 }
 
