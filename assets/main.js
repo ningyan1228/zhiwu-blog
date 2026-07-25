@@ -985,6 +985,7 @@ function initCommandPalette() {
 
   const builtinItems = [
     { title: "\u8fd4\u56de\u9996\u9875", description: "\u6253\u5f00\u4e2a\u4eba\u6570\u5b57\u82b1\u56ed\u9996\u9875", type: "\u547d\u4ee4", url: new URL("./", siteRoot).href, keywords: "\u9996\u9875 \u4e2a\u4eba\u535a\u5ba2 \u6570\u5b57\u82b1\u56ed" },
+    { title: "\u8fdb\u5165\u4eba\u751f\u65f6\u95f4\u7535\u5f71", description: "\u6d4f\u89c8\u5efa\u7ad9\u3001\u5b66\u4e60\u4e0e\u9879\u76ee\u7684\u8fdb\u7a0b\u8f68\u8ff9", type: "\u547d\u4ee4", url: new URL("journey/", siteRoot).href, keywords: "\u4eba\u751f \u65f6\u95f4\u8f74 \u8f68\u8ff9 \u7535\u5f71 \u5efa\u7ad9" },
     { title: "\u67e5\u770b\u6700\u65b0\u6587\u7ae0", description: "\u6d4f\u89c8\u5efa\u7ad9\u3001\u9605\u8bfb\u4e0e\u5b66\u4e60\u8bb0\u5f55", type: "\u547d\u4ee4", url: new URL("articles/", siteRoot).href, keywords: "\u6587\u7ae0 \u6700\u65b0 \u5199\u4f5c \u9605\u8bfb" },
     { title: "\u6253\u5f00\u9879\u76ee\u661f\u56fe", description: "\u67e5\u770b\u8fd1\u671f\u6d3b\u8dc3\u7684\u91cd\u70b9\u9879\u76ee", type: "\u547d\u4ee4", url: new URL("#project-constellation", siteRoot).href, keywords: "\u661f\u56fe \u9879\u76ee \u4f5c\u54c1" },
     { title: "\u6253\u5f00\u5b66\u4e60\u8d44\u6599\u5e93", description: "\u516c\u8003\u3001\u8003\u7f16\u4e0e\u5b66\u4e60\u8d44\u6599\u6574\u7406\u5165\u53e3", type: "\u547d\u4ee4", url: "https://ningyan1228.github.io/study-resource-library/", keywords: "\u5b66\u4e60\u8d44\u6599\u5e93 \u516c\u8003 \u8003\u7f16 \u6587\u6863" },
@@ -1261,4 +1262,70 @@ function initPageTransitions() {
 
 initHomeTimeScene();
 initPageTransitions();
+
+function initJourneyFilm() {
+  const film = document.querySelector("[data-journey-film]");
+  const track = document.querySelector("[data-journey-track]");
+  if (!film || !track) return;
+
+  const mainScript = [...document.scripts].find((script) => /assets\/main\.js/.test(script.src));
+  const siteRoot = new URL("../", mainScript?.src || window.location.href);
+  const make = (tag, className, value) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (value) node.textContent = value;
+    return node;
+  };
+
+  fetch(new URL("assets/journey.json", siteRoot), { cache: "no-store" })
+    .then((response) => {
+      if (!response.ok) throw new Error("Unable to load journey data");
+      return response.json();
+    })
+    .then((items) => {
+      if (!Array.isArray(items) || !items.length) throw new Error("Journey data is empty");
+
+      const fragment = document.createDocumentFragment();
+      items.forEach((item, index) => {
+        const chapter = make("section", `journey-chapter journey-tone-${item.tone || "blue"}`);
+        const visual = make("div", "journey-projection");
+        const orbit = make("span", "journey-projection-orbit");
+        const pulse = make("span", "journey-projection-pulse");
+        const chapterNumber = make("span", "journey-chapter-number", String(index + 1).padStart(2, "0"));
+        const story = make("div", "journey-story");
+        const date = make("p", "journey-date", item.date);
+        const eyebrow = make("p", "journey-eyebrow", item.eyebrow);
+        const title = make("h2", "", item.title);
+        const description = make("p", "journey-description", item.description);
+        const detail = make("p", "journey-detail", item.detail);
+        const link = make("a", "journey-action", item.action);
+
+        visual.append(orbit, pulse, chapterNumber);
+        link.href = new URL(item.href || "./", siteRoot).href;
+        story.append(date, eyebrow, title, description, detail, link);
+        chapter.append(visual, story);
+        fragment.append(chapter);
+      });
+
+      track.replaceChildren(fragment);
+      track.classList.add("is-ready");
+      const chapters = [...track.querySelectorAll(".journey-chapter")];
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          chapters.forEach((chapter) => chapter.classList.toggle("is-current", chapter === entry.target));
+          const index = chapters.indexOf(entry.target);
+          film.style.setProperty("--journey-progress", String(index / Math.max(chapters.length - 1, 1)));
+          document.body.dataset.journeyChapter = String(index + 1);
+        });
+      }, { threshold: 0.58 });
+
+      chapters.forEach((chapter) => observer.observe(chapter));
+    })
+    .catch(() => {
+      track.replaceChildren(make("p", "journey-loading", "Timeline temporarily unavailable."));
+    });
+}
+
+initJourneyFilm();
 

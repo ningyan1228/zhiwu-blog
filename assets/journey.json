@@ -1,0 +1,62 @@
+[
+  {
+    "date": "2026.06",
+    "eyebrow": "ORIGIN",
+    "title": "\u4e2a\u4eba\u6570\u5b57\u82b1\u56ed\u542f\u822a",
+    "description": "\u4ece\u4e00\u7bc7\u5efa\u7ad9\u8bb0\u5f55\u5f00\u59cb\uff0c\u628a\u9605\u8bfb\u3001\u5b66\u4e60\u4e0e\u521b\u4f5c\u653e\u8fdb\u540c\u4e00\u6761\u8f68\u9053\u3002",
+    "detail": "FIRST SIGNAL RECEIVED",
+    "href": "articles/how-to-build-blog.html",
+    "action": "\u9605\u8bfb\u5efa\u7ad9\u8bb0\u5f55",
+    "tone": "blue"
+  },
+  {
+    "date": "2026.06",
+    "eyebrow": "COLLECT",
+    "title": "\u8ba9\u77e5\u8bc6\u5f00\u59cb\u6709\u5165\u53e3",
+    "description": "\u5c06\u9605\u8bfb\u7b14\u8bb0\u3001\u516c\u8003\u8d44\u6599\u3001\u7f16\u7a0b\u7ec3\u4e60\u4e0e\u5e38\u7528\u5de5\u5177\u6536\u8fdb\u53ef\u4ee5\u957f\u671f\u4f7f\u7528\u7684\u5bb9\u5668\u3002",
+    "detail": "ARCHIVE MODULE ONLINE",
+    "href": "knowledge/",
+    "action": "\u8fdb\u5165\u77e5\u8bc6\u5e93",
+    "tone": "mint"
+  },
+  {
+    "date": "2026.07",
+    "eyebrow": "OBSERVE",
+    "title": "\u9879\u76ee\u661f\u56fe\u5f00\u59cb\u611f\u77e5\u6765\u8bbf",
+    "description": "\u9879\u76ee\u4e0d\u518d\u53ea\u662f\u9759\u6001\u5165\u53e3\u3002\u6bcf\u4e00\u6b21\u771f\u5b9e\u8bbf\u95ee\u90fd\u4f1a\u8fd4\u56de\u4e00\u7c92\u661f\u5c18\uff0c\u6210\u4e3a\u7ad9\u70b9\u8fd0\u884c\u7684\u5fae\u5c0f\u4fe1\u53f7\u3002",
+    "detail": "VISITOR DUST SIGNAL CONNECTED",
+    "href": "index.html#project-constellation",
+    "action": "\u67e5\u770b\u9879\u76ee\u661f\u56fe",
+    "tone": "blue"
+  },
+  {
+    "date": "2026.07",
+    "eyebrow": "CONTROL",
+    "title": "\u4e3a\u81ea\u5df1\u642d\u5efa\u63a7\u5236\u5ba4",
+    "description": "\u5c06\u6587\u7ae0\u53d1\u5e03\u3001\u9879\u76ee\u5065\u5eb7\u4e0e\u8bbf\u95ee\u661f\u5c18\u653e\u8fdb\u7ad9\u957f\u63a7\u5236\u53f0\uff0c\u8ba9\u516c\u5f00\u82b1\u56ed\u4e0e\u79c1\u4eba\u63a7\u5236\u5ba4\u5404\u81ea\u6709\u5b83\u7684\u8fb9\u754c\u3002",
+    "detail": "PRIVATE CONTROL ROOM ESTABLISHED",
+    "href": "about/",
+    "action": "\u8ba4\u8bc6\u8fd9\u5ea7\u7ad9\u70b9",
+    "tone": "mint"
+  },
+  {
+    "date": "2026.07",
+    "eyebrow": "BUILD",
+    "title": "\u628a\u60f3\u6cd5\u53d8\u6210\u53ef\u8fd0\u884c\u7684\u9879\u76ee",
+    "description": "\u4ece\u5b66\u4e60\u8d44\u6599\u5e93\u5230\u9605\u8bfb\u5de5\u5177\uff0c\u6bcf\u4e2a\u9879\u76ee\u90fd\u662f\u4e00\u6b21\u628a\u5174\u8da3\u63a8\u8fdb\u73b0\u5b9e\u7684\u5c1d\u8bd5\u3002",
+    "detail": "PROJECT CONSTELLATION EXPANDING",
+    "href": "projects/",
+    "action": "\u67e5\u770b\u9879\u76ee\u661f\u56fe",
+    "tone": "violet"
+  },
+  {
+    "date": "NOW",
+    "eyebrow": "TRANSMIT",
+    "title": "\u7ee7\u7eed\u5411\u672a\u77e5\u53d1\u5c04",
+    "description": "\u8fd9\u91cc\u4e0d\u662f\u7ec8\u70b9\u3002\u65b0\u7684\u9605\u8bfb\u3001\u65b0\u7684\u5de5\u5177\u4e0e\u65b0\u7684\u4f5c\u54c1\uff0c\u4f1a\u4e0d\u65ad\u4e3a\u8fd9\u6761\u8f68\u8ff9\u589e\u6dfb\u65b0\u5750\u6807\u3002",
+    "detail": "OPEN COORDINATES",
+    "href": "index.html",
+    "action": "\u8fd4\u56de\u7a7a\u95f4\u7ad9",
+    "tone": "amber"
+  }
+]
