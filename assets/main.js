@@ -87,29 +87,34 @@ function burstAt(x, y) {
     return;
   }
 
-  const colors = ["#6c8cff", "#a78bfa", "#61dafb", "#f472b6", "#fb7185", "#f8fafc"];
-  const count = 22;
+  const count = 8;
 
   for (let i = 0; i < count; i += 1) {
     const angle = Math.random() * Math.PI * 2;
-    const speed = Math.random() * 6 + 2;
-    const isShard = Math.random() > 0.42;
+    const distance = 18 + Math.random() * 34;
 
     particles.push({
       x,
       y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed - Math.random() * 2.4,
-      gravity: 0.13 + Math.random() * 0.05,
+      vx: Math.cos(angle) * distance,
+      vy: Math.sin(angle) * distance,
       life: 1,
-      decay: 0.018 + Math.random() * 0.018,
-      size: Math.random() * 6 + 3,
-      stretch: isShard ? Math.random() * 1.8 + 1.5 : 1,
-      rotation: Math.random() * Math.PI,
-      spin: (Math.random() - 0.5) * 0.24,
-      color: colors[Math.floor(Math.random() * colors.length)],
+      decay: 0.047 + Math.random() * 0.015,
+      size: Math.random() * 1.15 + 0.55,
+      phase: Math.random() * Math.PI * 2,
     });
   }
+
+  particles.push({
+    x,
+    y,
+    vx: 0,
+    vy: 0,
+    life: 1,
+    decay: 0.055,
+    size: 1,
+    isRipple: true,
+  });
 
   if (!fxRafId) {
     fxRafId = requestAnimationFrame(drawParticles);
@@ -120,36 +125,35 @@ function drawParticles() {
   fxCtx.clearRect(0, 0, width, height);
 
   particles = particles.filter((particle) => {
-    particle.x += particle.vx;
-    particle.y += particle.vy;
-    particle.vy += particle.gravity;
-    particle.vx *= 0.985;
-    particle.vy *= 0.985;
-    particle.rotation += particle.spin;
+    particle.x += particle.vx * 0.028;
+    particle.y += particle.vy * 0.028;
     particle.life -= particle.decay;
 
     if (particle.life <= 0) {
       return false;
     }
 
+    const opacity = Math.max(particle.life, 0);
     fxCtx.save();
-    fxCtx.globalAlpha = Math.max(particle.life, 0);
-    fxCtx.translate(particle.x, particle.y);
-    fxCtx.rotate(particle.rotation);
-    fxCtx.shadowColor = particle.color;
-    fxCtx.shadowBlur = 14;
-    fxCtx.fillStyle = particle.color;
-    fxCtx.beginPath();
-    fxCtx.ellipse(
-      0,
-      0,
-      particle.size * particle.stretch,
-      particle.size,
-      0,
-      0,
-      Math.PI * 2
-    );
-    fxCtx.fill();
+    if (particle.isRipple) {
+      const radius = 14 + (1 - particle.life) * 92;
+      fxCtx.globalAlpha = opacity * 0.34;
+      fxCtx.strokeStyle = "#c9eeff";
+      fxCtx.lineWidth = 1.15;
+      fxCtx.shadowColor = "#74cfff";
+      fxCtx.shadowBlur = 13;
+      fxCtx.beginPath();
+      fxCtx.arc(particle.x, particle.y, radius, 0, Math.PI * 2);
+      fxCtx.stroke();
+    } else {
+      fxCtx.globalAlpha = opacity * (0.6 + Math.sin(particle.phase) * 0.14);
+      fxCtx.fillStyle = "#d9f4ff";
+      fxCtx.shadowColor = "#8fdaff";
+      fxCtx.shadowBlur = 8;
+      fxCtx.beginPath();
+      fxCtx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      fxCtx.fill();
+    }
     fxCtx.restore();
 
     return true;
@@ -1201,4 +1205,60 @@ function initCommandPalette() {
 }
 
 initCommandPalette();
+
+function initHomeTimeScene() {
+  if (!document.body.classList.contains("home-page")) return;
+
+  const updateScene = () => {
+    const hour = new Date().getHours();
+    const scene = hour >= 5 && hour < 9
+      ? "dawn"
+      : hour >= 9 && hour < 17
+        ? "day"
+        : hour >= 17 && hour < 20
+          ? "dusk"
+          : "night";
+    document.body.dataset.timeScene = scene;
+  };
+
+  updateScene();
+  window.setInterval(updateScene, 60000);
+}
+
+function initPageTransitions() {
+  if (prefersReducedMotion) return;
+
+  const veil = document.createElement("div");
+  veil.className = "page-transition-veil";
+  veil.setAttribute("aria-hidden", "true");
+  document.body.append(veil);
+
+  document.addEventListener("click", (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    const link = event.target.closest("a[href]");
+    if (!link || link.target || link.hasAttribute("download")) return;
+
+    const destination = new URL(link.href, window.location.href);
+    const current = new URL(window.location.href);
+    const isSameDocument = destination.origin === current.origin
+      && destination.pathname === current.pathname
+      && destination.search === current.search;
+
+    if (destination.origin !== current.origin || isSameDocument) return;
+
+    event.preventDefault();
+    veil.style.setProperty("--transition-x", `${event.clientX}px`);
+    veil.style.setProperty("--transition-y", `${event.clientY}px`);
+    veil.classList.remove("is-active");
+    requestAnimationFrame(() => veil.classList.add("is-active"));
+
+    window.setTimeout(() => {
+      window.location.assign(destination.href);
+    }, 360);
+  }, true);
+}
+
+initHomeTimeScene();
+initPageTransitions();
 
