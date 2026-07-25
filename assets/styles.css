@@ -5601,6 +5601,15 @@ body.home-page.light-theme .constellation-shell::before {
   padding: 3px 5px;
 }
 
+/* Align the compact shortcut badge with the Chinese search label's visual center. */
+.command-trigger kbd {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 6px;
+  transform: translateY(1px);
+}
+
 .command-palette[hidden] {
   display: none;
 }
