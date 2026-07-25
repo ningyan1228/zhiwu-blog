@@ -84,6 +84,20 @@
         "y":  66
     },
     {
+        "id":  "knowledge-expedition",
+        "name":  "知识远征",
+        "kind":  "远征星",
+        "tone":  "green",
+        "url":  "https://expedition.101921.xyz/",
+        "healthUrl":  "",
+        "description":  "通过任务、地图、复习和知识图谱推进学习的游戏化知识探索平台。",
+        "lastUpdated":  "2026-07-25",
+        "activity":  84,
+        "visitsToday":  0,
+        "x":  42,
+        "y":  78
+    },
+    {
         "id":  "zhaoxi-wallpaper",
         "name":  "朝夕壁纸网站",
         "kind":  "视觉星",
