@@ -937,3 +937,268 @@ window.addEventListener("pointerdown", (event) => {
 
   burstAt(event.clientX, event.clientY);
 });
+
+/* Full-site command palette: builds its index from the site's existing content sources. */
+function initCommandPalette() {
+  const header = document.querySelector(".site-header");
+  const themeButton = document.querySelector(".theme-toggle");
+  if (!header || !themeButton || document.querySelector("[data-command-trigger]")) return;
+
+  const mainScript = [...document.scripts].find((script) => /assets\/main\.js/.test(script.src));
+  const siteRoot = new URL("../", mainScript?.src || window.location.href);
+  const shortcut = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent) ? "? K" : "Ctrl K";
+  const trigger = document.createElement("button");
+  trigger.className = "command-trigger";
+  trigger.type = "button";
+  trigger.dataset.commandTrigger = "";
+  trigger.setAttribute("aria-label", `???????${shortcut}?`);
+  trigger.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.2 4.2"></path></svg><span>??</span><kbd>' + shortcut + '</kbd>';
+  header.insertBefore(trigger, themeButton);
+
+  const palette = document.createElement("div");
+  palette.className = "command-palette";
+  palette.hidden = true;
+  palette.innerHTML = [
+    '<div class="command-palette-backdrop" data-command-close></div>',
+    '<section class="command-palette-dialog" role="dialog" aria-modal="true" aria-labelledby="command-palette-title">',
+    '  <div class="command-searchbar">',
+    '    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.2 4.2"></path></svg>',
+    '    <input type="search" autocomplete="off" placeholder="??????????????" aria-label="????" data-command-input />',
+    '    <kbd>Esc</kbd>',
+    '  </div>',
+    '  <div class="command-results" data-command-results aria-live="polite"></div>',
+    '  <footer class="command-palette-footer"><span><kbd>??</kbd> ??</span><span><kbd>?</kbd> ??</span><span>????</span></footer>',
+    '</section>'
+  ].join("");
+  document.body.append(palette);
+
+  const input = palette.querySelector("[data-command-input]");
+  const resultsRoot = palette.querySelector("[data-command-results]");
+  let items = [];
+  let selectedIndex = 0;
+  let previousFocus = null;
+  let indexPromise = null;
+
+  const builtinItems = [
+    { title: "????", description: "??????????", type: "??", url: new URL("./", siteRoot).href, keywords: "?? ???? ????" },
+    { title: "??????", description: "????????????", type: "??", url: new URL("articles/", siteRoot).href, keywords: "?? ?? ?? ??" },
+    { title: "??????", description: "???????????", type: "??", url: new URL("#project-constellation", siteRoot).href, keywords: "?? ?? ??" },
+    { title: "???????", description: "??????????????", type: "??", url: "https://ningyan1228.github.io/study-resource-library/", keywords: "????? ?? ?? ??" },
+    { title: "?????", description: "??????????", type: "??", url: new URL("knowledge/", siteRoot).href, keywords: "??? ?? notion" },
+    { title: "???", description: "???????????", type: "??", url: new URL("contact/", siteRoot).href, keywords: "?? ?? ???" }
+  ];
+
+  const normalize = (value = "") => value.toLocaleLowerCase("zh-CN").replace(/\s+/g, " ").trim();
+  const isExternal = (url) => {
+    try {
+      return new URL(url, window.location.href).origin !== window.location.origin;
+    } catch {
+      return false;
+    }
+  };
+
+  const toItem = ({ title, description, type, url, keywords = "" }) => {
+    if (!title || !url || url === "#") return null;
+    return {
+      title: title.trim(),
+      description: (description || "").replace(/\s+/g, " ").trim(),
+      type,
+      url: new URL(url, siteRoot).href,
+      keywords,
+      external: isExternal(url)
+    };
+  };
+
+  const extractCards = (html, sourceUrl, selector, type) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return [...doc.querySelectorAll(selector)].map((card) => {
+      const link = card.matches("a[href]") ? card : card.querySelector('a[href]:not([href="#"])');
+      const title = card.querySelector("h2")?.textContent || link?.textContent;
+      return toItem({
+        title,
+        description: card.textContent,
+        type,
+        url: link?.getAttribute("href") ? new URL(link.getAttribute("href"), sourceUrl).href : "",
+        keywords: card.querySelector(".project-kind, .knowledge-tags, .project-meta")?.textContent || ""
+      });
+    }).filter(Boolean);
+  };
+
+  const fetchText = async (path) => {
+    const response = await fetch(new URL(path, siteRoot), { cache: "no-store" });
+    if (!response.ok) throw new Error(`Unable to load ${path}`);
+    return response.text();
+  };
+
+  const buildIndex = async () => {
+    const collected = [...builtinItems];
+    const [articles, stars, toolsPage, knowledgePage, practicePage] = await Promise.allSettled([
+      fetchText("articles.json").then(JSON.parse),
+      fetchText("assets/project-stars.json").then(JSON.parse),
+      fetchText("tools/"),
+      fetchText("knowledge/"),
+      fetchText("practice/")
+    ]);
+
+    if (articles.status === "fulfilled" && Array.isArray(articles.value)) {
+      collected.push(...articles.value.map((article) => toItem({
+        title: article.title,
+        description: article.excerpt,
+        type: "??",
+        url: `articles/${article.slug}.html`,
+        keywords: [article.category, ...(article.tags || [])].join(" ")
+      })).filter(Boolean));
+    }
+
+    if (stars.status === "fulfilled" && Array.isArray(stars.value)) {
+      collected.push(...stars.value.map((star) => toItem({
+        title: star.name,
+        description: star.description || star.kind,
+        type: "??",
+        url: star.url,
+        keywords: [star.kind, star.tone, star.id].join(" ")
+      })).filter(Boolean));
+    }
+
+    if (toolsPage.status === "fulfilled") collected.push(...extractCards(toolsPage.value, new URL("tools/", siteRoot), ".finder-project-card", "??"));
+    if (knowledgePage.status === "fulfilled") collected.push(...extractCards(knowledgePage.value, new URL("knowledge/", siteRoot), ".knowledge-card:not(.is-locked)", "???"));
+    if (practicePage.status === "fulfilled") {
+      collected.push(...extractCards(practicePage.value, new URL("practice/", siteRoot), ".practice-folder", "??"));
+      collected.push(...extractCards(practicePage.value, new URL("practice/", siteRoot), ".practice-subcard", "????"));
+    }
+
+    const seen = new Set();
+    return collected.filter((item) => {
+      const key = `${item.title}|${item.url}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
+  const rankItems = (query) => {
+    const needle = normalize(query);
+    if (!needle) return builtinItems.map((item) => ({ ...item, external: isExternal(item.url) }));
+    return items.map((item) => {
+      const title = normalize(item.title);
+      const haystack = normalize(`${item.title} ${item.description} ${item.type} ${item.keywords}`);
+      const score = title === needle ? 100 : title.startsWith(needle) ? 70 : haystack.includes(needle) ? 35 : 0;
+      return { ...item, score };
+    }).filter((item) => item.score > 0).sort((left, right) => right.score - left.score || left.title.localeCompare(right.title, "zh-CN")).slice(0, 9);
+  };
+
+  const openItem = (item) => {
+    if (!item) return;
+    if (item.external) {
+      window.open(item.url, "_blank", "noopener,noreferrer");
+      return;
+    }
+    window.location.assign(item.url);
+  };
+
+  const render = () => {
+    const matches = rankItems(input.value);
+    selectedIndex = Math.min(selectedIndex, Math.max(matches.length - 1, 0));
+    resultsRoot.replaceChildren();
+
+    if (!matches.length) {
+      const empty = document.createElement("p");
+      empty.className = "command-empty";
+      empty.textContent = "?????????????????????????";
+      resultsRoot.append(empty);
+      return;
+    }
+
+    const label = document.createElement("p");
+    label.className = "command-result-label";
+    label.textContent = input.value.trim() ? `?? ${matches.length} ???` : "????";
+    resultsRoot.append(label);
+
+    matches.forEach((item, index) => {
+      const button = document.createElement("button");
+      const meta = document.createElement("span");
+      const copy = document.createElement("span");
+      const title = document.createElement("strong");
+      const description = document.createElement("small");
+      button.type = "button";
+      button.className = "command-result";
+      button.dataset.commandResult = String(index);
+      button.classList.toggle("is-active", index === selectedIndex);
+      meta.className = "command-result-type";
+      meta.textContent = item.type;
+      title.textContent = item.title;
+      description.textContent = item.description || "?????";
+      copy.append(title, description);
+      button.append(meta, copy);
+      button.addEventListener("mouseenter", () => {
+        selectedIndex = index;
+        resultsRoot.querySelectorAll(".command-result").forEach((result, resultIndex) => result.classList.toggle("is-active", resultIndex === index));
+      });
+      button.addEventListener("click", () => openItem(item));
+      resultsRoot.append(button);
+    });
+  };
+
+  const loadIndex = () => {
+    if (!indexPromise) {
+      indexPromise = buildIndex().then((nextItems) => {
+        items = nextItems;
+      }).catch(() => {
+        items = builtinItems.map((item) => ({ ...item, external: isExternal(item.url) }));
+      }).finally(render);
+    }
+    return indexPromise;
+  };
+
+  const open = () => {
+    if (!palette.hidden) return;
+    previousFocus = document.activeElement;
+    palette.hidden = false;
+    document.body.classList.add("command-palette-open");
+    selectedIndex = 0;
+    render();
+    window.setTimeout(() => input.focus(), 0);
+    loadIndex();
+  };
+
+  const close = () => {
+    if (palette.hidden) return;
+    palette.hidden = true;
+    document.body.classList.remove("command-palette-open");
+    input.value = "";
+    previousFocus?.focus?.();
+  };
+
+  trigger.addEventListener("click", open);
+  palette.querySelector("[data-command-close]").addEventListener("click", close);
+  input.addEventListener("input", () => {
+    selectedIndex = 0;
+    render();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    const shortcutPressed = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
+    if (shortcutPressed) {
+      event.preventDefault();
+      palette.hidden ? open() : close();
+      return;
+    }
+    if (palette.hidden) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      close();
+    } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const count = resultsRoot.querySelectorAll(".command-result").length;
+      if (!count) return;
+      selectedIndex = (selectedIndex + (event.key === "ArrowDown" ? 1 : -1) + count) % count;
+      render();
+    } else if (event.key === "Enter") {
+      const matches = rankItems(input.value);
+      openItem(matches[selectedIndex]);
+    }
+  });
+}
+
+initCommandPalette();
+
