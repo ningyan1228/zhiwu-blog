@@ -6550,3 +6550,29 @@ body.home-page.light-theme .site-header {
   .site-nav a { padding: 7px 10px; }
 }
 
+/* Keep search and theme together as one utility group on the header's right edge. */
+.site-header,
+body.light-theme .site-header,
+.home-page .site-header,
+body.home-page.light-theme .site-header {
+  justify-content: flex-start;
+  column-gap: 10px;
+}
+
+.site-nav {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.command-trigger {
+  margin-left: 0;
+}
+
+.command-trigger + .theme-toggle {
+  margin-left: 0;
+}
+
+@media (max-width: 880px) {
+  .site-nav { margin: 0; }
+}
+
