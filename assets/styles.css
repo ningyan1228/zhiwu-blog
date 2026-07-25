@@ -6235,3 +6235,85 @@ body.journey-page[data-journey-chapter="4"] .journey-film { background-color: rg
   .journey-chapter { opacity: 1; transform: none; transition: none; }
 }
 
+/* Station refinement: make the core and light paths feel like one orbital machine. */
+.station-dock {
+  border: 1px solid rgba(171, 221, 247, 0.16);
+  border-radius: 28px;
+  background:
+    linear-gradient(90deg, rgba(88, 178, 230, 0.055) 1px, transparent 1px) center / 12.5% 100%,
+    linear-gradient(rgba(88, 178, 230, 0.045) 1px, transparent 1px) center / 100% 20%,
+    radial-gradient(circle at 50% 50%, rgba(119, 209, 255, 0.2), transparent 17%),
+    radial-gradient(ellipse at 50% 42%, rgba(34, 99, 152, 0.24), transparent 42%),
+    linear-gradient(180deg, rgba(3, 13, 28, 0.28), rgba(3, 10, 21, 0.74));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), inset 0 -80px 120px rgba(1, 6, 15, 0.28), 0 30px 85px rgba(0, 0, 0, 0.15);
+}
+
+.station-dock::before { width: 88%; opacity: 0.72; }
+.station-dock::after { height: 88%; opacity: 0.62; }
+.station-orbit-one { width: 63%; height: 34%; border-color: rgba(153, 218, 252, 0.3); }
+.station-orbit-two { width: 38%; height: 64%; border-color: rgba(153, 218, 252, 0.18); }
+
+.station-core {
+  z-index: 2;
+  width: clamp(126px, 13vw, 168px);
+  border-color: rgba(205, 243, 255, 0.72);
+  background:
+    radial-gradient(circle, #f7fdff 0 3%, rgba(190, 238, 255, 0.96) 7%, rgba(89, 197, 248, 0.54) 16%, rgba(19, 69, 119, 0.42) 39%, rgba(4, 18, 36, 0.42) 60%, transparent 71%);
+  box-shadow: 0 0 24px rgba(143, 222, 255, 0.72), 0 0 78px rgba(61, 158, 243, 0.48), 0 0 170px rgba(51, 112, 208, 0.24);
+}
+
+.station-core::before { inset: -26%; border-color: rgba(187, 235, 255, 0.36); }
+.station-core::after { inset: 21%; border-color: rgba(232, 249, 255, 0.48); }
+.station-core i { width: 9px; height: 9px; box-shadow: 0 0 22px #d1f6ff; }
+.station-core b { inset: -51%; border-color: rgba(107, 202, 255, 0.2); }
+.station-core em {
+  position: relative;
+  z-index: 2;
+  margin-top: 50px;
+  color: rgba(224, 247, 255, 0.88);
+  font: 800 8px/1.55 Inter, system-ui, sans-serif;
+  font-style: normal;
+  letter-spacing: 0.17em;
+  text-align: center;
+  text-shadow: 0 0 12px rgba(154, 222, 255, 0.9);
+}
+
+.station-port {
+  min-height: 126px;
+  border-color: color-mix(in srgb, var(--port-color) 42%, rgba(205, 239, 255, 0.12));
+  background:
+    linear-gradient(115deg, color-mix(in srgb, var(--port-color) 16%, rgba(5, 18, 34, 0.88)), rgba(5, 16, 30, 0.64)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px) / 22px 100%;
+  backdrop-filter: blur(14px) saturate(125%);
+  -webkit-backdrop-filter: blur(14px) saturate(125%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -20px 34px rgba(0, 0, 0, 0.11), 0 22px 46px rgba(0, 0, 0, 0.2);
+}
+
+.station-port::before {
+  width: clamp(84px, 13vw, 190px);
+  height: 2px;
+  opacity: 0.72;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--port-color) 64%, transparent);
+}
+
+.station-port::after {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  width: 26px;
+  height: 2px;
+  content: "";
+  background: var(--port-color);
+  box-shadow: 7px 0 0 color-mix(in srgb, var(--port-color) 58%, transparent), 14px 0 0 color-mix(in srgb, var(--port-color) 25%, transparent);
+}
+
+.station-port:hover { transform: translateY(-7px) scale(1.025); }
+
+@media (max-width: 760px) {
+  .station-dock { border-radius: 20px; }
+  .station-core { width: 112px; }
+  .station-port { min-height: 112px; }
+  .station-port::before { width: 54px; }
+  .station-core em { margin-top: 41px; font-size: 7px; }
+}
+
