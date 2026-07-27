@@ -1,5 +1,19 @@
 [
     {
+        "id":  "xiaoka",
+        "name":  "上岸小卡",
+        "kind":  "记忆星",
+        "tone":  "mint",
+        "url":  "https://xiaoka.101921.xyz/",
+        "healthUrl":  "",
+        "description":  "面向公考常识的视觉记忆系统，结合题库、错题本与间隔复习流程。",
+        "lastUpdated":  "2026-07-27",
+        "activity":  88,
+        "visitsToday":  0,
+        "x":  31,
+        "y":  76
+    },
+    {
         "id":  "overseas-lead-finder",
         "name":  "海外潜在客户搜索",
         "kind":  "获客星",
