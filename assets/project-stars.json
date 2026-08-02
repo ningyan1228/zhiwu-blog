@@ -1,5 +1,19 @@
 [
     {
+        "id":  "ai-price-map",
+        "name":  "AI价格地图",
+        "kind":  "情报星",
+        "tone":  "cyan",
+        "url":  "https://ai-price-map.101921.xyz/",
+        "healthUrl":  "",
+        "description":  "追踪 AI 产品动态、GPT 地区价格与订阅变化，并提供工具对比和涨价记录。",
+        "lastUpdated":  "2026-08-03",
+        "activity":  90,
+        "visitsToday":  0,
+        "x":  37,
+        "y":  75
+    },
+    {
         "id":  "xiaoka",
         "name":  "上岸小卡",
         "kind":  "记忆星",
